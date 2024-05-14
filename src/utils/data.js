@@ -24,11 +24,11 @@ const pages = [
   //   href: '/user/dashboard',
   //   icon: FiUser,
   // },
-  {
-    title: "offer-page",
-    href: "/offer",
-    icon: FiGift,
-  },
+  // {
+  //   title: "offer-page",
+  //   href: "/offer",
+  //   icon: FiGift,
+  // },
   {
     title: "checkout-page",
     href: "/checkout",
@@ -59,11 +59,11 @@ const pages = [
     href: "/terms-and-conditions",
     icon: FiFileText,
   },
-  {
-    title: "not-found-page",
-    href: "/404",
-    icon: FiAlertCircle,
-  },
+  // {
+  //   title: "not-found-page",
+  //   href: "/404",
+  //   icon: FiAlertCircle,
+  // },
 ];
 
 const userSidebar = [

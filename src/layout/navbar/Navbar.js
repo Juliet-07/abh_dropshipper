@@ -76,7 +76,7 @@ const Navbar = () => {
               href="/"
               className="mr-3 lg:mr-12 xl:mr-12 hidden md:hidden lg:block"
             >
-              <div className="relative w-32 h-10">
+              <div className="relative w-[200px] h-10">
                 <Image
                   width="0"
                   height="0"
@@ -84,8 +84,8 @@ const Navbar = () => {
                   className="w-full h-auto"
                   priority
                   src={
-                    storeCustomizationSetting?.navbar?.logo ||
-                    "/logo/logo-light.svg"
+                    // storeCustomizationSetting?.navbar?.logo ||
+                    "/abh_logo.png"
                   }
                   alt="logo"
                 />
@@ -168,6 +168,7 @@ const Navbar = () => {
                 )}
               </button>
             </div>
+            <button className="bg-white w-[100px] h-10 text-[#359E52] font-semibold rounded-md mx-3">Join</button>
           </div>
         </div>
 

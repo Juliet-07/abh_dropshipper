@@ -296,7 +296,7 @@ const Footer = () => {
                 className="mr-3 lg:mr-12 xl:mr-12"
                 rel="noreferrer"
               >
-                <div className="relative w-32 h-10">
+                <div className="relative md:w-[200px] h-10">
                   <Image
                     // width={110}
                     // height={40}
@@ -305,8 +305,8 @@ const Footer = () => {
                     sizes="100vw"
                     className="w-full h-auto"
                     src={
-                      storeCustomizationSetting?.footer?.block4_logo ||
-                      "/logo/logo-color.svg"
+                      // storeCustomizationSetting?.footer?.block4_logo ||
+                      "/abh_logo.png"
                     }
                     alt="logo"
                   />
