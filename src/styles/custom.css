@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+  font-family: monserrat;
+  src: url("/vendor_assets/Montserrat-VariableFont_wght.ttf");
+}
 [type="radio"]:checked {
   background-image: none;
 }
