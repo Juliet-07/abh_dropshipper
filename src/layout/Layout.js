@@ -15,7 +15,7 @@ const Layout = ({ title, description, children }) => {
     <>
       <ToastContainer />
 
-      <div className="font-sans">
+      <div className="font-primaryRegular">
         <Head>
           <title>
             ABH Grocery Store

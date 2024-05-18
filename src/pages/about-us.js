@@ -16,322 +16,162 @@ const AboutUs = () => {
 
   return (
     <Layout title="About Us" description="This is about us page">
-      <PageHeader
-        headerBg={storeCustomizationSetting?.about_us?.header_bg}
-        title={showingTranslateValue(
-          storeCustomizationSetting?.about_us?.title
-        )}
-      />
-
-      <div className="bg-white">
-        <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
-          <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center">
-            <div className="">
-              <h3 className="text-xl lg:text-3xl mb-2 font-serif font-semibold">
-                Welcome to the ABH Store
-                {/* <CMSkeleton
-                  count={1}
-                  height={50}
-                  // error={error}
-                  loading={loading}
-                  data={storeCustomizationSetting?.about_us?.top_title}
-                /> */}
-              </h3>
-              <div className="mt-3 text-base opacity-90 leading-7">
-                <p>
-                  <CMSkeleton
-                    count={5}
-                    height={20}
-                    // error={error}
-                    loading={loading}
-                    data={storeCustomizationSetting?.about_us?.top_description}
-                  />
-                </p>
-              </div>
-              <div className="grid md:grid-cols-2 gap-6 lg:grid-cols-2 xl:gap-6 mt-8">
-                <div className="p-8 bg-indigo-50 shadow-sm rounded-lg">
-                  {loading ? (
-                    <CMSkeleton
-                      count={8}
-                      height={20}
-                      error={error}
-                      loading={loading}
-                    />
-                  ) : (
-                    <>
-                      <span className="text-3xl block font-extrabold font-serif mb-4 text-gray-800">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_two_title
-                        )}
-                      </span>
-                      <h4 className="text-lg font-serif font-bold mb-1">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_two_sub
-                        )}
-                      </h4>
-                      <p className="mb-0 opacity-90 leading-7">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us
-                            ?.card_two_description
-                        )}
-                      </p>
-                    </>
-                  )}
-                </div>
-                <div className="p-8 bg-indigo-50 shadow-sm rounded-lg">
-                  {loading ? (
-                    <CMSkeleton
-                      count={8}
-                      height={20}
-                      error={error}
-                      loading={loading}
-                    />
-                  ) : (
-                    <>
-                      <span className="text-3xl block font-extrabold font-serif mb-4 text-gray-800">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_one_title
-                        )}
-                      </span>
-                      <h4 className="text-lg font-serif font-bold mb-1">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_one_sub
-                        )}
-                      </h4>
-                      <p className="mb-0 opacity-90 leading-7">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.about_us
-                            ?.card_one_description
-                        )}
-                      </p>
-                    </>
-                  )}
-                </div>
-              </div>
+      {/* Hero section */}
+      <div
+        className="w-full h-[500px] md:h-[632px] relative bg-cover md:px-10 2xl:px-20 md:flex items-center"
+        style={{
+          backgroundImage: `url(${"../about-hero.png"})`,
+        }}
+      >
+        {/* <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#1C1C1C]/75 z-[2]"></div> */}
+        <div className="w-full flex flex-col md:flex-row items-center justify-between relative z-[3] p-4">
+          <div>
+            <p className="text-3xl md:text-5xl font-primaryBold text-white my-4 text-center md:text-left">
+              About Us
+            </p>
+            <div className="md:w-[621px] md:h-[240px] md:text-xl font-primaryRegular leading-10 md:leading-[50px] text-white text-center md:text-left">
+              ABH.com Limited is a dynamic and innovative ecommerce company
+              dedicated to providing exceptional online shopping experiences.
+              Established with a vision to revolutionize the way people shop,
+              ABH.com Limited leverages cutting-edge technology and a
+              customer-centric approach to deliver a diverse range of products
+              to consumers worldwide.
             </div>
-
-            <div className="mt-10 lg:mt-0">
+          </div>
+          <div></div>
+        </div>
+      </div>
+      {/* Our Mission */}
+      <div
+        className="w-full relative bg-cover md:px-10 flex items-center my-10"
+        style={{
+          backgroundImage: `url(${"../rafiki.png"})`,
+        }}
+      >
+        {/* <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#1C1C1C]/75 z-[2]"></div> */}
+        <div className="w-full flex flex-col items-center justify-center relative z-[3] p-4">
+          <div className="font-primaryBold text-xl md:text-3xl mb-4">
+            Our Mission
+          </div>
+          <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-evenly">
+            <div className="hidden md:block">
+              <Image width={271} height={359} src="/about-rec.png" alt="logo" />
+            </div>
+            <div className="block md:hidden">
               <Image
-                width={920}
-                height={750}
-                src={
-                  storeCustomizationSetting?.about_us?.content_right_img ||
-                  "/about-us.jpg"
-                }
+                width={307}
+                height={329}
+                src="/about-rec-mobile.png"
+                alt="logo"
+              />
+            </div>
+            <div className="md:w-[550px] md:text-lg leading-10 md:leading-[50px] text-center text-[#373435] font-primaryRegular py-4">
+              At ABH.com Limited, our mission is to empower customers by
+              offering convenient, reliable, and personalized e-commerce
+              solutions. We aim to exceed customer expectations by continuously
+              enhancing our platform, expanding our product offerings, and
+              delivering unparalleled service.
+            </div>
+            <div className="hidden md:block">
+              <Image
+                width={319}
+                height={402}
+                src="/about-rec2.png"
+                alt="logo"
+              />
+            </div>
+            <div className="block md:hidden">
+              <Image
+                width={348}
+                height={331}
+                src="/about-rec2.png"
                 alt="logo"
               />
             </div>
           </div>
-          <div className="mt-10 lg:mt-16 text-base opacity-90 leading-7">
-            <p>
-              <CMSkeleton
-                count={5}
-                height={20}
-                // error={error}
-                loading={loading}
-                data={
-                  storeCustomizationSetting?.about_us?.middle_description_one
-                }
-              />
-            </p>
-
-            <p>
-              <CMSkeleton
-                count={8}
-                height={20}
-                error={error}
-                loading={loading}
-                data={
-                  storeCustomizationSetting?.about_us?.middle_description_two
-                }
-              />
-            </p>
+        </div>
+      </div>
+      {/* Offerings */}
+      <div className="w-full p-4 md:py-6 md:px-10 grid md:grid-cols-2 gap-10">
+        <div className="md:w-[691px] md:h-[421px] bg-[#359E52] rounded-l-[80px] md:rounded-l-[150px] flex flex-col items-center p-6 md:p-10">
+          <p className="font-primaryBold text-2xl text-white">Key Offerings</p>
+          <p className="font-primaryRegular text-white leading-10 md:leading-[50px]">
+            ABH.com Limited offers a wide range of products across various
+            categories, including electronics, fashion, beauty, home goods, and
+            more. Our curated selection ensures that customers can find
+            everything they need in one convenient location. Additionally, we
+            partner with reputable brands and suppliers to guarantee the quality
+            and authenticity of our products.
+          </p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="hidden md:block relative">
+            <Image width={462} height={331} src="/tech.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-2xl font-primaryBold shadow-lg">
+              Technology Infrastructure
+            </div>
           </div>
-          <div className="mt-10 lg:mt-12 flex flex-col sm:grid gap-4">
-            <Image
-              width={1920}
-              height={570}
-              src={
-                storeCustomizationSetting?.about_us?.content_middle_Img ||
-                "/about-banner.jpg"
-              }
-              alt="logo"
-              className="block rounded-lg"
-            />
+          <div className="block md:hidden relative">
+            <Image width={366} height={257} src="/tech.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-xl font-primaryBold shadow-lg">
+              Technology Infrastructure
+            </div>
+          </div>
+          <div className="md:text-lg font-primaryRegular leading-8 md:leading-[50px] w-[305px] md:w-[418px] border border-[#8BCB90] bg-white p-4">
+            Our state-of-the-art ecommerce platform is designed to provide a
+            seamless and secure shopping experience. Leveraging advanced
+            algorithms and data analytics, we personalize product
+            recommendations and optimize the user interface to enhance
+            engagement and conversion rates. Furthermore, we prioritize
+            cybersecurity measures to safeguard customer data and maintain
+            trust.
           </div>
         </div>
-        <div className="bg-gray-50 lg:py-20 py-10">
-          <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-            <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-8">
-              <div className="max-w-2xl">
-                <h3 className="text-xl lg:text-3xl mb-2 font-serif font-semibold">
-                  <CMSkeleton
-                    count={1}
-                    height={50}
-                    // error={error}
-                    loading={loading}
-                    data={storeCustomizationSetting?.about_us?.founder_title}
-                  />
-                </h3>
-                <p className="mt-2 md:mt-3 font-normal block text-base">
-                  <CMSkeleton
-                    count={3}
-                    height={20}
-                    // error={error}
-                    loading={loading}
-                    data={
-                      storeCustomizationSetting?.about_us?.founder_description
-                    }
-                  />
-                </p>
-              </div>
+      </div>
+      {/* Offerings section 2 */}
+      <div className="w-full bg-[#F5F5F5] p-4 md:py-6 md:px-10 grid md:grid-cols-2 gap-10">
+        <div className="flex flex-col items-center justify-center">
+          <div className="hidden md:block relative">
+            <Image width={462} height={331} src="/globalReach.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-2xl font-primaryBold shadow-lg">
+              Global Reach
             </div>
-            <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-6 xl:gap-x-8">
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_one_img ||
-                    "/team/team-1.jpg"
-                  }
-                  alt="team-1"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_one_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_one_sub
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_two_img ||
-                    "/team/team-2.jpg"
-                  }
-                  alt="team-2"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_two_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_two_sub
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_three_img ||
-                    "/team/team-3.jpg"
-                  }
-                  alt="team-3"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_three_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_three_sub
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_four_img ||
-                    "/team/team-4.jpg"
-                  }
-                  alt="team-4"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_four_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_four_sub
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_five_img ||
-                    "/team/team-5.jpg"
-                  }
-                  alt="team-5"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_five_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_five_sub
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="max-w-sm">
-                <Image
-                  width={420}
-                  height={420}
-                  src={
-                    storeCustomizationSetting?.about_us?.founder_six_img ||
-                    "/team/team-6.jpg"
-                  }
-                  alt="team-6"
-                  className="block rounded-lg"
-                />
-                <div className="py-4">
-                  <h5 className="text-lg font-semibold font-serif">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_six_name
-                    )}
-                  </h5>
-                  <span className="opacity-75 text-sm">
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_six_sub
-                    )}
-                  </span>
-                </div>
-              </div>
+          </div>
+          <div className="block md:hidden relative">
+            <Image width={366} height={257} src="/globalReach.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-xl font-primaryBold shadow-lg">
+              Global Reach
             </div>
+          </div>
+          <div className="md:text-lg font-primaryRegular leading-8 md:leading-[50px] w-[305px] md:w-[418px] border border-[#8BCB90] bg-white p-4">
+            While headquartered in Port Harcourt, ABH.com Limited hope to serves
+            customers worldwide through our robust logistics network and
+            strategic partnerships. Whether customers are shopping from the
+            comfort of their homes or on the go, our platform is accessible
+            across multiple devices and regions, ensuring a consistent
+            experience for all.
+          </div>
+        </div>
+        {/* 2 */}
+        <div className="flex flex-col items-center justify-center">
+          <div className="hidden md:block relative">
+            <Image width={462} height={331} src="/future.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-2xl font-primaryBold shadow-lg">
+              Future Outlook
+            </div>
+          </div>
+          <div className="block md:hidden relative">
+            <Image width={366} height={257} src="/future.png" alt="logo" />
+            <div class="absolute top-[50%] inset-0 flex items-center justify-center text-white text-xl font-primaryBold shadow-lg">
+              Future Outlook
+            </div>
+          </div>
+          <div className="md:text-lg font-primaryRegular leading-8 md:leading-[50px] w-[305px] md:w-[418px] border border-[#8BCB90] bg-white p-4">
+            As ecommerce continues to thrive and evolve, ABH.com Limited is
+            poised for continued growth and success. We remain dedicated to
+            innovation, customer satisfaction, and operational excellence as we
+            expand our product offerings, enter new markets, and solidify our
+            position as a leader in the global e=commerce industry.
           </div>
         </div>
       </div>
