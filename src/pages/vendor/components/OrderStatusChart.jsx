@@ -9,24 +9,26 @@ import {
 } from 'recharts';
 
 const data = [
-    { name: 'Group A', value: 400, color: '#0088FE' },
-    { name: 'Group B', value: 300, color: '#00C49F' },
-    { name: 'Group C', value: 300, color: '#FFBB28' },
-    { name: 'Group D', value: 200, color: '#FF8042' },
+    { name: 'Delivered', value: 400, color: '#0088FE' },
+    { name: 'Returns (3)', value: 300, color: '#DFE30F' },
+    { name: 'Ready to ship (3)', value: 300, color: '#E38E0F' },
+    { name: 'Shipped', value: 200, color: '#9747FF' },
+    { name: 'Pending (3)', value: 200, color: '#E3140F' },
+    { name: 'Processing (30)', value: 200, color: '#7BB8FF' },
   ];
   
 const OrderStatusChart = () => {
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={300}>
       <PieChart>
         <Pie
           dataKey="value"
-          isAnimationActive={false}
+          // isAnimationActive={false}
           data={data}
           cx="50%"
           cy="50%"
-          outerRadius={80}
-          label
+          // outerRadius={80}
+          // label
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />

@@ -11,9 +11,9 @@ import { FiSearch } from "react-icons/fi";
 const DashboardTab = () => {
   return (
     <>
-      <VendorHeader />
+      <VendorHeader title={"Dashboard"} />
 
-      <div className="w-full h-full xl:p-[40px] p-[20px]">
+      <div className="w-full h-[90vh] xl:p-[40px] p-[20px] overflow-y-scroll">
         <p className=" my-[10px] w-full px-[0px] text-[16px] font-bold xl:hidden">
           Dashboard
         </p>
@@ -56,7 +56,7 @@ const DashboardTab = () => {
                     height={18}
                   />
                 </div>{" "}
-                <p className="text-[16px]">Out of stock</p>
+                <p className="text-[16px]">Orders</p>
               </div>
               <div className=" w-full flex flex-row items-center justify-between">
                 <div className="flex flex-row  gap-[10px]">
@@ -159,7 +159,7 @@ const DashboardTab = () => {
           </div>
         </div>
 
-        <div className="mt-[40px] w-full  min-h-[700px] bg-white rounded-[10px] p-[20px] ">
+        <div className="mt-[40px] w-full  min-h-[500px] bg-white rounded-[10px] p-[20px] ">
           <div className="w-full h-[56px] p-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px]">
             <div className="w-[300px] flex flex-row justify-between items-center">
               <p className="text-[16px] font-[600]">RECENT ORDERS</p>
@@ -180,13 +180,13 @@ const DashboardTab = () => {
             </div>
           </div>
           <div className="w-full h-[40px] mt-[10px] md:hidden bg-white p-[10px] flex items-center rounded-[6px] border-[#CFCBCB] border-[0.66px] ">
-              <input
-                type="text"
-                className="w-full  bg-none border-none h-[35px] outline-none  placeholder:text-[12px] placeholder:text-[#37343566]"
-                placeholder="Search for products"
-              />
-              <FiSearch width={16} height={16} color="#37343566" />
-            </div>
+            <input
+              type="text"
+              className="w-full  bg-none border-none h-[35px] outline-none  placeholder:text-[12px] placeholder:text-[#37343566]"
+              placeholder="Search for products"
+            />
+            <FiSearch width={16} height={16} color="#37343566" />
+          </div>
           <div className="w-full min-h-[300px] overflow-x-scroll">
             <div className="min-w-full h-[56px] mt-[10px] p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
               <b className="text-[14px] text-black  min-w-[164px] text-center">
@@ -214,19 +214,20 @@ const DashboardTab = () => {
                   <p className="text-[14px] text-black min-w-[164px] text-center">
                     120381
                   </p>
-                  <p className="text-[14px] text-black min-w-[164px] text-center">
+                  <p className="text-[12px] text-black min-w-[164px] text-center">
                     Aug 2, 2024
                   </p>
-                  <p className="text-[14px] text-black min-w-[164px] text-center">
+                  <p className="text-[12px] text-black min-w-[164px] text-center">
                     Michael Farasin{" "}
                   </p>
-                  <p className="text-[14px] text-black min-w-[164px] text-center">
+                  <p className="text-[12px] text-black min-w-[164px] text-center">
                     7, Kingsway, Otawa, NY
                   </p>
-                  <p className="text-[14px] text-black min-w-[164px] text-center">
-                    Pending
-                  </p>
-                  <p className="text-[14px] text-black min-w-[164px] text-center">
+                  <div className="text-[14px] text-black min-w-[164px] flex flex-row justify-center items-center gap-[10px]">
+                    <div className="w-[8px] h-[8px] bg-[#08932E] rounded-[100px]" />
+                    <p className="text-[12px]">Pending</p>
+                  </div>
+                  <p className="text-[12px] text-black min-w-[164px] text-center">
                     10
                   </p>
                 </div>
