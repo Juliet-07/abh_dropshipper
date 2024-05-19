@@ -7,6 +7,11 @@
   font-family: monserrat;
   src: url("/vendor_assets/Montserrat-VariableFont_wght.ttf");
 }
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+
 [type="radio"]:checked {
   background-image: none;
 }

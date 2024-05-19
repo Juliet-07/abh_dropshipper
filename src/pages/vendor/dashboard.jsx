@@ -1,12 +1,17 @@
 import React from "react";
 import DashboardTab from "./tabs/dashboard_tab";
-import OrdersTab from "./tabs/orders_tab";
-import Inventory from "./tabs/inventory_tab";
+import OrdersTab from "./tabs/orders/orders_tab";
+import Inventory from "./tabs/inventory/inventory_tab";
 import AnalyticalTab from "./tabs/analytics_tab";
+import { ChevronRightIcon } from "@heroicons/react/outline";
 
 const Dashboard = () => {
   const [windowSize, setWindowSize] = React.useState(0);
   const [currentTab, setcurrentTab] = React.useState("dashboard");
+  const [currentSubTab, setcurrentSubTab] = React.useState({
+    tab: "",
+    child: "",
+  });
 
   React.useEffect(() => {
     setWindowSize(document.documentElement.clientWidth);
@@ -17,9 +22,12 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="w-full h-[100vh] bg-[#F4F4F4] flex flex-row " style={{color: "#373435"}}>
-        <div className="w-[300px] h-[100vh] bg-white border-r-[0.6px] md:flex hidden font-[monserrat] border-r-[#C1C6C5] flex-col items-center gap-[12px]">
-          <img src="/abh_logo.png" alt="" width={200} className="mt-[50px]" />
+      <div
+        className="w-full h-[100vh] bg-[#F4F4F4] flex flex-row "
+        style={{ color: "#373435" }}
+      >
+        <div className="w-[300px] h-[100vh] bg-white border-r-[0.6px] xl:flex hidden font-[monserrat] border-r-[#C1C6C5] flex-col items-center gap-[12px]">
+          <img src="/abh_logo.png" alt="" width={172} className="mt-[50px]" />
           <br />
           {[
             { icon: "/vendor_assets/dashboard.svg", title: "Dashboard" },
@@ -28,27 +36,105 @@ const Dashboard = () => {
             { icon: "/vendor_assets/analytics.svg", title: "Analytics" },
           ].map((tab, index) => {
             return (
-              <div style={currentTab == tab.title.toLowerCase() ? {background: "#F1FAF2"} : {}}
-              className="w-[219px] h-[38px] flex flex-row cursor-pointer items-center p-[10px] gap-[10px]" onClick={()=> setcurrentTab(tab.title.toLowerCase())}>
-                <img src={tab.icon} alt="" width={18} height={18} />
-                <p className="text-[14px]">{tab.title}</p>
+              <div>
+                <div
+                  style={
+                    currentTab == tab.title.toLowerCase()
+                      ? { background: "#F1FAF2" }
+                      : {}
+                  }
+                  className="w-[219px] h-[38px] flex flex-row cursor-pointer items-center justify-between p-[10px] "
+                  onClick={() => {
+                    currentTab == "orders"
+                      ? setcurrentSubTab({
+                          tab: currentTab,
+                          child: "All orders",
+                        })
+                      : null;
+                    setcurrentTab(tab.title.toLowerCase());
+                  }}
+                >
+                  <div className="flex flex-row gap-[10px]">
+                    <img src={tab.icon} alt="" width={18} height={18} />
+                    <p className="text-[14px]">{tab.title}</p>
+                  </div>
+
+                  {(tab.title == "Orders") | (tab.title == "Inventory") ? (
+                    <ChevronRightIcon
+                      width={14}
+                      height={14}
+                      className=" transition-all duration-[0.2s]"
+                      style={
+                        (tab.title === "Orders" && currentTab == "orders") ||
+                        (tab.title === "Inventory" && currentTab == "inventory")
+                          ? { transform: "rotate(90deg)" }
+                          : {}
+                      }
+                    />
+                  ) : null}
+                </div>
+                {tab.title === "Orders" && currentTab == "orders" && (
+                  <div className="w-full flex flex-col">
+                    {["All orders", "Track orders"].map((subTab, index) => {
+                      return (
+                        <div
+                          onClick={() =>
+                            setcurrentSubTab({ tab: currentTab, child: subTab })
+                          }
+                          style={
+                            subTab == currentSubTab.child
+                              ? {
+                                  color: "#359E52",
+                                }
+                              : {}
+                          }
+                          className={`w-[80%] h-[37px] cursor-pointer border-b-[#CFCBCB] flex items-center justify-start mx-8 ${
+                            index == 0 && "border-b-[0.66px]"
+                          }`}
+                        >
+                          {subTab}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {tab.title == "Inventory" && currentTab == "inventory" && (
+                  <div className="w-full flex flex-col">
+                    {["All orders", "Track orders"].map((subTab, index) => {
+                      return (
+                        <div
+                          onClick={() =>
+                            setcurrentSubTab({ tab: currentTab, child: subTab })
+                          }
+                          style={
+                            subTab == currentSubTab.child
+                              ? {
+                                  color: "#359E52",
+                                }
+                              : {}
+                          }
+                          className={`w-[80%] h-[37px] cursor-pointer border-b-[#CFCBCB] flex items-center justify-start mx-8 ${
+                            index == 0 && "border-b-[0.66px]"
+                          }`}
+                        >
+                          {subTab}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
-        <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none">
-          {
-            currentTab == "dashboard" && <DashboardTab />
-          }
-          {
-            currentTab == "orders" && <OrdersTab />
-          }
-          {
-            currentTab == "inventory" && <Inventory />
-          }
-          {
-            currentTab == "analytics" && <AnalyticalTab />
-          }
+        <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none no-scrollbar">
+          {currentTab == "dashboard" && <DashboardTab />}
+          {currentTab == "orders" && (
+            <OrdersTab currentTab={currentSubTab.child} />
+          )}
+          {currentTab == "inventory" && <Inventory />}
+          {currentTab == "analytics" && <AnalyticalTab />}
         </div>
       </div>
     </>
