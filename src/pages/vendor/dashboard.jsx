@@ -128,7 +128,7 @@ const Dashboard = () => {
             );
           })}
         </div>
-        <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none no-scrollbar">
+        <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none no-scrollbar font-[monserrat]">
           {currentTab == "dashboard" && <DashboardTab />}
           {currentTab == "orders" && (
             <OrdersTab currentTab={currentSubTab.child} />
