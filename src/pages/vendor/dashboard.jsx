@@ -43,7 +43,7 @@ const Dashboard = () => {
                       ? { background: "#F1FAF2" }
                       : {}
                   }
-                  className="w-[219px] h-[38px] flex flex-row cursor-pointer items-center justify-between p-[10px] "
+                  className="w-[219px] h-[38px] flex flex-row cursor-pointer items-center justify-between p-[10px] rounded-[6px] "
                   onClick={() => {
                     currentTab == "orders"
                       ? setcurrentSubTab({
@@ -101,7 +101,7 @@ const Dashboard = () => {
 
                 {tab.title == "Inventory" && currentTab == "inventory" && (
                   <div className="w-full flex flex-col">
-                    {["All orders", "Track orders"].map((subTab, index) => {
+                    {["My Products", "Draft Products", "Discount"].map((subTab, index) => {
                       return (
                         <div
                           onClick={() =>
@@ -115,7 +115,7 @@ const Dashboard = () => {
                               : {}
                           }
                           className={`w-[80%] h-[37px] cursor-pointer border-b-[#CFCBCB] flex items-center justify-start mx-8 ${
-                            index == 0 && "border-b-[0.66px]"
+                            index == 0 || index == 1 ? "border-b-[0.66px]" : ""
                           }`}
                         >
                           {subTab}

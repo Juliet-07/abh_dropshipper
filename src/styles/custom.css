@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
 
 @font-face {
   font-family: monserrat;
@@ -10,6 +11,44 @@
 
 .no-scrollbar::-webkit-scrollbar{
   display: none;
+=======
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@layer base {
+  body {
+    @apply font-[Montserrat];
+  }
+}
+
+@font-face {
+  font-family: "Thin";
+  src: local("Montserrat-Thin"),
+    url("../fonts/Montserrat-Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Regular";
+  src: local("Montserrat-Regular"),
+    url("../fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Medium";
+  src: local("Montserrat-Medium"),
+    url("../fonts/Montserrat-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Bold";
+  src: local("Montserrat-Bold"),
+    url("../fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SemiBold";
+  src: local("Montserrat-SemiBold"),
+    url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+>>>>>>> 1db57dff9f644c9f78e57ab5b8aa4ccd6e2f41ff
 }
 
 [type="radio"]:checked {

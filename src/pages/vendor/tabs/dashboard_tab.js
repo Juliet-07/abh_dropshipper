@@ -148,7 +148,7 @@ const DashboardTab = () => {
                 <div className="w-full h-[68px] mt-[10px] flex flex-row items-center justify-between border-b-[1px] border-[#CFCBCB]">
                   <div className="w-[60px] h-[60px] border-[1px] border-[#CFCBCB]"></div>
 
-                  <div className="w-[70%] flex flex-col justify-start gap-0">
+                  <div className="w-[70%] flex flex-col justify-start gap-0 px-4">
                     <p className="text-[16px] text-black  ">{data.product}</p>
                     <p className="text-[14px] text-[#373435] ">{data.type}</p>
                   </div>

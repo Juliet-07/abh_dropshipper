@@ -168,7 +168,11 @@ const Navbar = () => {
                 )}
               </button>
             </div>
-            <button className="bg-white w-[100px] h-10 text-[#359E52] font-semibold rounded-md mx-3">Join</button>
+            <Link href="/vendor/signup">
+              <button className="bg-white w-[100px] h-10 text-[#359E52] font-semibold rounded-md mx-3">
+                Join
+              </button>
+            </Link>
           </div>
         </div>
 
