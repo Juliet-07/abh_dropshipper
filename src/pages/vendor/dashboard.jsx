@@ -8,9 +8,13 @@ import { ChevronRightIcon } from "@heroicons/react/outline";
 const Dashboard = () => {
   const [windowSize, setWindowSize] = React.useState(0);
   const [currentTab, setcurrentTab] = React.useState("dashboard");
-  const [currentSubTab, setcurrentSubTab] = React.useState({
+  const [OrderscurrentSubTab, setOrderscurrentSubTab] = React.useState({
     tab: "",
-    child: "",
+    child: "All orders",
+  });
+  const [InventorycurrentSubTab, setInventorycurrentSubTab] = React.useState({
+    tab: "",
+    child: "My Products",
   });
 
   React.useEffect(() => {
@@ -45,12 +49,11 @@ const Dashboard = () => {
                   }
                   className="w-[219px] h-[38px] flex flex-row cursor-pointer items-center justify-between p-[10px] rounded-[6px] "
                   onClick={() => {
-                    currentTab == "orders"
-                      ? setcurrentSubTab({
-                          tab: currentTab,
-                          child: "All orders",
-                        })
-                      : null;
+                    currentTab == "orders" &&
+                      setOrderscurrentSubTab({
+                        tab: currentTab,
+                        child: "All orders",
+                      });
                     setcurrentTab(tab.title.toLowerCase());
                   }}
                 >
@@ -79,10 +82,13 @@ const Dashboard = () => {
                       return (
                         <div
                           onClick={() =>
-                            setcurrentSubTab({ tab: currentTab, child: subTab })
+                            setOrderscurrentSubTab({
+                              tab: currentTab,
+                              child: subTab,
+                            })
                           }
                           style={
-                            subTab == currentSubTab.child
+                            subTab == OrderscurrentSubTab.child
                               ? {
                                   color: "#359E52",
                                 }
@@ -101,27 +107,34 @@ const Dashboard = () => {
 
                 {tab.title == "Inventory" && currentTab == "inventory" && (
                   <div className="w-full flex flex-col">
-                    {["My Products", "Draft Products", "Discount"].map((subTab, index) => {
-                      return (
-                        <div
-                          onClick={() =>
-                            setcurrentSubTab({ tab: currentTab, child: subTab })
-                          }
-                          style={
-                            subTab == currentSubTab.child
-                              ? {
-                                  color: "#359E52",
-                                }
-                              : {}
-                          }
-                          className={`w-[80%] h-[37px] cursor-pointer border-b-[#CFCBCB] flex items-center justify-start mx-8 ${
-                            index == 0 || index == 1 ? "border-b-[0.66px]" : ""
-                          }`}
-                        >
-                          {subTab}
-                        </div>
-                      );
-                    })}
+                    {["My Products", "Draft Products", "Discount"].map(
+                      (subTab, index) => {
+                        return (
+                          <div
+                            onClick={() =>
+                              setInventorycurrentSubTab({
+                                tab: currentTab,
+                                child: subTab,
+                              })
+                            }
+                            style={
+                              subTab == InventorycurrentSubTab.child
+                                ? {
+                                    color: "#359E52",
+                                  }
+                                : {}
+                            }
+                            className={`w-[80%] h-[37px] cursor-pointer border-b-[#CFCBCB] flex items-center justify-start mx-8 ${
+                              index == 0 || index == 1
+                                ? "border-b-[0.66px]"
+                                : ""
+                            }`}
+                          >
+                            {subTab}
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                 )}
               </div>
@@ -131,9 +144,11 @@ const Dashboard = () => {
         <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none no-scrollbar font-[monserrat]">
           {currentTab == "dashboard" && <DashboardTab />}
           {currentTab == "orders" && (
-            <OrdersTab currentTab={currentSubTab.child} />
+            <OrdersTab currentTab={OrderscurrentSubTab.child} />
           )}
-          {currentTab == "inventory" && <Inventory />}
+          {currentTab == "inventory" && (
+            <Inventory currentTab={InventorycurrentSubTab.child} />
+          )}
           {currentTab == "analytics" && <AnalyticalTab />}
         </div>
       </div>
