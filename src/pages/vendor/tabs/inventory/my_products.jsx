@@ -2,8 +2,48 @@ import { XIcon } from "@heroicons/react/outline";
 import VendorHeader from "@pages/vendor/components/VendorHeader";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { settings } from "@pages/vendor/components/slider_settings";
 
-const Myproducts = ({pushEdit, pushAdd}) => {
+const Myproducts = ({ pushEdit, pushAdd }) => {
+  const CustomSlider = ({ settings }) => {
+    return (
+      <div className="slider-container p-[20px] bg-none">
+        <Slider {...settings}>
+          <div
+            className="max-w-[73px] border-[1px] min-h-[55px] bg-contain  mr-5 bg-[url(/vendor_assets/apple.png)]"
+            style={{
+              background: "url(/vendor_assets/apple.png) center no-repeat",
+              backgroundSize: "cover",
+            }}
+          ></div>
+          <div
+            className="max-w-[73px] border-[1px] min-h-[55px] bg-contain  bg-[url(/vendor_assets/apple.png)]"
+            style={{
+              background: "url(/vendor_assets/apple.png) center no-repeat",
+              backgroundSize: "cover",
+            }}
+          ></div>
+          <div
+            className="max-w-[73px] border-[1px] min-h-[55px]  bg-center bg-[url(/vendor_assets/apple.png)] "
+            style={{
+              background: "url(/vendor_assets/apple.png) center no-repeat ",
+              backgroundSize: "cover",
+            }}
+          ></div>
+          <div
+            className="max-w-[73px] border-[1px] min-h-[55px] bg-contain  bg-[url(/vendor_assets/apple.png)]"
+            style={{
+              background: "url(/vendor_assets/apple.png) center no-repeat",
+              backgroundSize: "cover",
+            }}
+          ></div>
+        </Slider>
+      </div>
+    );
+  };
   const productsData = [
     {
       id: "1565132",
@@ -106,7 +146,7 @@ const Myproducts = ({pushEdit, pushAdd}) => {
           // onClick={()=> setPreview(false)}
           className="w-full h-[100vh] overflow-y-scroll bg-[#000000a8] fixed top-0 left-0 flex flex-col items-center "
         >
-          <div className="w-[90%] max-w-[882px] relative min-h-[120vh] md:min-h-[680px] bg-white rounded-[10px] p-[20px] md:p-[40px] mt-[5vh]">
+          <div className="w-[90%] max-w-[882px] relative  bg-white rounded-[10px] p-[20px] md:p-[40px] my-[5vh]">
             <b className="text-[16px] w-full text-center flex justify-center">
               Product Details
             </b>
@@ -117,14 +157,24 @@ const Myproducts = ({pushEdit, pushAdd}) => {
               color="red"
               onClick={() => setPreview(false)}
             />
-            <div className="w-full flex flex-row flex-wrap mt-[20px] min-h-1">
+            <div className="w-full flex flex-row flex-wrap mt-[20px] min-h-1 gap-2">
               <div className="w-full min-w-[300px] min-h-[200px] flex flex-[45] flex-col">
                 <p>ID 123145</p>
                 <br />
-                <div className="w-full h-[198px] bg-contain"
-                style={{background: "url(/vendor_assets/apple.png) center no-repeat", backgroundSize: "contain"}}></div>
+                <div
+                  className="w-full h-[198px] bg-contain"
+                  style={{
+                    background:
+                      "url(/vendor_assets/apple.png) center no-repeat",
+                    backgroundSize: "contain",
+                  }}
+                ></div>
+                <br />
+                <CustomSlider settings={settings} />
               </div>
-              <div className="w-full min-w-[300px] min-h-[500px] flex flex-[55] flex-col">
+              <div className="w-full min-w-[300px] flex flex-[55] flex-col">
+               <br />
+               <br />
                 <b>Mint</b>
                 <p>Grocery</p>
                 {/* <br className="h-[1px]" /> */}
@@ -155,22 +205,28 @@ const Myproducts = ({pushEdit, pushAdd}) => {
                 </div>
               </div>
             </div>
-
-
-            <div className="flex flex-row h-[4pc] items-center justify-between">
+{/* <br /> */}
+<br />
+            <div className="flex flex-row h-[1pc] items-center justify-between">
               <div className="flex flex-row gap-[10px]">
-              <button 
-              onClick={()=>{
-                // window.open("#edit", "_parent")
-                setPreview(false);
-                 pushEdit("id");
-                }}
-              className="md:w-[186px] w-[99px]  h-[46px] bg-[#4CBD6B] text-white rounded-[6px]">Edit</button>
-              <button className="md:w-[186px] w-[99px]  h-[46px] bg-[#E3140F] text-white rounded-[6px]">Delete</button>
+                <button
+                  onClick={() => {
+                    // window.open("#edit", "_parent")
+                    setPreview(false);
+                    pushEdit("id");
+                  }}
+                  className="md:w-[186px] w-[99px]  h-[46px] bg-[#4CBD6B] text-white rounded-[6px]"
+                >
+                  Edit
+                </button>
+                <button className="md:w-[186px] w-[99px]  h-[46px] bg-[#E3140F] text-white rounded-[6px]">
+                  Delete
+                </button>
               </div>
 
-              <button className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]">Cancel</button>
-
+              <button className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]">
+                Cancel
+              </button>
             </div>
             <br />
             <br />
@@ -199,8 +255,10 @@ const Myproducts = ({pushEdit, pushAdd}) => {
               <button className="h-[36px] w-[143px] rounded-[6px] bg-[#F58634] text-[14px] text-white">
                 Bulk upload
               </button>
-              <button onClick={()=> pushAdd("id")}
-              className="h-[36px] w-[122px] rounded-[6px] bg-none text-[14px] text-[#359E52] border-[1px] border-[#359E52]">
+              <button
+                onClick={() => pushAdd("id")}
+                className="h-[36px] w-[122px] rounded-[6px] bg-none text-[14px] text-[#359E52] border-[1px] border-[#359E52]"
+              >
                 Add product
               </button>
             </div>

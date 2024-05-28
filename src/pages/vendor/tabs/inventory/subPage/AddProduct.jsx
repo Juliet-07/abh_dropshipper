@@ -2,11 +2,27 @@ import { MenuIcon } from "@heroicons/react/outline";
 import { ArrowNarrowLeftIcon, CheckIcon, XIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import React from "react";
+import Select from 'react-select';
 import { FiBell, FiUploadCloud, FiUser } from "react-icons/fi";
 
 const AddProduct = ({ productId }) => {
   const router = useRouter();
   const [showPreview, setPreview] = React.useState(false);
+
+  
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
+
+  const options = [
+    { value: 'Fruits & Vegetables', label: 'Fruits & Vegetables' },
+    { value: 'oil and paint', label: 'oil and paint' },
+    { value: 'merch', label: 'merch' },
+    { value: 'yellow', label: 'Yellow' },
+    { value: 'orange', label: 'Orange' },
+  ];
+
+  const handleChange = (selected) => {
+    setSelectedOptions(selected);
+  };
 
   //
 
@@ -214,6 +230,17 @@ const AddProduct = ({ productId }) => {
               />
             </div>
             <br />
+            <p className="text-[16px] w-full">Category</p>
+            <Select
+             value={selectedOptions}
+             isMulti
+             name="colors"
+             options={options}
+             className="basic-multi-select"
+             classNamePrefix="select"
+             onChange={handleChange}
+            />
+            <br />
             <p className="text-[16px] w-full">Price</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB] flex flex-row justify-between">
               <input
@@ -235,7 +262,7 @@ const AddProduct = ({ productId }) => {
               <textarea
                 name=""
                 id=""
-                className="w-full h-full border-none"
+                className="w-full h-full border-none resize-none"
                 placeholder="Enter product description"
               ></textarea>
             </div>

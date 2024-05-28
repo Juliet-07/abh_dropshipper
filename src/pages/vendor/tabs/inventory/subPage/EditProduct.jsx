@@ -3,33 +3,51 @@ import { ArrowNarrowLeftIcon, CheckIcon, XIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import React from "react";
 import { FiBell, FiUploadCloud, FiUser } from "react-icons/fi";
+import Select from 'react-select';
 
 const EditProduct = ({ productId }) => {
   const router = useRouter();
   const [showPreview, setPreview] = React.useState(false);
 
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
+
+  const options = [
+    { value: 'Fruits & Vegetables', label: 'Fruits & Vegetables' },
+    { value: 'oil and paint', label: 'oil and paint' },
+    { value: 'merch', label: 'merch' },
+    { value: 'yellow', label: 'Yellow' },
+    { value: 'orange', label: 'Orange' },
+  ];
+
+  const handleChange = (selected) => {
+    setSelectedOptions(selected);
+  };
+
   //
 
   return (
     <>
-
-{showPreview && (
+      {showPreview && (
         <div
           // onClick={()=> setPreview(false)}
           className="w-full h-[100vh]  bg-[#000000a8] z-[10000] fixed top-0 left-0 flex flex-col items-center  justify-center"
         >
-            <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-[10px] flex flex-col items-center  justify-center">
-                <div className="w-[50px] h-[50px] rounded-[100px] border-[#08932E] border-[1px] flex flex-col items-center  justify-center">
-                    <CheckIcon width={30} height={30} color="#08932E" />
-                </div>
-                <br />
-                <p>Product updated successfully</p>
-                <br />
-                <button onClick={()=> setPreview(false)}
-                className="w-[186px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white">Okay</button>
+          <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-[10px] flex flex-col items-center  justify-center">
+            <div className="w-[50px] h-[50px] rounded-[100px] border-[#08932E] border-[1px] flex flex-col items-center  justify-center">
+              <CheckIcon width={30} height={30} color="#08932E" />
             </div>
-            </div>
-)}
+            <br />
+            <p>Product updated successfully</p>
+            <br />
+            <button
+              onClick={() => setPreview(false)}
+              className="w-[186px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+            >
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
       <header className="w-full h-[70px] flex  bg-white  flex-row items-center justify-between p-[20px]">
         <div className="flex flex-row gap-[10px] items-center ">
           <ArrowNarrowLeftIcon
@@ -157,55 +175,109 @@ const EditProduct = ({ productId }) => {
           <div className="w-full p-[20px] md:max-w-[596px] min-h-[100vh] md:rounded-[10px] border-[1px] bg-white">
             <p className="text-[16px] w-full">Product Name</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB]">
-                <input type="text" name="" id="" className="flex w-full h-[35px] border-none" />
+              <input
+                type="text"
+                name=""
+                id=""
+                className="flex w-full h-[35px] border-none"
+              />
             </div>
             <br />
             <p className="text-[16px] w-full">Quantity</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB] flex flex-row justify-between">
-                <input type="number" name="" id="" style={{outline: "none"}} className="flex w-[90%] h-[35px] border-none" />
-                <select name="" id="" className="border-none">
-                    <option value="Units" selected disabled>Units</option>
-                </select>
+              <input
+                type="number"
+                name=""
+                id=""
+                style={{ outline: "none" }}
+                className="flex w-[90%] h-[35px] border-none"
+              />
+              <select name="" id="" className="border-none">
+                <option value="Units" selected disabled>
+                  Units
+                </option>
+              </select>
             </div>
             <br />
             <p className="text-[16px] w-full">Size</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB] flex flex-row justify-between">
-                <input type="number" name="" id="" style={{outline: "none"}} className="flex w-[90%] h-[35px] border-none" />
-                <select name="" id="" className="border-none">
-                    <option value="KG" selected disabled>KG</option>
-                </select>
+              <input
+                type="number"
+                name=""
+                id=""
+                style={{ outline: "none" }}
+                className="flex w-[90%] h-[35px] border-none"
+              />
+              <select name="" id="" className="border-none">
+                <option value="KG" selected disabled>
+                  KG
+                </option>
+              </select>
             </div>
             <br />
             <p className="text-[16px] w-full">Manufacturer</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB]">
-                <input type="text" name="" id="" className="flex w-full h-[35px] border-none" />
+              <input
+                type="text"
+                name=""
+                id=""
+                className="flex w-full h-[35px] border-none"
+              />
             </div>
+            <br />
+            <p className="text-[16px] w-full">Category</p>
+            <Select
+             value={selectedOptions}
+             isMulti
+             name="colors"
+             options={options}
+             className="basic-multi-select"
+             classNamePrefix="select"
+             onChange={handleChange}
+            />
             <br />
             <p className="text-[16px] w-full">Price</p>
             <div className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB] flex flex-row justify-between">
-                <input type="number" name="" id="" style={{outline: "none"}} className="flex w-[90%] h-[35px] border-none" />
-                <select name="" id="" className="border-none">
-                    <option value="Units" selected disabled>$</option>
-                </select>
+              <input
+                type="number"
+                name=""
+                id=""
+                style={{ outline: "none" }}
+                className="flex w-[90%] h-[35px] border-none"
+              />
+              <select name="" id="" className="border-none">
+                <option value="Units" selected disabled>
+                  $
+                </option>
+              </select>
             </div>
             <br />
             <p className="text-[16px] w-full">Product Description</p>
             <div className="w-full h-[180px] border-[1px] mt-[10px]">
-                <textarea name="" id="" className="w-full h-full border-none" placeholder="Enter product description"></textarea>
+              <textarea
+                name=""
+                id=""
+                className="w-full h-full border-none"
+                placeholder="Enter product description"
+              ></textarea>
             </div>
             <br />
             <p className="text-[16px] w-full">Discount</p>
             <select className="w-full h-[40px] border-[1px] mt-[10px] border-[#CFCBCB]">
-                <option value="Select one" selected disabled>Select one</option>
+              <option value="Select one" selected disabled>
+                Select one
+              </option>
             </select>
             <br />
           </div>
         </div>
         <div className="w-full h-[200px] flex flex-row items-center justify-end md:p-[40px] p-[20px]">
-            <button onClick={()=> setPreview(true)}
-            className="w-[221px] h-[46px] bg-white rounded-[6px] border-[1px] border-[#359E52] text-[#359E52]">
-                <b>Update product</b>
-            </button>
+          <button
+            onClick={() => setPreview(true)}
+            className="w-[221px] h-[46px] bg-white rounded-[6px] border-[1px] border-[#359E52] text-[#359E52]"
+          >
+            <b>Update product</b>
+          </button>
         </div>
       </div>
     </>
