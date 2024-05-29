@@ -3,12 +3,15 @@ import VendorHeader from "../../components/VendorHeader";
 import { FiSearch } from "react-icons/fi";
 import { ArrowLeftIcon, DownloadIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AllOrders = () => {
   const [Filter, setFilter] = React.useState("All");
   const [CurrentScreen, setCurrentScreen] = React.useState("orders");
   const router = useRouter();
-  const [activeTab, setActiveTab] = React.useState("");
+  const [activeTab, setActiveTab] = React.useState("orders_tab");
+  const [acceptOrder, setacceptOrder] = React.useState(false);
 
   React.useEffect(() => {
     // Set the initial tab based on the URL hash
@@ -16,7 +19,7 @@ const AllOrders = () => {
     if (hash) {
       setActiveTab(hash.substring(1)); // Remove the '#' from the hash
     } else {
-      setActiveTab(""); // Default tab
+      setActiveTab("orders_tab"); // Default tab
     }
   }, []);
 
@@ -41,7 +44,22 @@ const AllOrders = () => {
 
   return (
     <>
-      {activeTab == "" && (
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        // bodyClassName={"bg-[red]"}
+        theme="colored"
+        transition={Bounce}
+      />
+
+      {activeTab == "orders_tab" && (
         <>
           <VendorHeader title={"Orders"} />
           <div className="w-full h-[90vh] xl:p-[40px] p-[20px] flex flex-col overflow-y-scroll ">
@@ -58,32 +76,38 @@ const AllOrders = () => {
                 <FiSearch width={16} height={16} color="#37343566" />
               </div>
 
-              <div className="w-full h-[50px] flex flex-row gap-[15px] mt-[20px] overflow-x-scroll no-scrollbar">
-                {[
-                  "All",
-                  "Pending",
-                  "Processing",
-                  "Ready to ship",
-                  "Shipped",
-                  "Delivered",
-                  "Returned",
-                ].map((tab, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setFilter(tab)}
-                    className={`min-w-[66px] h-[37px] p-[10px] cursor-pointer flex items-center justify-center rounded-[6px] ${
-                      Filter === tab ? "bg-[#359E52] text-white" : "bg-[#C1C6C5]"
-                    }`}
-                  >
-                    <p className="text-[14px] flex flex-row flex-nowrap">
-                      {tab}
-                    </p>
-                  </div>
-                ))}
+              <div className="w-full h-[60px] overflow-x-scroll no-scrollbar overflow-y-hidden ">
+                <div className="min-w-[200vw] md:min-w-[100%] h-[50px] flex flex-row gap-[15px] mt-[20px] ">
+                  {[
+                    "All",
+                    "Pending",
+                    "Processing",
+                    "Ready to ship",
+                    "Shipped",
+                    "Delivered",
+                    "Returned",
+                  ].map((tab, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setFilter(tab)}
+                      className={`min-w-[70px] h-[37px] p-[10px] cursor-pointer flex items-center justify-center rounded-[6px] ${
+                        Filter === tab
+                          ? "bg-[#359E52] text-white"
+                          : "bg-[#C1C6C5]"
+                      }`}
+                    >
+                      <p className="text-[14px] flex flex-row flex-nowrap">
+                        {tab}
+                      </p>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="w-full min-h-[300px] overflow-x-scroll overflow-y-hidden px-[10px] bg-white mt-[20px] pb-[10px]">
-                <div className="min-w-full h-[56px] mt-[10px] p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
+              <div className="flex flex-row items-center gap-4">
+
+                <div className=" h-[56px] mt-[10px] p-[10px] flex flex-1 flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
                   <b className="text-[14px] text-black  min-w-[164px] text-center">
                     Order ID
                   </b>
@@ -97,20 +121,24 @@ const AllOrders = () => {
                     Address
                   </b>
                   <b className="text-[14px] text-black  min-w-[164px] text-center">
-                    Order status
+                  Payment  status
                   </b>
                   <b className="text-[14px] text-black  min-w-[164px] text-center">
-                    Payment status
+                  Orders status
                   </b>
                   <b className="text-[14px] text-black  min-w-[164px] text-center">
                     Items
                   </b>
                 </div>
+                </div>
                 {[{}, {}, {}, {}, {}].map((data, index) => {
                   return (
+                    <div className="flex flex-row items-center gap-4">
+
                     <div
                       onClick={() => handleTabClick("order_details")}
-                      className="min-w-full h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
+
+                      className="  cursor-pointer h-[56px] px-[10px] flex flex-1 flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
                     >
                       <p className="text-[12px] text-black min-w-[164px] text-center">
                         120381
@@ -147,6 +175,7 @@ const AllOrders = () => {
                         10
                       </p>
                     </div>
+                    </div>
                   );
                 })}
               </div>
@@ -167,9 +196,11 @@ const AllOrders = () => {
             </div>
 
             <div className="flex flex-row gap-[26px] ">
-              <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] hidden md:block">
-                Change status
-              </button>
+              {acceptOrder && (
+                <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] hidden md:block">
+                  Change status
+                </button>
+              )}
               <div className="bg-[#8BCB901F] md:w-[197px] w-[40px] h-[40px] p-[10px] gap-[11px] flex flex-row items-center justify-center rounded-[6px] ">
                 <DownloadIcon width={14} height={14} color="#359E52" />
                 <p className="text-[16px] text-[#359E52] hidden md:flex">
@@ -180,13 +211,15 @@ const AllOrders = () => {
           </header>
           <div className="w-full h-[90vh] xl:p-[40px] p-[20px] flex flex-col overflow-y-scroll ">
             <div className="w-full min-h-[100vh]  flex flex-col ">
-              <br />
+              <br className="md:hidden flex" />
               <div className="w-full">
-                <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] md:hidden block">
-                  Change status
-                </button>
+                {acceptOrder && (
+                  <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] md:hidden block">
+                    Change status
+                  </button>
+                )}
               </div>
-              <br />
+              <br className="md:hidden flex" />
               <div className="w-full bg-white flex flex-col ">
                 <div className="w-full flex flex-row min-h-[100px] border-b-[1px] border-[#CFCBCB]">
                   <div className="flex flex-col p-[20px] justify-between items-center">
@@ -197,13 +230,15 @@ const AllOrders = () => {
                   </div>
                   <div className="flex flex-col p-[20px] justify-between items-center">
                     <p>Total price</p>
-                    <b className="text-[12px] md:text-[16px]">$250</b>
+                    <b className="text-[12px] md:text-[14px] text-center">
+                      $250
+                    </b>
                   </div>
                   <div className="flex flex-col p-[20px] justify-between items-center">
                     <p>Order status</p>
                     <div className="flex flex-row gap-[10px] items-center justify-center">
                       <div className="w-[8px] h-[8px] bg-[#E3140F] rounded-[100px]" />
-                      <b className="text-[12px] md:text-[16px]"> pending</b>
+                      <b className="text-[14px] md:text-[16px]"> pending</b>
                     </div>
                   </div>
                 </div>
@@ -300,16 +335,26 @@ const AllOrders = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full flex flex-row items-center justify-end mt-[20px]">
-                <div className="w-full md:max-w-[300px] md:gap-[20px] flex flex-row justify-between items-center">
-                  <button className="h-[46px] w-[150px] rounded-[6px] bg-[#359E52] text-white">
-                    Accept Order
-                  </button>
-                  <button className="h-[46px] w-[150px] rounded-[6px] bg-none text-[red] border-[1px] border-[red]">
-                    Cancel order
-                  </button>
+              {!acceptOrder && (
+                <div className="w-full flex flex-row items-center justify-end mt-[20px]">
+                  <div className="w-full md:max-w-[300px] md:gap-[20px] flex flex-row justify-between items-center">
+                    <button
+                      onClick={() => {
+                        toast("Order Accepted", {
+                          position: "top-center",
+                        });
+                        setacceptOrder(true);
+                      }}
+                      className="h-[46px] w-[150px] rounded-[6px] bg-[#359E52] text-white"
+                    >
+                      Accept Order
+                    </button>
+                    <button className="h-[46px] w-[150px] rounded-[6px] bg-none text-[red] border-[1px] border-[red]">
+                      Cancel order
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="min-h-[100px] w-full"></div>
             </div>
           </div>

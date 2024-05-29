@@ -1,9 +1,101 @@
-import React from 'react'
+import React from "react";
+import Myproducts from "./my_products";
+import DraftProducts from "./draft_products";
+import Discount from "./discount";
+import EditProduct from "./subPage/EditProduct";
+import { useRouter } from "next/router";
+import AddProduct from "./subPage/AddProduct";
+import EditDiscount from "./subPage/EditDiscount";
+import AddDiscount from "./subPage/AddDiscount";
 
-const Inventory = () => {
+const Inventory = ({ currentTab }) => {
+  const [subScreen, setSubScreen] = React.useState(false);
+  const [CurrentScreen, setCurrentScreen] = React.useState("");
+
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setSubScreen(true);
+    } else {
+      setSubScreen(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        setSubScreen(true);
+      } else {
+        setSubScreen(false);
+        setCurrentScreen("");
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  const handleTabClick = (tab) => {};
+
   return (
-    <div>Inventory</div>
-  )
-}
+    <>
+      {CurrentScreen == "" && (
+        <>
+          {currentTab == "My Products" && (
+            <Myproducts
+              pushEdit={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("edit");
+                router.push(`#edit`);
+              }}
+              pushAdd={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("addProduct");
+                router.push(`#addProduct`);
+              }}
+            />
+          )}
+          {currentTab == "Draft Products" && (
+            <DraftProducts
+              pushEdit={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("edit");
+                router.push(`#edit`);
+              }}
+              pushAdd={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("addProduct");
+                router.push(`#addProduct`);
+              }}
+            />
+          )}
+          {currentTab == "Discount" && 
+          <Discount pushEdit={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("editDiscount");
+                router.push(`#editDiscount`);
+              }}
+              pushAdd={(id) => {
+                setSubScreen(true);
+                setCurrentScreen("addDiscount");
+                router.push(`#addDiscount`);
+              }}
+              />}
+        </>
+      )}
 
-export default Inventory
+      {CurrentScreen == "edit" && <EditProduct productId={""} />}
+      {CurrentScreen == "editDiscount" && <EditDiscount productId={""} />}
+      {CurrentScreen == "addDiscount" && <AddDiscount productId={""} />}
+      {CurrentScreen == "addProduct" && <AddProduct productId={""} />}
+    </>
+  );
+};
+
+export default Inventory;

@@ -1,9 +1,10 @@
 import React from 'react'
-import { BellIcon, MenuIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
+import { BellIcon, MenuIcon, UserIcon, UsersIcon, XIcon } from '@heroicons/react/outline'
 import { FiBell, FiSearch, FiUser } from 'react-icons/fi'
-import { IoSearch } from 'react-icons/io5'
+
 
 const VendorHeader = ({title}) => {
+
   return (
     <>
    <header className='w-full h-[72px] bg-[#359E52] xl:flex hidden items-center flex-row justify-between p-[20px] '>
@@ -25,24 +26,25 @@ const VendorHeader = ({title}) => {
                   <option >$ (USD)</option>
                 </select>
               </div>
-              <FiBell width={24} height={24} color='white' />
-              <FiUser width={24} height={24} color='white' />
+              <FiBell className='active:opacity-5 cursor-pointer ' onClick={()=> window.open("#notifications", "_parent")} width={24} height={24} color='white' />
+              <FiUser className='active:opacity-5 cursor-pointer ' onClick={()=> window.open("#profile", "_parent")} width={24} height={24} color='white' />
             </div>
         </header>
 
-        <header className='w-full h-[72px] bg-none xl:hidden flex items-center flex-row justify-between p-[20px] '>
+        <header className='w-full h-[72px] bg-none xl:hidden flex items-center flex-row z-[400000] justify-between p-[20px] '>
             <div className='flex flex-row items-center gap-[20px]'>
-              <MenuIcon width={24} height={24} color='#373435'/>
+              <MenuIcon  width={24} height={24} color='#373435' className='active:opacity-5 cursor-pointer ' onClick={()=> window.open("#SideNav", "_parent")}/>
             <img src='/abh_logo.png' width={119.29} height={20.76} />
             </div>
             
 
             <div className='flex flex-row items-center gap-[44px]'>
              
-              <FiBell width={24} height={24} color='#373435' />
-              <FiUser width={24} height={24} color='#373435' />
+              <FiBell className='active:opacity-5 cursor-pointer ' onClick={()=> window.open("#notifications", "_parent")} size={20} color='#373435' />
+              <FiUser className='active:opacity-5 cursor-pointer ' onClick={()=> window.open("#profile", "_parent")} size={20} color='#373435' />
             </div>
         </header>
+        
     </>
   )
 }

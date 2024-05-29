@@ -82,7 +82,7 @@ const DashboardTab = () => {
                     height={20}
                   />
                 </div>{" "}
-                <p className="text-[16px]">Out of stock</p>
+                <p className="text-[16px]">Total Sales</p>
               </div>
               <div className=" w-full flex flex-row items-center justify-between">
                 <div className="flex flex-row  gap-[10px]">
@@ -187,8 +187,10 @@ const DashboardTab = () => {
             />
             <FiSearch width={16} height={16} color="#37343566" />
           </div>
+
           <div className="w-full min-h-[300px] overflow-x-scroll">
-            <div className="min-w-full h-[56px] mt-[10px] p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
+          <div className="flex flex-row items-center gap-4">
+            <div className=" h-[56px] mt-[10px] p-[10px] flex flex-row items-center md:justify-between bg-[#F1F4F2] border-[#C1C6C5]">
               <b className="text-[14px] text-black  min-w-[164px] text-center">
                 Order ID
               </b>
@@ -208,9 +210,12 @@ const DashboardTab = () => {
                 Items
               </b>
             </div>
+            </div>
             {[{}, {}, {}, {}, {}].map((data, index) => {
               return (
-                <div className="min-w-full h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]">
+                <div className="flex flex-row items-center gap-4">
+
+                <div className="h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]">
                   <p className="text-[14px] text-black min-w-[164px] text-center">
                     120381
                   </p>
@@ -230,6 +235,7 @@ const DashboardTab = () => {
                   <p className="text-[12px] text-black min-w-[164px] text-center">
                     10
                   </p>
+                </div>
                 </div>
               );
             })}
