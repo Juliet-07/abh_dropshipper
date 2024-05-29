@@ -14,13 +14,13 @@ const TrackOrders = () => {
       </header>
       <header className="w-full h-[72px] bg-none md:hidden flex items-center flex-row justify-between p-[20px] ">
         <div className="flex flex-row items-center gap-[20px]">
-          <MenuIcon width={24} height={24} color="#373435" />
+          <MenuIcon width={24} height={24} color="#373435" className=" cursor-pointer active:opacity-5 " onClick={()=> window.open("#SideNav", "_parent")} />
           <img src="/abh_logo.png" width={119.29} height={20.76} />
         </div>
 
         <div className="flex flex-row items-center gap-[44px]">
-          <FiBell width={24} height={24} color="#373435" />
-          <FiUser width={24} height={24} color="#373435" />
+          <FiBell width={24} height={24} color="#373435" className=" cursor-pointer active:opacity-5 " onClick={()=> window.open("#notifications", "_parent")}  />
+          <FiUser width={24} height={24} color="#373435" className=" cursor-pointer active:opacity-5 " onClick={()=> window.open("#profile", "_parent")}  />
         </div>
       </header>
 
@@ -31,7 +31,7 @@ const TrackOrders = () => {
               <img src="" alt="" />
               <b className="text-black text-[22px]">Track a Package</b>
             </div>
-            <div className="w-full flex justify-center items-center h-[100px] gap-[20px]">
+            <div className="w-full flex justify-center items-center h-[100px] md:gap-[20px] gap-1">
               <div
                 className="w-full max-w-[534px] h-[40px] bg-[#F3F5F4] p-[10px] 
               border-[1px] border-[#CFCBCB]
@@ -45,7 +45,7 @@ const TrackOrders = () => {
               </div>
               <button
                 onClick={() => setRecords(true)}
-                className={` active:opacity-[0.5]
+                className={` active:opacity-[0.5] 
                  md:w-[186px] w-[150px] h-[46px] p-[10px] cursor-pointer flex items-center justify-center rounded-[6px] 
                       bg-[#359E52] text-white
                     `}

@@ -1,4 +1,10 @@
-import { XIcon } from "@heroicons/react/outline";
+import {
+  ChatAlt2Icon,
+  ChatAltIcon,
+  ChatIcon,
+  CheckIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 import VendorHeader from "@pages/vendor/components/VendorHeader";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
@@ -6,6 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { settings } from "@pages/vendor/components/slider_settings";
+import { IoWarningOutline } from "react-icons/io5";
 
 const Myproducts = ({ pushEdit, pushAdd }) => {
   const CustomSlider = ({ settings }) => {
@@ -138,13 +145,52 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
   ];
 
   const [showPreview, setPreview] = React.useState(false);
+  const [showDelete, setDelete] = React.useState(false);
 
   return (
     <>
+      {showDelete && (
+        <div
+          // onClick={()=> setPreview(false)}
+          className="w-full h-[100vh]  bg-[#000000a8] z-[100000] fixed top-0 left-0 flex flex-col items-center  justify-center"
+        >
+          <div className="w-[90%] max-w-[498px] h-[344px] relative bg-white p-[40px] rounded-[10px] flex flex-col items-center  justify-center">
+            <XIcon width={20} height={20} onClick={()=> setDelete(false)}
+             color="red" className="absolute active:opacity-5 right-[20px] top-[20px] cursor-pointer" />
+            <IoWarningOutline size={50} color="red" />
+            <br />
+            {/* <ChatAltIcon /> */}
+            <p className="w-full text-center">
+              By deleting this product, it will no longer beavailable in the
+              marketplace.
+            </p>
+            <br />
+
+            <div className="flex flex-row gap-[10px]">
+              <button
+                onClick={() => {
+                  setDelete(false);
+                  setPreview(false);
+                }}
+                className="w-[186px] h-[46px] rounded-[6px] bg-[red] text-white"
+              >
+                Yes, Delete
+              </button>
+              <button
+                className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]"
+                onClick={() => setDelete(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showPreview && (
         <div
           // onClick={()=> setPreview(false)}
-          className="w-full h-[100vh] overflow-y-scroll bg-[#000000a8] fixed top-0 left-0 flex flex-col items-center "
+          className="w-full h-[100vh] overflow-y-scroll bg-[#000000a8] fixed z-[60000] top-0 left-0 flex flex-col items-center "
         >
           <div className="w-[90%] max-w-[882px] relative  bg-white rounded-[10px] p-[20px] md:p-[40px] my-[5vh]">
             <b className="text-[16px] w-full text-center flex justify-center">
@@ -173,8 +219,8 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                 <CustomSlider settings={settings} />
               </div>
               <div className="w-full min-w-[300px] flex flex-[55] flex-col">
-               <br />
-               <br />
+                <br />
+                <br />
                 <b>Mint</b>
                 <p>Grocery</p>
                 {/* <br className="h-[1px]" /> */}
@@ -205,8 +251,8 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                 </div>
               </div>
             </div>
-{/* <br /> */}
-<br />
+            {/* <br /> */}
+            <br />
             <div className="flex flex-row h-[1pc] items-center justify-between">
               <div className="flex flex-row gap-[10px]">
                 <button
@@ -219,12 +265,24 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                 >
                   Edit
                 </button>
-                <button className="md:w-[186px] w-[99px]  h-[46px] bg-[#E3140F] text-white rounded-[6px]">
+                <button
+                  onClick={() => {
+                    setDelete(true);
+                    setPreview(false);
+                  }}
+                  className="md:w-[186px] w-[99px]  h-[46px] bg-[#E3140F] text-white rounded-[6px]"
+                >
                   Delete
                 </button>
               </div>
 
-              <button className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]">
+              <button
+                onClick={() => {
+                  setDelete(false);
+                  setPreview(false);
+                }}
+                className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]"
+              >
                 Cancel
               </button>
             </div>
@@ -252,12 +310,12 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
             </div>
 
             <div className="flex flex-row items-center gap-[10px]">
-              <button className="h-[36px] w-[143px] rounded-[6px] bg-[#F58634] text-[14px] text-white">
+              <button className="h-[36px] w-[143px] rounded-[6px] bg-[#F58634] z-[2000] text-[14px] text-white">
                 Bulk upload
               </button>
               <button
                 onClick={() => pushAdd("id")}
-                className="h-[36px] w-[122px] rounded-[6px] bg-none text-[14px] text-[#359E52] border-[1px] border-[#359E52]"
+                className="h-[36px] w-[122px] rounded-[6px] bg-none text-[14px] z-[2000] text-[#359E52] border-[1px] border-[#359E52]"
               >
                 Add product
               </button>
@@ -291,7 +349,9 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
           {/* <br className="md:hidden" /> */}
 
           <div className="w-full min-h-[100vh] overflow-x-scroll overflow-y-hidden px-[10px] bg-white mt-[20px] pb-[10px]">
-            <div className=" md:w-full w-[300vw] h-[56px] mt-[10px] p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
+          <div className="flex flex-row items-center gap-4 ">
+
+            <div className=" h-[56px] mt-[10px] flex-1 p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
               <b className="text-[14px] text-black  min-w-[150px] text-center">
                 ID
               </b>
@@ -317,12 +377,15 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                 Action
               </b>
             </div>
+            </div>
             {productsData.map((data, index) => {
               return (
+          <div className="flex flex-row items-center gap-4">
+
                 <div
                   //   onClick={() => handleTabClick("order_details")}
 
-                  className=" md:w-full w-[300vw] h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
+                  className=" h-[56px] px-[10px] flex flex-1 flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
                 >
                   <p className="text-[12px] text-black min-w-[150px] text-center">
                     120381
@@ -421,7 +484,9 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                       />
                     </div>
                     <div
-                      onClick={() => {}}
+                      onClick={() => {
+                        setDelete(true);
+                      }}
                       className="w-[28px] h-[28px] border-[1px] cursor-pointer active:opacity-[0.2] rounded-[100px] flex items-center justify-center"
                     >
                       {" "}
@@ -433,6 +498,7 @@ const Myproducts = ({ pushEdit, pushAdd }) => {
                       />
                     </div>
                   </div>
+                </div>
                 </div>
               );
             })}

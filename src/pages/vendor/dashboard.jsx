@@ -4,6 +4,10 @@ import OrdersTab from "./tabs/orders/orders_tab";
 import Inventory from "./tabs/inventory/inventory_tab";
 import AnalyticalTab from "./tabs/analytics_tab";
 import { ChevronRightIcon } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
+import Profile from "./components/Profile";
+import Notification from "./components/Notification";
+import SideNav from "./components/SideNav";
 
 const Dashboard = () => {
   const [windowSize, setWindowSize] = React.useState(0);
@@ -23,6 +27,39 @@ const Dashboard = () => {
       setWindowSize(document.documentElement.clientWidth);
     });
   }, []);
+
+  const router = useRouter();
+  const [activeTab, setActiveTab] = React.useState("");
+  // const [acceptOrder, setacceptOrder] = React.useState(false);
+
+  React.useEffect(() => {
+    // Set the initial tab based on the URL hash
+    const hash = window.location.hash;
+    if (hash) {
+      setActiveTab(hash.substring(1)); // Remove the '#' from the hash
+    } else {
+      setActiveTab(""); // Default tab
+    }
+  }, []);
+
+  React.useEffect(() => {
+    // Listen for hash changes
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      setActiveTab(hash.substring(1)); // Remove the '#' from the hash
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    router.push(`#${tab}`);
+  };
 
   return (
     <>
@@ -142,14 +179,26 @@ const Dashboard = () => {
           })}
         </div>
         <div className="w-full h-[100vh] overflow-y-scroll overscroll-x-none no-scrollbar font-[monserrat]">
-          {currentTab == "dashboard" && <DashboardTab />}
-          {currentTab == "orders" && (
-            <OrdersTab currentTab={OrderscurrentSubTab.child} />
+          {activeTab == "" && (
+            <>
+              {currentTab == "dashboard" && <DashboardTab />}
+              {currentTab == "orders" && (
+                <OrdersTab currentTab={OrderscurrentSubTab.child} />
+              )}
+              {currentTab == "inventory" && (
+                <Inventory currentTab={InventorycurrentSubTab.child} />
+              )}
+              {currentTab == "analytics" && <AnalyticalTab />}
+            </>
           )}
-          {currentTab == "inventory" && (
-            <Inventory currentTab={InventorycurrentSubTab.child} />
-          )}
-          {currentTab == "analytics" && <AnalyticalTab />}
+
+          {activeTab == "profile" && <Profile />}
+
+          {activeTab == "notifications" && <Notification />}
+          {activeTab == "SideNav" && <SideNav InventorycurrentSubTab={InventorycurrentSubTab} setInventorycurrentSubTab={(data)=> setInventorycurrentSubTab(data)}
+          OrderscurrentSubTab={OrderscurrentSubTab} setOrderscurrentSubTab={(data)=> setOrderscurrentSubTab(data)} currentTab={currentTab} 
+          setcurrentTab={(data)=> setcurrentTab(data)}
+           />}
         </div>
       </div>
     </>

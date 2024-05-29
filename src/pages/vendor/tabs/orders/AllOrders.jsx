@@ -10,7 +10,7 @@ const AllOrders = () => {
   const [Filter, setFilter] = React.useState("All");
   const [CurrentScreen, setCurrentScreen] = React.useState("orders");
   const router = useRouter();
-  const [activeTab, setActiveTab] = React.useState("");
+  const [activeTab, setActiveTab] = React.useState("orders_tab");
   const [acceptOrder, setacceptOrder] = React.useState(false);
 
   React.useEffect(() => {
@@ -19,7 +19,7 @@ const AllOrders = () => {
     if (hash) {
       setActiveTab(hash.substring(1)); // Remove the '#' from the hash
     } else {
-      setActiveTab(""); // Default tab
+      setActiveTab("orders_tab"); // Default tab
     }
   }, []);
 
@@ -59,7 +59,7 @@ const AllOrders = () => {
         transition={Bounce}
       />
 
-      {activeTab == "" && (
+      {activeTab == "orders_tab" && (
         <>
           <VendorHeader title={"Orders"} />
           <div className="w-full h-[90vh] xl:p-[40px] p-[20px] flex flex-col overflow-y-scroll ">
@@ -105,7 +105,9 @@ const AllOrders = () => {
               </div>
 
               <div className="w-full min-h-[300px] overflow-x-scroll overflow-y-hidden px-[10px] bg-white mt-[20px] pb-[10px]">
-                <div className=" md:w-full w-[300vw] h-[56px] mt-[10px] p-[10px] flex flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
+              <div className="flex flex-row items-center gap-4">
+
+                <div className=" h-[56px] mt-[10px] p-[10px] flex flex-1 flex-row items-center justify-between bg-[#F1F4F2] border-[#C1C6C5]">
                   <b className="text-[14px] text-black  min-w-[164px] text-center">
                     Order ID
                   </b>
@@ -128,12 +130,15 @@ const AllOrders = () => {
                     Items
                   </b>
                 </div>
+                </div>
                 {[{}, {}, {}, {}, {}].map((data, index) => {
                   return (
+                    <div className="flex flex-row items-center gap-4">
+
                     <div
                       onClick={() => handleTabClick("order_details")}
 
-                      className=" md:w-full w-[300vw] cursor-pointer h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
+                      className="  cursor-pointer h-[56px] px-[10px] flex flex-1 flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]"
                     >
                       <p className="text-[12px] text-black min-w-[164px] text-center">
                         120381
@@ -169,6 +174,7 @@ const AllOrders = () => {
                       <p className="text-[12px] text-black min-w-[164px] text-center">
                         10
                       </p>
+                    </div>
                     </div>
                   );
                 })}
