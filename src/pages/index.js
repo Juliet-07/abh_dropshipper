@@ -15,7 +15,7 @@ import ProductServices from "@services/ProductServices";
 import ProductCard from "@component/product/ProductCard";
 import MainCarousel from "@component/carousel/MainCarousel";
 import FeatureCategory from "@component/category/FeatureCategory";
-import AttributeServices from "@services/AttributeServices";
+// import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
@@ -50,7 +50,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   <div className="w-full hidden lg:flex">
                     <OfferCard />
                   </div>
-                </div>
+                </div>I
                 {storeCustomizationSetting?.home?.promotion_banner_status && (
                   <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
                     <Banner />
@@ -237,27 +237,27 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  const { cookies } = context.req;
-  const { query, _id } = context.query;
+// export const getServerSideProps = async (context) => {
+//   const { cookies } = context.req;
+//   const { query, _id } = context.query;
 
-  const [data, attributes] = await Promise.all([
-    ProductServices.getShowingStoreProducts({
-      category: _id ? _id : "",
-      title: query ? query : "",
-    }),
+//   const [data, attributes] = await Promise.all([
+//     ProductServices.getShowingStoreProducts({
+//       category: _id ? _id : "",
+//       title: query ? query : "",
+//     }),
 
-    AttributeServices.getShowingAttributes(),
-  ]);
+//     AttributeServices.getShowingAttributes(),
+//   ]);
 
-  return {
-    props: {
-      popularProducts: data.popularProducts,
-      discountProducts: data.discountedProducts,
-      cookies: cookies,
-      attributes,
-    },
-  };
-};
+//   return {
+//     props: {
+//       popularProducts: data.popularProducts,
+//       discountProducts: data.discountedProducts,
+//       cookies: cookies,
+//       attributes,
+//     },
+//   };
+// };
 
 export default Home;
