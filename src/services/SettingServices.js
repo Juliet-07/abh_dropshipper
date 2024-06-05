@@ -14,13 +14,13 @@ const SettingServices = {
     return requests.get("/setting/store/customization/all");
   },
 
-  getShowingLanguage: async () => {
-    return requests.get(`/language/show`);
-  },
+  // getShowingLanguage: async () => {
+  //   return requests.get(`/language/show`);
+  // },
 
-  getGlobalSetting: async () => {
-    return requests.get("/setting/global/all");
-  },
+  // getGlobalSetting: async () => {
+  //   return requests.get("/setting/global/all");
+  // },
 };
 
 export default SettingServices;

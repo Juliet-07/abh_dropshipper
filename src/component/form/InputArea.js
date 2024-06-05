@@ -7,9 +7,10 @@ const InputArea = ({
   type,
   Icon,
   register,
-  defaultValue,
+  value,
   autocomplete,
   placeholder,
+  onChange,
 }) => {
   return (
     <>
@@ -28,9 +29,10 @@ const InputArea = ({
           })}
           type={type}
           name={name}
-          defaultValue={defaultValue}
+          value={value}
           placeholder={placeholder}
           autoComplete={autocomplete}
+          onChange={onChange}
           className={
             Icon
               ? "py-2 pl-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"

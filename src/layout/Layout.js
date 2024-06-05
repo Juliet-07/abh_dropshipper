@@ -17,12 +17,7 @@ const Layout = ({ title, description, children }) => {
 
       <div className="font-primaryRegular">
         <Head>
-          <title>
-            ABH Grocery Store
-            {/* {title
-              ? `KachaBazar | ${title}`
-              : "ABH - Grocery & Organic Food Store"} */}
-          </title>
+          <title>ABH Markets</title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href="/favicon.png" />
         </Head>

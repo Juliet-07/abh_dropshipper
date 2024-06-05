@@ -48,8 +48,9 @@ const ContactUs = () => {
         </div>
       </div>
       {/* Contact Details */}
-      <div className="w-full p-4 md:py-6 md:px-10 grid md:grid-cols-2 gap-10">
-        <div className="md:w-[535px] md:h-[421px] bg-[#359E52] flex flex-col p-6 md:p-10">
+      <div className="w-full flex flex-col md:flex-row items-stretch justify-between gap-4 p-4 md:p-10">
+        {/* Reach out to us */}
+        <div className="md:w-[535px] bg-[#359E52] flex flex-col p-6 md:p-10">
           <div className="w-full font-primaryBold text-2xl text-white text-center">
             Reach Out To Us
           </div>
@@ -74,6 +75,7 @@ const ContactUs = () => {
             </div>
           </div>
         </div>
+        {/* content form */}
         <div className="md:w-[748px] bg-white border border-[#CFCBCB] p-4">
           <div className="w-full font-primaryBold text-2xl text-center">
             Send Us A Message

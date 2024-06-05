@@ -34,19 +34,23 @@ const CustomerServices = {
   // },
 
   // on-render-endpoints
+  registerCustomer: async (body) => {
+    return requests.post(`/user`, body);
+  },
+
   customerLogin: async (body) => {
     return requests.post("/user/login", body);
   },
 
-  verifyEmailAddress: async (body) => {
-    return requests.post("/customer/request-verification", body);
+  verifyEmailAddress: async (email) => {
+    return requests.post(`/user/request-verification${email}`);
   },
 
   registerCustomer: async (token, body) => {
     return requests.post(`/user/register/${token}`, body);
   },
 
-  signUpWithProvider( body) {
+  signUpWithProvider(body) {
     return requests.post("/user/signup", body);
   },
 };

@@ -1,60 +1,175 @@
-import { FiLock, FiMail, FiUser } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiLock, FiMail, FiPhoneCall, FiUser } from "react-icons/fi";
+import axios from "axios";
 
 //internal import
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
+import Label from "@component/form/Label";
 
 const Register = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading } =
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const { handleSubmit, submitHandler, register1, errors } =
     useLoginSubmit(setModalOpen);
+
+  // const { handleSubmit } = useForm();
+
+  const [loading, setLoading] = useState(false);
+
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    referralCode: "",
+  };
+
+  const [register, setRegister] = useState(initialValues);
+  const { firstName, lastName, email, phoneNumber, password, referralCode } =
+    register;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRegister({ ...register, [name]: value });
+  };
+
+  const handleRegisteration = () => {
+    try {
+      axios
+        .post(`${apiURL}user`, register)
+        .then((res) => res.json())
+        .then((user) => {
+          console.log(user, "confirm here");
+          // let userDetail = JSON.ify(user.data);
+          // localStorage.setItem("userInfo", userDetail);
+          // if (user.message === "User Authenticated Successfully") {
+          //   navigate("/applications");
+          // }
+          // if (user.status === "99") {
+          //   alert(user.message);
+          //   navigate("/");
+          // }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold font-serif">Signing Up</h2>
-        <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
+        <h2 className="text-3xl font-primaryBold">Signing Up</h2>
+        <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10 font-primaryRegular">
           Create an account with email
         </p>
       </div>
       <form
-        onSubmit={handleSubmit(submitHandler)}
+        onSubmit={handleSubmit(handleRegisteration)}
         className="flex flex-col justify-center"
       >
-        <div className="grid grid-cols-1 gap-5">
-          <div className="form-group">
-            <InputArea
-              register={register}
-              label="Name"
-              name="name"
-              type="text"
-              placeholder="Full Name"
-              Icon={FiUser}
-            />
+        <div className="grid grid-cols-1 gap-5 font-primaryRegular">
+          <div className="form-group relative">
+            <Label label={`First Name`} />
+            <div className="relative">
+              <input
+                value={firstName}
+                name="firstName"
+                type="text"
+                placeholder="First Name"
+                onChange={handleChange}
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-800 sm:text-base">
+                  <FiUser />
+                </span>
+              </div>
+            </div>
 
             <Error errorName={errors.name} />
           </div>
 
-          <div className="form-group">
-            <InputArea
-              register={register}
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              Icon={FiMail}
-            />
+          <div className="form-group relative">
+            <Label label={`Last Name`} />
+            <div className="relative">
+              <input
+                value={lastName}
+                name="lastName"
+                type="text"
+                placeholder="Last Name"
+                onChange={handleChange}
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-800 sm:text-base">
+                  <FiUser />
+                </span>
+              </div>
+            </div>
             <Error errorName={errors.email} />
           </div>
-          <div className="form-group">
-            <InputArea
-              register={register}
-              label="Password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              Icon={FiLock}
-            />
+
+          <div className="form-group relative">
+            <Label label={`Email`} />
+            <div className="relative">
+              <input
+                value={email}
+                name="email"
+                type="email"
+                placeholder="Email"
+                onChange={handleChange}
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-800 sm:text-base">
+                  <FiMail />
+                </span>
+              </div>
+            </div>
+
+            <Error errorName={errors.password} />
+          </div>
+
+          <div className="form-group relative">
+            <Label label={`Phone Number`} />
+            <div className="relative">
+              <input
+                value={phoneNumber}
+                name="phoneNumber"
+                type="text"
+                placeholder="Phone Number"
+                onChange={handleChange}
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-800 sm:text-base">
+                  <FiPhoneCall />
+                </span>
+              </div>
+            </div>
+
+            <Error errorName={errors.password} />
+          </div>
+
+          <div className="form-group relative">
+            <Label label={`Password`} />
+            <div className="relative">
+              <input
+                value={password}
+                name="password"
+                type="password"
+                placeholder="Password"
+                onChange={handleChange}
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-800 sm:text-base">
+                  <FiLock />
+                </span>
+              </div>
+            </div>
 
             <Error errorName={errors.password} />
           </div>

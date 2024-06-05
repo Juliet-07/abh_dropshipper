@@ -24,18 +24,19 @@ const useLoginSubmit = (setModalOpen) => {
   } = useForm();
 
   const submitHandler = ({
-    name,
+    firstName,
+    lastName,
     email,
-    registerEmail,
-    verifyEmail,
+    phoneNumber,
     password,
+    referralCode,
   }) => {
     setLoading(true);
     const cookieTimeOut = 0.5;
 
-    if (registerEmail && password) {
+    if (email && password) {
       CustomerServices.customerLogin({
-        registerEmail,
+        email,
         password,
       })
         .then((res) => {
@@ -53,18 +54,18 @@ const useLoginSubmit = (setModalOpen) => {
           setLoading(false);
         });
     }
-    if (name && email && password) {
-      CustomerServices.verifyEmailAddress({ name, email, password })
-        .then((res) => {
-          setLoading(false);
-          setModalOpen(false);
-          notifySuccess(res.message);
-        })
-        .catch((err) => {
-          setLoading(false);
-          notifyError(err.response.data.message);
-        });
-    }
+    // if (email) {
+    //   CustomerServices.verifyEmailAddress({ email })
+    //     .then((res) => {
+    //       setLoading(false);
+    //       setModalOpen(false);
+    //       notifySuccess(res.message);
+    //     })
+    //     .catch((err) => {
+    //       setLoading(false);
+    //       notifyError(err.response.data.message);
+    //     });
+    // }
     if (verifyEmail) {
       CustomerServices.forgetPassword({ verifyEmail })
         .then((res) => {

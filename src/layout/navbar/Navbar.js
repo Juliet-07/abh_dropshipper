@@ -19,16 +19,12 @@ import useGetSetting from "@hooks/useGetSetting";
 import { handleLogEvent } from "@utils/analytics";
 
 const Navbar = () => {
-  const { t } = useTranslation();
   const [imageUrl, setImageUrl] = useState("");
   const [searchText, setSearchText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer } = useContext(SidebarContext);
   const { totalItems } = useCart();
   const router = useRouter();
-
-  const { storeCustomizationSetting } = useGetSetting();
-  // console.log("storeCustomizationSetting", storeCustomizationSetting);
 
   const {
     state: { userInfo },
@@ -55,19 +51,12 @@ const Navbar = () => {
     }
   }, []);
 
-  // console.log(
-  //   "storeCustomizationSetting?.navbar?.header_logo",
-  //   storeCustomizationSetting?.navbar?.logo
-  // );
-
   return (
     <>
       <CartDrawer />
       {modalOpen && (
         <LoginModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       )}
-
-      {/* <div className="bg-emerald-500 sticky top-0 z-20"> */}
       <div className="bg-[#359E52] sticky top-0 z-20">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="top-bar h-16 lg:h-auto flex items-center justify-between py-4 mx-auto">
@@ -83,10 +72,7 @@ const Navbar = () => {
                   sizes="100vw"
                   className="w-full h-auto"
                   priority
-                  src={
-                    // storeCustomizationSetting?.navbar?.logo ||
-                    "/abh_logo.png"
-                  }
+                  src={"/abh_logo.png"}
                   alt="logo"
                 />
               </div>
@@ -104,7 +90,7 @@ const Navbar = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         value={searchText}
                         className="form-input w-full pl-5 appearance-none transition ease-in-out border text-input text-sm font-sans rounded-md min-h-10 h-10 duration-200 bg-white focus:ring-0 outline-none border-none focus:outline-none placeholder-gray-500 placeholder-opacity-75"
-                        placeholder={t(`common:search-placeholder`)}
+                        placeholder="Search"
                       />
                     </label>
                     <button
@@ -136,7 +122,6 @@ const Navbar = () => {
                 <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
               </button>
               {/* Profile dropdown */}
-
               <button
                 className="pl-5 text-white text-2xl font-bold"
                 aria-label="Login"
@@ -175,7 +160,6 @@ const Navbar = () => {
             </Link>
           </div>
         </div>
-
         {/* second header */}
         <NavbarPromo />
       </div>

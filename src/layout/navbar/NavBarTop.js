@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
-import { IoLockOpenOutline } from "react-icons/io5";
 import { FiPhoneCall, FiUser } from "react-icons/fi";
 
 //internal import
@@ -50,84 +48,11 @@ const NavBarTop = () => {
           <div className="text-gray-700 py-2 font-sans text-xs font-medium border-b flex justify-between items-center">
             <span className="flex items-center">
               <FiPhoneCall className="mr-2" />
-              {showingTranslateValue(
-                storeCustomizationSetting?.navbar?.help_text
-              )}
-              <a
-                href={`tel:${
-                  storeCustomizationSetting?.navbar?.phone_number ||
-                  "+099949343"
-                }`}
-                className="font-bold text-emerald-500 ml-1"
-              >
-                {storeCustomizationSetting?.navbar?.phone_number ||
-                  "+099949343"}
+              <a href="#" className="font-bold text-emerald-500 ml-1">
+                +099949343
               </a>
             </span>
-
-            {/* <div className="lg:text-right flex items-center navBar">
-              {storeCustomizationSetting?.navbar?.about_menu_status && (
-                <div>
-                  <Link
-                    href="/about-us"
-                    className="font-medium hover:text-emerald-600"
-                  >
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.navbar?.about_us
-                    )}
-                  </Link>
-                  <span className="mx-2">|</span>
-                </div>
-              )}
-              {storeCustomizationSetting?.navbar?.contact_menu_status && (
-                <div>
-                  <Link
-                    href="/contact-us"
-                    className="font-medium hover:text-emerald-600"
-                  >
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.navbar?.contact_us
-                    )}
-                  </Link>
-                  <span className="mx-2">|</span>
-                </div>
-              )}
-              <button
-                onClick={handleModal}
-                className="font-medium hover:text-emerald-600"
-              >
-                {showingTranslateValue(
-                  storeCustomizationSetting?.navbar?.my_account
-                )}
-              </button>
-              <span className="mx-2">|</span>
-              {userInfo?.email ? (
-                <button
-                  onClick={handleLogOut}
-                  className="flex items-center font-medium hover:text-emerald-600"
-                >
-                  <span className="mr-1">
-                    <IoLockOpenOutline />
-                  </span>
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.navbar?.logout
-                  )}
-                </button>
-              ) : (
-                <button
-                  onClick={() => setModalOpen(!modalOpen)}
-                  className="flex items-center font-medium hover:text-emerald-600"
-                >
-                  <span className="mr-1">
-                    <FiUser />
-                  </span>
-
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.navbar?.login
-                  )}
-                </button>
-              )}
-            </div> */}
+            <p>Logout</p>
           </div>
         </div>
       </div>
