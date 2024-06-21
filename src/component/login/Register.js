@@ -38,7 +38,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
   const handleRegisteration = () => {
     try {
       axios
-        .post(`${apiURL}user`, register)
+        .post(`${apiURL}/user`, register)
         .then((res) => res.json())
         .then((user) => {
           console.log(user, "confirm here");

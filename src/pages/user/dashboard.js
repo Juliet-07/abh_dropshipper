@@ -58,7 +58,7 @@ const Dashboard = ({ title, description, children }) => {
 
   const handleLogOut = () => {
     dispatch({ type: "USER_LOGOUT" });
-    Cookies.remove("userInfo");
+    Cookies.remove("abhUserInfo");
     Cookies.remove("couponInfo");
     router.push("/");
   };
@@ -72,30 +72,22 @@ const Dashboard = ({ title, description, children }) => {
 
   const userSidebar = [
     {
-      title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.dashboard_title
-      ),
+      title: "Dashboard",
       href: "/user/dashboard",
       icon: FiGrid,
     },
     {
-      title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.my_order
-      ),
+      title: "My Orders",
       href: "/user/my-orders",
       icon: FiList,
     },
     {
-      title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.update_profile
-      ),
+      title: "Update Profile",
       href: "/user/update-profile",
       icon: FiSettings,
     },
     {
-      title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.change_password
-      ),
+      title: "Change Password",
       href: "/user/change-password",
       icon: FiFileText,
     },
@@ -139,9 +131,7 @@ const Dashboard = ({ title, description, children }) => {
                       onClick={handleLogOut}
                       className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-emerald-600"
                     >
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.navbar?.logout
-                      )}
+                      Logout
                     </button>
                   </span>
                 </div>
@@ -150,41 +140,32 @@ const Dashboard = ({ title, description, children }) => {
                 {!children && (
                   <div className="overflow-hidden">
                     <h2 className="text-xl font-serif font-semibold mb-5">
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.dashboard_title
-                      )}
+                      Dashboard
                     </h2>
                     <div className="grid gap-4 mb-8 md:grid-cols-2 xl:grid-cols-4">
                       <Card
-                        title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.total_order
-                        )}
+                        title="Total Orders"
                         Icon={FiShoppingCart}
-                        quantity={data?.totalDoc}
+                        // quantity={data?.totalDoc}
+                        quantity={300}
                         className="text-red-600  bg-red-200"
                       />
                       <Card
-                        title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.pending_order
-                        )}
+                        title="Pending Orders"
                         Icon={FiRefreshCw}
-                        quantity={data?.pending}
+                        quantity={100}
                         className="text-orange-600 bg-orange-200"
                       />
                       <Card
-                        title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.processing_order
-                        )}
+                        title="Processing Orders"
                         Icon={FiTruck}
-                        quantity={data?.processing}
+                        quantity={54}
                         className="text-indigo-600 bg-indigo-200"
                       />
                       <Card
-                        title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.complete_order
-                        )}
+                        title="Complete Orders"
                         Icon={FiCheck}
-                        quantity={data?.delivered}
+                        quantity={146}
                         className="text-emerald-600 bg-emerald-200"
                       />
                     </div>

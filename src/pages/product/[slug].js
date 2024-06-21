@@ -29,7 +29,7 @@ import Loading from "@component/preloader/Loading";
 import ProductCard from "@component/product/ProductCard";
 import VariantList from "@component/variants/VariantList";
 import { SidebarContext } from "@context/SidebarContext";
-import AttributeServices from "@services/AttributeServices";
+// import AttributeServices from "@services/AttributeServices";
 import ProductServices from "@services/ProductServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import Discount from "@component/common/Discount";

@@ -25,12 +25,12 @@ const ProductCard = ({ product, attributes }) => {
   const { globalSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
-  const currency = globalSetting?.default_currency || "$";
+  const currency = globalSetting?.default_currency || "#";
 
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
-    if (p.stock < 1) return notifyError("Insufficient stock!");
+    if (p.quantity < 1) return notifyError("Insufficient stock!");
 
     if (p?.variants?.length > 0) {
       setModalOpen(!modalOpen);
@@ -40,10 +40,10 @@ const ProductCard = ({ product, attributes }) => {
       product;
     const newItem = {
       ...updatedProduct,
-      title: showingTranslateValue(p?.title),
-      id: p._id,
+      title: showingTranslateValue(p?.name),
+      id: p.id,
       variant: p.prices,
-      price: p.prices.price,
+      price: p.price,
       originalPrice: product.prices?.originalPrice,
     };
     addItem(newItem);
@@ -65,24 +65,29 @@ const ProductCard = ({ product, attributes }) => {
         />
       )}
 
-      <div className="group box-border overflow-hidden flex rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
+      <div className="h-full group box-border overflow-hidden flex rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
         <div className="w-full flex justify-between">
-          <Stock product={product} stock={product.stock} card />
-          <Discount product={product} />
+          <Stock
+            product={product}
+            stock={product.quantity - product.soldQuantity}
+            card
+          />
+          {/* <Discount product={product} /> */}
         </div>
         <div
           onClick={() => {
-            handleModalOpen(!modalOpen, product._id);
-            handleLogEvent(
-              "product",
-              `opened ${showingTranslateValue(product?.title)} product modal`
-            );
+            handleModalOpen(!modalOpen, product.id);
+            handleLogEvent("product", `opened ${product?.name} product modal`);
           }}
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
         >
           <div className="relative w-full h-full p-2">
-            {product.image[0] ? (
-              <ImageWithFallback src={product.image[0]} alt="product" />
+            {product.images[0] ? (
+              <img
+                src={product.featured_image}
+                alt="product"
+                className="w-full h-full"
+              />
             ) : (
               <Image
                 src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
@@ -97,14 +102,15 @@ const ProductCard = ({ product, attributes }) => {
             )}
           </div>
         </div>
-        <div className="w-full px-3 lg:px-4 pb-4 overflow-hidden">
+        <div className="w-full px-3 lg:px-4 pb-2 overflow-hidden">
           <div className="relative mb-1">
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
-              {product.unit}
+              {product.quantity + product.unit}
             </span>
             <h2 className="text-heading truncate mb-0 block text-sm font-medium text-gray-600">
               <span className="line-clamp-2">
-                {showingTranslateValue(product?.title)}
+                {/* {showingTranslateValue(product?.title)} */}
+                {product.name}
               </span>
             </h2>
           </div>
@@ -114,23 +120,24 @@ const ProductCard = ({ product, attributes }) => {
               card
               product={product}
               currency={currency}
-              price={
-                product?.isCombination
-                  ? product?.variants[0]?.price
-                  : product?.prices?.price
-              }
-              originalPrice={
-                product?.isCombination
-                  ? product?.variants[0]?.originalPrice
-                  : product?.prices?.originalPrice
-              }
+              price={product?.price}
+              // price={
+              //   product?.isCombination
+              //     ? product?.variants[0]?.price
+              //     : product?.prices?.price
+              // }
+              // originalPrice={
+              //   product?.isCombination
+              //     ? product?.variants[0]?.originalPrice
+              //     : product?.prices?.originalPrice
+              // }
             />
 
-            {inCart(product._id) ? (
+            {inCart(product.id) ? (
               <div>
                 {items.map(
                   (item) =>
-                    item.id === product._id && (
+                    item.id === product.id && (
                       <div
                         key={item.id}
                         className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-emerald-500 text-white rounded"

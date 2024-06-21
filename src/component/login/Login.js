@@ -29,25 +29,19 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
     setLoginDetails({ ...loginDetails, [name]: value });
   };
 
-  const handleLoginValidation = () => {
+  const handleLoginValidation = async () => {
     try {
-      axios.post(`${apiURL}user/login`, loginDetails).then((user) => {
-        console.log(user, "confirm here");
-        let userDetail = JSON.stringify(user.data);
-        localStorage.setItem("abhUserInfo", userDetail);
-        router.push(redirect || "/user/dashboard");
-        // if (user.message === "User Authenticated Successfully") {
-        //   navigate("/applications");
-        // }
-        // if (user.status === "99") {
-        //   alert(user.message);
-        //   navigate("/");
-        // }
-      });
+      const user = await axios.post(`${apiURL}/user/login`, loginDetails);
+      console.log(user, "confirm here");
+      const userDetail = JSON.stringify(user.data);
+      localStorage.setItem("abhUserInfo", userDetail);
+      // router.push(redirect || "/checkout");
+      router.push("/user/dashboard")
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <>
       <div className="text-center mb-6">

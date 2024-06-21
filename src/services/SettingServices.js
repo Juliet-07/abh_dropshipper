@@ -2,18 +2,20 @@ import requests from "./httpServices";
 
 const SettingServices = {
   //store setting all function
-  getStoreSetting: async () => {
-    return requests.get("/setting/store-setting/all");
-  },
+  // getStoreSetting: async () => {
+  //   return requests.get("/setting/store-setting/all");
+  // },
 
-  getStoreSeoSetting: async () => {
-    return requests.get("/setting/store-setting/seo");
-  },
+  // getStoreSeoSetting: async () => {
+  //   return requests.get("/setting/store-setting/seo");
+  // },
   //store customization setting all function
+  // getStoreCustomizationSetting: async () => {
+  //   return requests.get("/setting/store/customization/all");
+  // },
   getStoreCustomizationSetting: async () => {
-    return requests.get("/setting/store/customization/all");
+    return requests.get("/products/all");
   },
-
   // getShowingLanguage: async () => {
   //   return requests.get(`/language/show`);
   // },

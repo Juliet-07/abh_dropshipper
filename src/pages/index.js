@@ -1,6 +1,7 @@
 import { SidebarContext } from "@context/SidebarContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 //internal import
 import Layout from "@layout/Layout";
@@ -13,11 +14,11 @@ import FeatureCategory from "@component/category/FeatureCategory";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
-
-  // console.log("storeCustomizationSetting", storeCustomizationSetting);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     if (router.asPath === "/") {
@@ -25,6 +26,19 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     } else {
       setIsLoading(false);
     }
+    const getProducts = () => {
+      axios
+        .get(`${apiURL}/products/all`)
+        .then((response) => {
+          console.log(response.data.data.data);
+          setProducts(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getProducts();
   }, [router]);
 
   return (
@@ -78,7 +92,14 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     />
                   ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                      {popularProducts
+                      {products.map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          attributes={attributes}
+                        />
+                      ))}
+                      {/* {popularProducts
                         ?.slice(
                           0,
                           storeCustomizationSetting?.home?.popular_product_limit
@@ -89,7 +110,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                             product={product}
                             attributes={attributes}
                           />
-                        ))}
+                        ))} */}
                     </div>
                   )}
                 </div>
@@ -97,7 +118,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             </div>
 
             {/* feature category's */}
-            <div className="bg-gray-100 lg:py-16 py-10">
+            {/* <div className="bg-gray-100 lg:py-16 py-10">
               <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="mb-10 flex justify-center">
                   <div className="text-center w-full lg:w-2/5">
@@ -113,7 +134,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
                 <FeatureCategory />
               </div>
-            </div>
+            </div> */}
 
             {/* promotional banner card */}
             <div className="block mx-auto max-w-screen-2xl">

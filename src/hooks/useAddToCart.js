@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useCart } from "react-use-cart";
-
 import { notifyError, notifySuccess } from "@utils/toast";
 
 const useAddToCart = () => {
@@ -11,6 +10,8 @@ const useAddToCart = () => {
 
   const handleAddItem = (product) => {
     const result = items.find((i) => i.id === product.id);
+    console.log(result, "checking the results");
+    console.log(product, "checking products");
     // console.log(
     //   "result in add to",
     //   result,
@@ -27,11 +28,11 @@ const useAddToCart = () => {
       if (
         result?.quantity + item <=
         (product?.variants?.length > 0
-          ? product?.variant?.quantity
-          : product?.stock)
+          ? product?.quantity
+          : product?.quantity - product?.soldQuantity)
       ) {
         addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} added to cart!`);
+        notifySuccess(`${item} ${product.name} added to cart!`);
       } else {
         notifyError("Insufficient stock!");
       }
@@ -39,11 +40,11 @@ const useAddToCart = () => {
       if (
         item <=
         (product?.variants?.length > 0
-          ? product?.variant?.quantity
-          : product?.stock)
+          ? product?.quantity
+          : product?.quantity - product?.soldQuantity)
       ) {
         addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} added to cart!`);
+        notifySuccess(`${item} ${product.name} added to cart!`);
       } else {
         notifyError("Insufficient stock!");
       }
@@ -52,6 +53,8 @@ const useAddToCart = () => {
 
   const handleIncreaseQuantity = (product) => {
     const result = items?.find((p) => p.id === product.id);
+    console.log(result, "checking the results");
+    console.log(product, "checking products");
     // console.log(
     //   "handleIncreaseQuantity",
     //   product,
@@ -64,8 +67,8 @@ const useAddToCart = () => {
       if (
         result?.quantity + item <=
         (product?.variants?.length > 0
-          ? product?.variant?.quantity
-          : product?.stock)
+          ? product?.quantity
+          : product?.quantity - product?.soldQuantity)
       ) {
         updateItemQuantity(product.id, product.quantity + 1);
       } else {

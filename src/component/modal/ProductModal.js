@@ -1,9 +1,9 @@
-import useTranslation from "next-translate/useTranslation";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
 
 //internal import
 import Price from "@component/common/Price";
@@ -51,7 +51,7 @@ const ProductModal = ({
       const result = product?.variants?.filter((variant) =>
         Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
       );
-
+      console.log(result, "checking result on modal");
       const res = result?.map(
         ({
           originalPrice,
@@ -119,7 +119,7 @@ const ProductModal = ({
       setOriginalPrice(originalPrice);
     } else {
       setStock(product?.stock);
-      setImg(product?.image[0]);
+      setImg(product?.images[0]);
       const price = getNumber(product?.prices?.price);
       const originalPrice = getNumber(product?.prices?.originalPrice);
       const discountPercentage = getNumber(
@@ -141,13 +141,13 @@ const ProductModal = ({
   ]);
   // console.log("product", product);
 
-  useEffect(() => {
-    const res = Object.keys(Object.assign({}, ...product?.variants));
+  // useEffect(() => {
+  //   const res = Object.keys(Object.assign({}, ...product?.variants));
 
-    const varTitle = attributes?.filter((att) => res.includes(att?._id));
+  //   const varTitle = attributes?.filter((att) => res.includes(att?._id));
 
-    setVariantTitle(varTitle?.sort());
-  }, [variants, attributes]);
+  //   setVariantTitle(varTitle?.sort());
+  // }, [variants, attributes]);
 
   const handleAddToCart = (p) => {
     if (p.variants.length === 1 && p.variants[0].quantity < 1)
@@ -220,42 +220,50 @@ const ProductModal = ({
   return (
     <>
       <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+        <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl font-primaryRegular">
           <div className="flex flex-col lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
-            <Link href={`/product/${product.slug}`} passHref>
-              <div
-                onClick={() => setModalOpen(false)}
-                className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer"
-              >
-                <Discount product={product} discount={discount} modal />
-                {product.image[0] ? (
-                  <Image
-                    src={img || product.image[0]}
-                    width={420}
-                    height={420}
-                    alt="product"
-                  />
-                ) : (
-                  <Image
-                    src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                    width={420}
-                    height={420}
-                    alt="product Image"
-                  />
-                )}
-              </div>
-            </Link>
+            {/* <Link href={`/product/${product.slug}`} passHref> */}
+            <div
+              onClick={() => setModalOpen(false)}
+              className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer"
+            >
+              <Discount product={product} discount={discount} modal />
+              <img
+                src={product.featured_image}
+                width={420}
+                height={420}
+                alt="Product Image"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+
+              {/* {product.images[0] ? (
+                <Image
+                  src={img || product.images[0]}
+                  width={420}
+                  height={420}
+                  alt="product"
+                />
+              ) : (
+                <Image
+                  src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                  width={420}
+                  height={420}
+                  alt="product Image"
+                />
+              )} */}
+            </div>
+            {/* </Link> */}
 
             <div className="w-full flex flex-col p-5 md:p-8 text-left">
               <div className="mb-2 md:mb-2.5 block -mt-1.5">
-                <Link href={`/product/${product.slug}`} passHref>
-                  <h1
-                    onClick={() => setModalOpen(false)}
-                    className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer"
-                  >
-                    {showingTranslateValue(product?.title)}
-                  </h1>
-                </Link>
+                {/* <Link href={`/product/${product.slug}`} passHref> */}
+                <h1
+                  onClick={() => setModalOpen(false)}
+                  className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer"
+                >
+                  {product?.name}
+                </h1>
+                {/* </Link> */}
                 <div
                   className={`${
                     stock <= 0 ? "relative py-1 mb-2" : "relative"
@@ -265,7 +273,7 @@ const ProductModal = ({
                 </div>
               </div>
               <p className="text-sm leading-6 text-gray-500 md:leading-6">
-                {showingTranslateValue(product?.description)}
+                {product?.description}
               </p>
               <div className="flex items-center my-4">
                 <Price
@@ -284,7 +292,7 @@ const ProductModal = ({
                     </h4>
                     <div className="flex flex-row mb-3">
                       <VariantList
-                        att={a._id}
+                        att={a.id}
                         lang={lang}
                         option={a.option}
                         setValue={setValue}
@@ -342,40 +350,40 @@ const ProductModal = ({
                       <span className="text-gray-700">
                         {t("common:category")}:
                       </span>{" "}
-                      <Link
+                      {/* <Link
                         href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                      > */}
+                      <button
+                        type="button"
+                        className="text-gray-600 font-serif font-medium underline ml-2 hover:text-teal-600"
+                        onClick={() => setIsLoading(!isLoading)}
                       >
-                        <button
-                          type="button"
-                          className="text-gray-600 font-serif font-medium underline ml-2 hover:text-teal-600"
-                          onClick={() => setIsLoading(!isLoading)}
-                        >
-                          {category_name}
-                        </button>
-                      </Link>
+                        {category_name}
+                      </button>
+                      {/* </Link> */}
                     </span>
 
-                    <Tags product={product} />
+                    {/* <Tags product={product} /> */}
                   </div>
 
-                  <div>
+                  {/* <div>
                     <button
                       onClick={() => handleMoreInfo(product.slug)}
                       className="font-sans font-medium text-sm text-orange-500"
                     >
                       {t("common:moreInfo")}
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
-              <div className="flex justify-end mt-2">
+              {/* <div className="flex justify-end mt-2">
                 <p className="text-xs sm:text-sm text-gray-600">
                   Call Us To Order By Mobile Number :{" "}
                   <span className="text-emerald-700 font-semibold">
                     +0044235234
                   </span>{" "}
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
