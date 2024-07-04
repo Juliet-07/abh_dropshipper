@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
+import axios from "axios";
 
 //internal import
 import Price from "@component/common/Price";
@@ -25,6 +26,7 @@ const ProductModal = ({
   attributes,
   currency,
 }) => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { setIsLoading, isLoading } = useContext(SidebarContext);
   const { t } = useTranslation("ns1");
@@ -149,60 +151,89 @@ const ProductModal = ({
   //   setVariantTitle(varTitle?.sort());
   // }, [variants, attributes]);
 
-  const handleAddToCart = (p) => {
-    if (p.variants.length === 1 && p.variants[0].quantity < 1)
-      return notifyError("Insufficient stock");
+  // const handleAddToCart = (p) => {
+  //   if (p.variants.length === 1 && p.variants[0].quantity < 1)
+  //     return notifyError("Insufficient stock");
 
-    if (stock <= 0) return notifyError("Insufficient stock");
+  //   if (stock <= 0) return notifyError("Insufficient stock");
 
-    if (
-      product?.variants.map(
-        (variant) =>
-          Object.entries(variant).sort().toString() ===
-          Object.entries(selectVariant).sort().toString()
-      )
-    ) {
-      const { variants, categories, description, ...updatedProduct } = product;
-      const newItem = {
-        ...updatedProduct,
-        id: `${
-          p?.variants.length <= 0
-            ? p._id
-            : p._id +
-              "-" +
-              variantTitle?.map((att) => selectVariant[att._id]).join("-")
-        }`,
-        title: `${
-          p?.variants.length <= 0
-            ? showingTranslateValue(p.title)
-            : showingTranslateValue(p.title) +
-              "-" +
-              variantTitle
-                ?.map((att) =>
-                  att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => showingTranslateValue(el?.name))
-        }`,
-        image: img,
-        variant: selectVariant || {},
-        price:
-          p.variants.length === 0
-            ? getNumber(p.prices.price)
-            : getNumber(price),
-        originalPrice:
-          p.variants.length === 0
-            ? getNumber(p.prices.originalPrice)
-            : getNumber(originalPrice),
-      };
+  //   if (
+  //     product?.variants.map(
+  //       (variant) =>
+  //         Object.entries(variant).sort().toString() ===
+  //         Object.entries(selectVariant).sort().toString()
+  //     )
+  //   ) {
+  //     const { variants, categories, description, ...updatedProduct } = product;
+  //     const newItem = {
+  //       ...updatedProduct,
+  //       id: `${
+  //         p?.variants.length <= 0
+  //           ? p._id
+  //           : p._id +
+  //             "-" +
+  //             variantTitle?.map((att) => selectVariant[att._id]).join("-")
+  //       }`,
+  //       title: `${
+  //         p?.variants.length <= 0
+  //           ? showingTranslateValue(p.title)
+  //           : showingTranslateValue(p.title) +
+  //             "-" +
+  //             variantTitle
+  //               ?.map((att) =>
+  //                 att.variants?.find((v) => v._id === selectVariant[att._id])
+  //               )
+  //               .map((el) => showingTranslateValue(el?.name))
+  //       }`,
+  //       image: img,
+  //       variant: selectVariant || {},
+  //       price:
+  //         p.variants.length === 0
+  //           ? getNumber(p.prices.price)
+  //           : getNumber(price),
+  //       originalPrice:
+  //         p.variants.length === 0
+  //           ? getNumber(p.prices.originalPrice)
+  //           : getNumber(originalPrice),
+  //     };
 
-      // console.log("newItem", newItem);
+  //     // console.log("newItem", newItem);
 
-      handleAddItem(newItem);
-    } else {
-      return notifyError("Please select all variant first!");
+  //     handleAddItem(newItem);
+  //   } else {
+  //     return notifyError("Please select all variant first!");
+  //   }
+  // };
+
+  const handleAddToCart = async (p) => {
+    if (p.quantity < 1) return notifyError("Insufficient stock!");
+
+    const { categories, description, ...updatedProduct } = product;
+
+    const newItem = {
+      ...updatedProduct,
+      title: p?.name,
+      id: p.id,
+      price: p.price,
+    };
+
+    try {
+      const response = await axios.put(`${apiURL}/cart/add`, {
+        productId: p.id,
+        quantity: p.quantity, // Assuming 1 for now, adjust as needed
+      });
+
+      if (response.status === 200) {
+        handleAddItem(newItem);
+        notifySuccess("Item added to cart successfully!");
+      } else {
+        notifyError("Failed to add item to cart!");
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      notifyError("Error adding item to cart!");
     }
   };
-
   const handleMoreInfo = (slug) => {
     setModalOpen(false);
 

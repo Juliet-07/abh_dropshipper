@@ -5,7 +5,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 //internal import
 import useAsync from "@hooks/useAsync";
-import CouponServices from "@services/CouponServices";
+import CouponServices from "@services/CouponServices1";
 import OfferTimer from "@component/coupon/OfferTimer";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 

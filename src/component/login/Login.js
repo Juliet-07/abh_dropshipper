@@ -36,7 +36,12 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
       const userDetail = JSON.stringify(user.data);
       localStorage.setItem("abhUserInfo", userDetail);
       // router.push(redirect || "/checkout");
-      router.push("/user/dashboard")
+      // router.push("/user/dashboard")
+      if (redirect) {
+        router.push("/checkout");
+      } else {
+        router.push("/user/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +69,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
                 type="email"
                 placeholder="Email"
                 onChange={handleChange}
-                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-[#359E52] h-11 md:h-12"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span className="text-gray-800 sm:text-base">
@@ -83,7 +88,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
                 type="password"
                 placeholder="Password"
                 onChange={handleChange}
-                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+                className="py-2 pl-10 pr-4 md:pr-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-[#359E52] h-11 md:h-12"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span className="text-gray-800 sm:text-base">
@@ -94,7 +99,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             {/* <Error errorName={} /> */}
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex ms-auto">
+            {/* <div className="flex ms-auto">
               <button
                 type="button"
                 onClick={() => setShowResetPassword(true)}
@@ -102,13 +107,13 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
               >
                 Forgot password?
               </button>
-            </div>
+            </div> */}
           </div>
           {loading ? (
             <button
               disabled={loading}
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-emerald-500 text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-emerald-600 h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
+              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-[#359E52] text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-[#359E52] h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
             >
               <img
                 src="/loader/spinner.gif"
@@ -122,7 +127,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             <button
               disabled={loading}
               type="submit"
-              className="w-full text-center py-3 rounded bg-emerald-500 text-white hover:bg-emerald-600 transition-all focus:outline-none my-1"
+              className="w-full text-center py-3 rounded bg-[#359E52] text-white hover:bg-[#359E52] transition-all focus:outline-none my-1"
               // onClick={() => setLoading(!loading)}
             >
               Login

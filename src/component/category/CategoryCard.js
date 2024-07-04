@@ -87,7 +87,7 @@ const CategoryCard = ({ title, icon, nested, id }) => {
                 <a
                   onClick={() =>
                     handleSubNestedCategory(
-                      children._id,
+                      children.id,
                       showingTranslateValue(children.name)
                     )
                   }
@@ -102,7 +102,7 @@ const CategoryCard = ({ title, icon, nested, id }) => {
 
                     {children.children.length > 0 ? (
                       <span className="transition duration-700 ease-in-out inline-flex loading-none items-end text-gray-400">
-                        {showSubCategory.id === children._id &&
+                        {showSubCategory.id === children.id &&
                         showSubCategory.show ? (
                           <IoChevronDownOutline />
                         ) : (

@@ -104,7 +104,7 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:hidden md:items-center lg:flex xl:block absolute inset-y-0 right-0 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div className="hidden md:hidden md:items-center lg:flex xl:flex absolute inset-y-0 right-0 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {/* <button
                 className="pr-5 text-white text-2xl font-bold"
                 aria-label="Alert"
@@ -154,7 +154,7 @@ const Navbar = () => {
               </button>
             </div>
             <Link href="/vendor/signup">
-              <button className="bg-white w-[100px] h-10 text-[#359E52] font-semibold rounded-md mx-3">
+              <button className="bg-white w-20 h-10 text-[#359E52] font-semibold rounded-md mx-3">
                 Join
               </button>
             </Link>

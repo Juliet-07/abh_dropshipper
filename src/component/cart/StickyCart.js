@@ -1,7 +1,7 @@
-import dynamic from "next/dynamic";
 import React, { useContext, useState } from "react";
-import { IoBagHandleOutline } from "react-icons/io5";
+import dynamic from "next/dynamic";
 import { useCart } from "react-use-cart";
+import { IoBagHandleOutline } from "react-icons/io5";
 
 //internal import
 import { SidebarContext } from "@context/SidebarContext";

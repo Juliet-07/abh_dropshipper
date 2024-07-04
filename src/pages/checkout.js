@@ -27,33 +27,33 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import SettingServices from "@services/SettingServices";
 
 const Checkout = () => {
-  const { t } = useTranslation();
-  const { storeCustomizationSetting } = useGetSetting();
-  const { showingTranslateValue } = useUtilsFunction();
-  const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
+  // const { t } = useTranslation();
+  // const { storeCustomizationSetting } = useGetSetting();
+  // const { showingTranslateValue } = useUtilsFunction();
+  // const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
-  const {
-    handleSubmit,
-    submitHandler,
-    handleShippingCost,
-    register,
-    errors,
-    showCard,
-    setShowCard,
-    error,
-    stripe,
-    couponInfo,
-    couponRef,
-    handleCouponCode,
-    discountAmount,
-    shippingCost,
-    total,
-    isEmpty,
-    items,
-    cartTotal,
-    currency,
-    isCheckoutSubmit,
-  } = useCheckoutSubmit();
+  // const {
+  //   handleSubmit,
+  //   submitHandler,
+  //   handleShippingCost,
+  //   register,
+  //   errors,
+  //   showCard,
+  //   setShowCard,
+  //   error,
+  //   stripe,
+  //   couponInfo,
+  //   couponRef,
+  //   handleCouponCode,
+  //   discountAmount,
+  //   shippingCost,
+  //   total,
+  //   isEmpty,
+  //   items,
+  //   cartTotal,
+  //   currency,
+  //   isCheckoutSubmit,
+  // } = useCheckoutSubmit();
 
   // console.log(
   //   "shippingCost",
@@ -71,152 +71,112 @@ const Checkout = () => {
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
             <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               <div className="mt-5 md:mt-0 md:col-span-2">
-                <form onSubmit={handleSubmit(submitHandler)}>
+                {/* <form onSubmit={handleSubmit(submitHandler)}> */}
+                <form>
                   <div className="form-group">
                     <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
-                      01.{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.personal_details
-                      )}
+                      01. Personal Details
                     </h2>
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.first_name
-                          )}
-                          name="firstName"
+                        <Label label="First Name" />
+                        <input
                           type="text"
-                          placeholder="John"
+                          className="w-full p-3 border border-gray-200 text-sm"
+                          placeholder="First Name"
                         />
-                        <Error errorName={errors.firstName} />
+                        {/* <Error errorName={errors.firstName} /> */}
                       </div>
 
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.last_name
-                          )}
-                          name="lastName"
+                        <Label label="Last Name" />
+                        <input
                           type="text"
-                          placeholder="Doe"
+                          className="w-full p-3 border border-gray-200 text-sm"
+                          placeholder="Last Name"
                         />
-                        <Error errorName={errors.lastName} />
                       </div>
-
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.email_address
-                          )}
-                          name="email"
+                        <Label label="Email" />
+                        <input
                           type="email"
-                          placeholder="youremail@gmail.com"
+                          className="w-full p-3 border border-gray-200 text-sm"
+                          placeholder="Email"
                         />
-                        <Error errorName={errors.email} />
                       </div>
-
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.checkout_phone
-                          )}
-                          name="contact"
-                          type="tel"
-                          placeholder="+062-6532956"
+                        <Label label="Phone Number" />
+                        <input
+                          type="number"
+                          className="w-full p-3 border border-gray-200 text-sm"
+                          placeholder="Phone Number"
                         />
-
-                        <Error errorName={errors.contact} />
                       </div>
                     </div>
                   </div>
-
                   <div className="form-group mt-12">
                     <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
-                      02.{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.shipping_details
-                      )}
+                      02. Shipping Information
                     </h2>
 
                     <div className="grid grid-cols-6 gap-6 mb-8">
                       <div className="col-span-6">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.street_address
-                          )}
-                          name="address"
+                        <Label label="Street Address" />
+                        <input
                           type="text"
+                          className="w-full p-3 border border-gray-200 text-sm"
                           placeholder="123 Boulevard Rd, Beverley Hills"
                         />
-                        <Error errorName={errors.address} />
                       </div>
 
                       <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.city
-                          )}
-                          name="city"
+                        <Label label="City" />
+                        <input
                           type="text"
+                          className="w-full p-3 border border-gray-200 text-sm"
                           placeholder="Los Angeles"
                         />
-                        <Error errorName={errors.city} />
                       </div>
 
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.country
-                          )}
-                          name="country"
+                        <Label label="Country" />
+                        <input
                           type="text"
+                          className="w-full p-3 border border-gray-200 text-sm"
                           placeholder="United States"
                         />
-                        <Error errorName={errors.country} />
                       </div>
 
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.zip_code
-                          )}
-                          name="zipCode"
+                        <Label label="Zip Code" />
+                        <input
                           type="text"
+                          className="w-full p-3 border border-gray-200 text-sm"
                           placeholder="2345"
                         />
-                        <Error errorName={errors.zipCode} />
                       </div>
                     </div>
 
                     <Label
-                      label={showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.shipping_cost
-                      )}
+                    // label={showingTranslateValue(
+                    //   storeCustomizationSetting?.checkout?.shipping_cost
+                    // )}
                     />
-                    <div className="grid grid-cols-6 gap-6">
+                    {/* <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
                         <InputShipping
                           currency={currency}
                           handleShippingCost={handleShippingCost}
                           register={register}
-                          // value="FedEx"
-                          value={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_name_two
-                          )}
-                          description={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_one_desc
-                          )}
+                          value="FedEx"
+                          // value={showingTranslateValue(
+                          //   storeCustomizationSetting?.checkout
+                          //     ?.shipping_name_two
+                          // )}
+                          // description={showingTranslateValue(
+                          //   storeCustomizationSetting?.checkout
+                          //     ?.shipping_one_desc
+                          // )}
                           // time="Today"
                           cost={
                             Number(
@@ -233,14 +193,14 @@ const Checkout = () => {
                           currency={currency}
                           handleShippingCost={handleShippingCost}
                           register={register}
-                          value={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_name_two
-                          )}
-                          description={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_two_desc
-                          )}
+                          // value={showingTranslateValue(
+                          //   storeCustomizationSetting?.checkout
+                          //     ?.shipping_name_two
+                          // )}
+                          // description={showingTranslateValue(
+                          //   storeCustomizationSetting?.checkout
+                          //     ?.shipping_two_desc
+                          // )}
                           // time="7 Days"
                           cost={
                             Number(
@@ -251,17 +211,14 @@ const Checkout = () => {
                         />
                         <Error errorName={errors.shippingOption} />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="form-group mt-12">
                     <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
-                      03.{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.payment_method
-                      )}
+                      03. Payment Menthod
                     </h2>
-                    {showCard && (
+                    {/* {showCard && (
                       <div className="mb-3">
                         <CardElement />{" "}
                         <p className="text-red-400 text-sm mt-1">{error}</p>
@@ -293,7 +250,7 @@ const Checkout = () => {
                           <Error errorName={errors.paymentMethod} />
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
@@ -305,18 +262,16 @@ const Checkout = () => {
                         <span className="text-xl mr-2">
                           <IoReturnUpBackOutline />
                         </span>
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.continue_button
-                        )}
+                        Continue Shipping
                       </Link>
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <button
                         type="submit"
-                        disabled={isEmpty || !stripe || isCheckoutSubmit}
-                        className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
+                        // disabled={isEmpty || !stripe || isCheckoutSubmit}
+                        className="bg-[#359E52] hover:bg-[#359E52] border border-[#359E52] transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
                       >
-                        {isCheckoutSubmit ? (
+                        {/* {isCheckoutSubmit ? (
                           <span className="flex justify-center text-center">
                             {" "}
                             <img
@@ -325,22 +280,21 @@ const Checkout = () => {
                               width={20}
                               height={10}
                             />{" "}
-                            <span className="ml-2">
-                              {t("common:processing")}
-                            </span>
+                            <span className="ml-2">processing</span>
                           </span>
-                        ) : (
-                          <span className="flex justify-center text-center">
-                            {showingTranslateValue(
+                        ) : ( */}
+                        <span className="flex justify-center text-center">
+                          Confirm Order
+                          {/* {showingTranslateValue(
                               storeCustomizationSetting?.checkout
                                 ?.confirm_button
-                            )}
-                            <span className="text-xl ml-2">
-                              {" "}
-                              <IoArrowForward />
-                            </span>
+                            )} */}
+                          <span className="text-xl ml-2">
+                            {" "}
+                            <IoArrowForward />
                           </span>
-                        )}
+                        </span>
+                        {/* )} */}
                       </button>
                     </div>
                   </div>
@@ -348,7 +302,7 @@ const Checkout = () => {
               </div>
             </div>
 
-            <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
+            {/* <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
               <div className="border p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
                 <h2 className="font-semibold font-serif text-lg pb-4">
                   {showingTranslateValue(
@@ -442,7 +396,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Layout>

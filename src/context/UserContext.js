@@ -4,15 +4,15 @@ import React, { createContext, useReducer } from 'react';
 export const UserContext = createContext();
 
 const initialState = {
-  userInfo: Cookies.get('userInfo')
-    ? JSON.parse(Cookies.get('userInfo'))
+  userInfo: Cookies.get('abhUserInfo')
+    ? JSON.parse(Cookies.get('abhUserInfo'))
     : null,
   shippingAddress: Cookies.get('shippingAddress')
     ? JSON.parse(Cookies.get('shippingAddress'))
     : {},
-  couponInfo: Cookies.get('couponInfo')
-    ? JSON.parse(Cookies.get('couponInfo'))
-    : {},
+  // couponInfo: Cookies.get('couponInfo')
+  //   ? JSON.parse(Cookies.get('couponInfo'))
+  //   : {},
 };
 
 function reducer(state, action) {
@@ -29,8 +29,8 @@ function reducer(state, action) {
     case 'SAVE_SHIPPING_ADDRESS':
       return { ...state, shippingAddress: action.payload };
 
-    case 'SAVE_COUPON':
-      return { ...state, couponInfo: action.payload };
+    // case 'SAVE_COUPON':
+    //   return { ...state, couponInfo: action.payload };
   }
 }
 

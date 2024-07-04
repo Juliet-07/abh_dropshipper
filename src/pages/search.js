@@ -11,7 +11,7 @@ import ProductCard from "@component/product/ProductCard";
 import CategoryCarousel from "@component/carousel/CategoryCarousel";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
-import AttributeServices from "@services/AttributeServices";
+// import AttributeServices from "@services/AttributeServices";
 
 const Search = ({ products, attributes }) => {
   const { t } = useTranslation();
@@ -117,7 +117,7 @@ export const getServerSideProps = async (context) => {
       category: _id ? _id : "",
       title: query ? encodeURIComponent(query) : "",
     }),
-    AttributeServices.getShowingAttributes({}),
+    // AttributeServices.getShowingAttributes({}),
   ]);
 
   return {

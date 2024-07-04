@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
 import { useCart } from "react-use-cart";
+import axios from "axios";
 
 //internal import
 
@@ -18,6 +19,7 @@ import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
 
 const ProductCard = ({ product, attributes }) => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [modalOpen, setModalOpen] = useState(false);
 
   const { items, addItem, updateItemQuantity, inCart } = useCart();
@@ -48,6 +50,36 @@ const ProductCard = ({ product, attributes }) => {
     };
     addItem(newItem);
   };
+
+  // const handleAddItem = async (p) => {
+  //   if (p.quantity < 1) return notifyError("Insufficient stock!");
+
+  //   const { categories, description, ...updatedProduct } = product;
+
+  //   const newItem = {
+  //     ...updatedProduct,
+  //     title: p?.name,
+  //     id: p.id,
+  //     price: p.price,
+  //   };
+
+  //   try {
+  //     const response = await axios.put(`${apiURL}/cart/add`, {
+  //       productId: p.id,
+  //       quantity: p.quantity, // Assuming 1 for now, adjust as needed
+  //     });
+
+  //     if (response.status === 200) {
+  //       addItem(newItem);
+  //       notifySuccess("Item added to cart successfully!");
+  //     } else {
+  //       notifyError("Failed to add item to cart!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding item to cart:", error);
+  //     notifyError("Error adding item to cart!");
+  //   }
+  // };
 
   const handleModalOpen = (event, id) => {
     setModalOpen(event);

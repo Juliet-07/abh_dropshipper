@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
+import axios from "axios";
 
 //internal import
 import { pages } from "@utils/data";
@@ -13,15 +14,32 @@ import CategoryCard from "@component/category/CategoryCard";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const Category = () => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { categoryDrawerOpen, closeCategoryDrawer } =
     useContext(SidebarContext);
   const { showingTranslateValue } = useUtilsFunction();
   const { data, loading, error } = useAsync(() =>
     CategoryServices.getShowingCategory()
   );
+  const [categories, setCategories] = useState([]);
 
+  useEffect(() => {
+    const getCategories = () => {
+      axios
+        .get(`${apiURL}/category`)
+        .then((response) => {
+          console.log(response.data.data.data);
+          setCategories(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getCategories();
+  }, []);
   return (
-    <div className="flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
+    <div className="flex flex-col w-full h-full bg-white cursor-pointer font-primaryRegular scrollbar-hide">
       {categoryDrawerOpen && (
         <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-[#359E52] text-white border-b border-gray-100">
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
@@ -52,13 +70,13 @@ const Category = () => {
           <Loading loading={loading} />
         ) : (
           <div className="relative grid gap-2 p-6">
-            {data[0]?.children?.map((category) => (
+            {categories.map((category) => (
               <CategoryCard
-                key={category._id}
-                id={category._id}
-                icon={category.icon}
-                nested={category.children}
-                title={showingTranslateValue(category?.name)}
+                key={category.id}
+                id={category.id}
+                // icon={category.icon}
+                // nested={category.children}
+                title={category?.name}
               />
             ))}
           </div>
