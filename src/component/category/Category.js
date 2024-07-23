@@ -58,7 +58,7 @@ const Category = () => {
       )}
       <div className="w-full max-h-full">
         {categoryDrawerOpen && (
-          <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center border-b px-8 py-3">
+          <h2 className="font-semibold  m-0 text-heading flex align-center border-b px-8 py-3">
             All Categories
           </h2>
         )}
@@ -69,7 +69,7 @@ const Category = () => {
         ) : data.length === 0 ? (
           <Loading loading={loading} />
         ) : (
-          <div className="relative grid gap-2 p-6">
+          <div className="relative grid gap-2 p-4">
             {categories.map((category) => (
               <CategoryCard
                 key={category.id}
@@ -84,10 +84,10 @@ const Category = () => {
 
         {categoryDrawerOpen && (
           <div className="relative grid gap-2 mt-5">
-            <h3 className="font-semibold font-serif text-lg m-0 text-heading flex align-center border-b px-8 py-3">
+            <h3 className="font-semibold font-serif text-base m-0 text-heading flex align-center border-b px-8">
               Pages
             </h3>
-            <div className="relative grid gap-1 p-6">
+            <div className="relative grid gap-1 p-4">
               {pages.map((item) => (
                 <a
                   key={item.title}

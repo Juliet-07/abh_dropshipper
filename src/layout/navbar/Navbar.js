@@ -121,7 +121,7 @@ const Navbar = () => {
                 </span>
                 <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
               </button>
-              {/* Profile dropdown */}
+              {/* Profile */}
               <button
                 className="pl-5 text-white text-2xl font-bold"
                 aria-label="Login"
@@ -147,17 +147,20 @@ const Navbar = () => {
                     {userInfo?.name[0]}
                   </Link>
                 ) : (
-                  <span onClick={() => setModalOpen(!modalOpen)}>
-                    <FiUser className="w-6 h-6 drop-shadow-xl" />
-                  </span>
+                  <div className="flex items-center">
+                    <span onClick={() => setModalOpen(!modalOpen)}>
+                      <FiUser className="w-6 h-6 drop-shadow-xl" />
+                    </span>
+                    <p className="mx-2 text-sm">Sign in</p>
+                  </div>
                 )}
               </button>
             </div>
-            <Link href="/vendor/signup">
-              <button className="bg-white w-20 h-10 text-[#359E52] font-semibold rounded-md mx-3">
-                Join
+            {/* <Link href="/vendor/signup">
+              <button className="bg-white w-20 h-10 text-[#359E52] font-semibold rounded-md mx-3 text-xs">
+                Sell on ABH
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         {/* second header */}

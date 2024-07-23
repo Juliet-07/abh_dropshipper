@@ -33,7 +33,7 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.first_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.first_img) ||
-        "/slider/slider-1.jpg",
+        "/slider/slider-1.png",
     },
     {
       id: 2,
@@ -49,7 +49,7 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.second_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.second_img) ||
-        "/slider/slider-2.jpg",
+        "/slider/slider-2.png",
     },
     {
       id: 3,
@@ -65,7 +65,7 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.third_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.third_img) ||
-        "/slider/slider-3.jpg",
+        "/slider/slider-3.png",
     },
     {
       id: 4,
@@ -81,23 +81,7 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.four_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.four_img) ||
-        "/slider/slider-1.jpg",
-    },
-    {
-      id: 5,
-      title: showingTranslateValue(
-        storeCustomizationSetting?.slider?.five_title
-      ),
-      info: showingTranslateValue(
-        storeCustomizationSetting?.slider?.five_description
-      ),
-      buttonName: showingTranslateValue(
-        storeCustomizationSetting?.slider?.five_button
-      ),
-      url: showingUrl(storeCustomizationSetting?.slider?.five_link),
-      image:
-        showingImage(storeCustomizationSetting?.slider?.five_img) ||
-        "/slider/slider-2.jpg",
+        "/slider/slider-4.png",
     },
   ];
 
@@ -128,20 +112,22 @@ const MainCarousel = () => {
       >
         {sliderData?.map((item, i) => (
           <SwiperSlide
-            className="h-full relative rounded-lg overflow-hidden"
+            className="h-full relative overflow-hidden"
             key={i + 1}
           >
             <div className="text-sm text-gray-600 hover:text-emerald-dark">
               <Image
-                width={950}
-                height={400}
+                width={500}
+                height={406}
                 src={item.image}
                 alt={item.title}
-                className="object-cover"
+                className="object-cover w-full"
                 priority
               />
             </div>
-            <div className="absolute top-0 left-0 z-10 p-r-16 flex-col flex w-full h-full place-items-start justify-center">
+            {/* <div className="absolute top-0 left-0 z-10 w-full h-full flex items-center justify-center">information on the sliders</div> */}
+
+            {/* <div className="absolute top-0 left-0 z-10 p-r-16 flex-col flex w-full h-full place-items-start justify-center">
               <div className="pl-4 pr-12 sm:pl-10 sm:pr-16 w-10/12 lg:w-8/12 xl:w-7/12">
                 <h1 className="mb-2 font-serif text-xl sm:text-lg md:text-2xl line-clamp-1 md:line-clamp-none  lg:line-clamp-none  lg:text-3xl font-bold text-gray-800">
                   {item.title}
@@ -156,7 +142,7 @@ const MainCarousel = () => {
                   {item.buttonName}
                 </Link>
               </div>
-            </div>
+            </div> */}
           </SwiperSlide>
         ))}
       </Swiper>

@@ -25,39 +25,44 @@ const pages = [
   //   icon: FiUser,
   // },
   // {
-  //   title: "offer-page",
-  //   href: "/offer",
-  //   icon: FiGift,
+  //   title: "checkout-page",
+  //   href: "/checkout",
+  //   icon: FiShoppingBag,
   // },
   {
-    title: "checkout-page",
-    href: "/checkout",
-    icon: FiShoppingBag,
-  },
-  {
-    title: "faq-page",
-    href: "/faq",
-    icon: FiHelpCircle,
-  },
-  {
-    title: "about-us-page",
+    title: "About Us",
     href: "/about-us",
     icon: FiUsers,
   },
   {
-    title: "contact-us-page",
+    title: "Contact Us",
     href: "/contact-us",
     icon: FiPhoneIncoming,
   },
   {
-    title: "privacy-policy-page",
+    title: "FAQ",
+    href: "/faq",
+    icon: FiHelpCircle,
+  },
+  {
+    title: "Privacy Policy",
     href: "/privacy-policy",
     icon: FiPocket,
   },
   {
-    title: "terms-and-conditions-page",
+    title: "Terms & Conditions",
     href: "/terms-and-conditions",
     icon: FiFileText,
+  },
+  {
+    title: "Bulk Purchase",
+    href: "#",
+    icon: FiGift,
+  },
+  {
+    title: "Sell on ABH",
+    href: "#",
+    icon: FiShoppingBag,
   },
   // {
   //   title: "not-found-page",

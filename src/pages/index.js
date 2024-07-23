@@ -1,6 +1,8 @@
-import { SidebarContext } from "@context/SidebarContext";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
+import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
 
 //internal import
@@ -12,6 +14,9 @@ import Loading from "@component/preloader/Loading";
 import ProductCard from "@component/product/ProductCard";
 import FeatureCategory from "@component/category/FeatureCategory";
 import CMSkeleton from "@component/preloader/CMSkeleton";
+import MainCarousel from "@component/carousel/MainCarousel";
+import OfferCard from "@component/offer/OfferCard";
+import Banner from "@component/banner/Banner";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -19,6 +24,40 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
   const [products, setProducts] = useState([]);
+  // const [categories, setCategories] = useState([]);
+
+  const categories = [
+    {
+      image: "/fashion.png",
+      title: "Fashion & Apparel",
+      path: "/about-us",
+    },
+    {
+      image: "/electronics.png",
+      title: "Electronics",
+      path: "/contact-us",
+    },
+    {
+      image: "/beauty.png",
+      title: "Health & Beauty",
+      path: "/contact-us",
+    },
+    {
+      image: "/home.png",
+      title: "Home & Kitchen",
+      path: "/about-us",
+    },
+    {
+      image: "/grocery.png",
+      title: "Grocery and Gourmet",
+      path: "/contact-us",
+    },
+    {
+      image: "/beauty.png",
+      title: "Health & Beauty",
+      path: "/contact-us",
+    },
+  ];
 
   useEffect(() => {
     if (router.asPath === "/") {
@@ -38,6 +77,19 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
         });
     };
 
+    // const getCategories = () => {
+    //   axios
+    //     .get(`${apiURL}/category`)
+    //     .then((response) => {
+    //       console.log(response.data.data.data);
+    //       setCategories(response.data.data.data);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching vendors:", error);
+    //     });
+    // };
+
+    // getCategories();
     getProducts();
   }, [router]);
 
@@ -49,6 +101,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
         <Layout>
           <div className="min-h-screen">
             <StickyCart />
+
             {/* <div className="bg-white">
               <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
                 <div className="flex w-full">
@@ -58,18 +111,93 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   <div className="w-full hidden lg:flex">
                     <OfferCard />
                   </div>
-                </div>I
-                {storeCustomizationSetting?.home?.promotion_banner_status && (
-                  <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
-                    <Banner />
-                  </div>
-                )}
+                </div>
+                <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
+                  <Banner />
+                </div>
               </div>
             </div> */}
 
+            {/* Carousel */}
+            <div className="bg-white w-full">
+              <div className="mx-auto w-full px-0">
+                <div className="flex w-full">
+                  <div className="flex-shrink-0 w-full">
+                    <MainCarousel />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Shop by Category */}
+            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+              <div className="flex items-center">
+                <div className="w-5 h-10 bg-[#359E52] rounded"></div>
+                <p className="text-[#359E52] font-primarySemibold mx-4">
+                  Categories
+                </p>
+              </div>
+              <div className="py-5 md:text-xl font-primarySemibold">
+                Shop by Category
+              </div>
+              <div className="w-full flex gap-4 overflow-x-auto">
+                {categories.map((category) => (
+                  <Link href={category.path}>
+                    <div className="w-[100px] md:w-[270px] h-[130px] md:h-[270px] bg-[#CED9CF] flex flex-col items-center justify-center rounded md:rounded-lg">
+                      <Image
+                        width={211}
+                        height={226}
+                        src={category.image}
+                        alt={category.title}
+                        className="hidden md:block"
+                        // priority
+                      />
+                      <Image
+                        width={90}
+                        height={75}
+                        src={category.image}
+                        alt={category.title}
+                        className="block md:hidden"
+                        // priority
+                      />
+                      <p className="text-xs md:text-base font-primarySemibold md:py-3">
+                        {category.title}
+                        {/* {category.name} */}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {/* popular products */}
             <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
-              <div className="mb-10 flex justify-center">
+              <div className="flex items-center">
+                <div className="w-2 md:w-5 h-10 bg-[#359E52] rounded"></div>
+                <p className="text-[#359E52] font-primarySemibold mx-3 md:mx-4">
+                  Our Products
+                </p>
+              </div>
+              <div className="w-full flex items-center justify-between py-5">
+                <div className="text-sm md:text-xl font-primarySemibold">
+                  Explore Our Products
+                </div>
+                <Link href="/all-products">
+                  <button className="hidden md:inline-block w-[250px] h-[44px] text-white font-primaryMedium bg-[#4CBD6B] rounded">
+                    View all products
+                  </button>
+                </Link>
+                <div className="block md:hidden">
+                  <Link href="/all-products">
+                  <button className="p-2 text-white font-primaryMedium bg-[#4CBD6B] rounded">
+                    View all
+                  </button>
+                </Link>
+                </div>
+                
+              </div>
+
+              {/* <div className="mb-10 flex justify-center">
                 <div className="text-center w-full lg:w-2/5">
                   <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
                     Popular Products for Daily Shopping
@@ -80,7 +208,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     special offer with free shipping.
                   </p>
                 </div>
-              </div>
+              </div> */}
               <div className="flex">
                 <div className="w-full">
                   {loading ? (
