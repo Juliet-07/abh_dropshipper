@@ -59,11 +59,11 @@ const Navbar = () => {
       )}
       <div className="bg-[#359E52] sticky top-0 z-20">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-          <div className="top-bar h-16 lg:h-auto flex items-center justify-between py-4 mx-auto">
+          <div className="top-bar h-full md:h-16 lg:h-auto flex flex-col md:flex-row md:items-center justify-between py-4 mx-auto">
             {/* Logo */}
             <Link
               href="/"
-              className="mr-3 lg:mr-12 xl:mr-12 hidden md:hidden lg:block"
+              className="mr-3 lg:mr-12 xl:mr-12  md:hidden lg:block"
             >
               <div className="relative w-[200px] h-10">
                 <Image

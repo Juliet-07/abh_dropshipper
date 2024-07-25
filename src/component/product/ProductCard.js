@@ -23,7 +23,7 @@ const ProductCard = ({ product, attributes }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const { items, addItem, updateItemQuantity, inCart } = useCart();
-  const { handleIncreaseQuantity } = useAddToCart();
+  const { handleIncreaseQuantity, handleAddItem } = useAddToCart();
   const { globalSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
@@ -31,46 +31,49 @@ const ProductCard = ({ product, attributes }) => {
 
   // console.log('attributes in product cart',attributes)
 
-  const handleAddItem = (p) => {
-    if (p.quantity < 1) return notifyError("Insufficient stock!");
-
-    if (p?.variants?.length > 0) {
-      setModalOpen(!modalOpen);
-      return;
-    }
-    const { slug, variants, categories, description, ...updatedProduct } =
-      product;
-    const newItem = {
-      ...updatedProduct,
-      title: showingTranslateValue(p?.name),
-      id: p.id,
-      variant: p.prices,
-      price: p.price,
-      originalPrice: product.prices?.originalPrice,
-    };
-    addItem(newItem);
-  };
-
-  // const handleAddItem = async (p) => {
+  // const handleAddItem = (p) => {
   //   if (p.quantity < 1) return notifyError("Insufficient stock!");
+
+  //   if (p?.variants?.length > 0) {
+  //     setModalOpen(!modalOpen);
+  //     return;
+  //   }
+  //   const { slug, variants, categories, description, ...updatedProduct } =
+  //     product;
+  //   console.log("product info", product);
+  //   const newItem = {
+  //     ...updatedProduct,
+  //     title: showingTranslateValue(p?.name),
+  //     id: p.id,
+  //     variant: p.prices,
+  //     price: p.price,
+  //     originalPrice: product.prices?.originalPrice,
+  //   };
+  //   addItem(newItem);
+  // };
+
+  // const handleAddToCart = async () => {
+  //   if (product.quantity < 1) return notifyError("Insufficient stock!");
 
   //   const { categories, description, ...updatedProduct } = product;
 
+  //   console.log("product info in modal", product);
+
   //   const newItem = {
   //     ...updatedProduct,
-  //     title: p?.name,
-  //     id: p.id,
-  //     price: p.price,
+  //     title: product?.name,
+  //     id: product.id,
+  //     price: product.price,
   //   };
 
   //   try {
   //     const response = await axios.put(`${apiURL}/cart/add`, {
-  //       productId: p.id,
-  //       quantity: p.quantity, // Assuming 1 for now, adjust as needed
+  //       productId: product.id,
+  //       quantity: item,
   //     });
 
   //     if (response.status === 200) {
-  //       addItem(newItem);
+  //       handleAddItem(newItem);
   //       notifySuccess("Item added to cart successfully!");
   //     } else {
   //       notifyError("Failed to add item to cart!");
@@ -140,10 +143,7 @@ const ProductCard = ({ product, attributes }) => {
               {product.quantity + product.unit}
             </span>
             <h2 className="text-heading truncate mb-0 block text-sm font-medium text-gray-600">
-              <span className="line-clamp-2">
-                {/* {showingTranslateValue(product?.title)} */}
-                {product.name}
-              </span>
+              <span className="line-clamp-2">{product.name}</span>
             </h2>
           </div>
 
@@ -165,54 +165,17 @@ const ProductCard = ({ product, attributes }) => {
               // }
             />
 
-            {inCart(product.id) ? (
-              <div>
-                {items.map(
-                  (item) =>
-                    item.id === product.id && (
-                      <div
-                        key={item.id}
-                        className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-emerald-500 text-white rounded"
-                      >
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item.id, item.quantity - 1)
-                          }
-                        >
-                          <span className="text-dark text-base">
-                            <IoRemove />
-                          </span>
-                        </button>
-                        <p className="text-sm text-dark px-1 font-serif font-semibold">
-                          {item.quantity}
-                        </p>
-                        <button
-                          onClick={() =>
-                            item?.variants?.length > 0
-                              ? handleAddItem(item)
-                              : handleIncreaseQuantity(item)
-                          }
-                        >
-                          <span className="text-dark text-base">
-                            <IoAdd />
-                          </span>
-                        </button>
-                      </div>
-                    )
-                )}{" "}
-              </div>
-            ) : (
-              <button
-                onClick={() => handleAddItem(product)}
-                aria-label="cart"
-                className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
-              >
-                {" "}
-                <span className="text-xl">
-                  <IoBagAddSharp />
-                </span>{" "}
-              </button>
-            )}
+            <div
+              // onClick={() => handleAddItem(product)}
+              onClick={() => handleModalOpen(!modalOpen, product.id)}
+              aria-label="cart"
+              className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+            >
+              {" "}
+              <span className="text-xl">
+                <IoBagAddSharp />
+              </span>{" "}
+            </div>
           </div>
         </div>
       </div>
