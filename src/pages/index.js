@@ -26,11 +26,11 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const [products, setProducts] = useState([]);
   // const [categories, setCategories] = useState([]);
 
-  const categories = [
+  const exclusiveDeals = [
     {
       image: "/fashion.png",
-      title: "Fashion & Apparel",
-      path: "/about-us",
+      text: "Fashion & Apparel",
+      price: "#62,000",
     },
     {
       image: "/electronics.png",
@@ -102,85 +102,11 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
           <div className="min-h-screen">
             <StickyCart />
 
-            {/* <div className="bg-white">
-              <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
-                <div className="flex w-full">
-                  <div className="flex-shrink-0 xl:pr-6 lg:block w-full lg:w-3/5">
-                    <MainCarousel />
-                  </div>
-                  <div className="w-full hidden lg:flex">
-                    <OfferCard />
-                  </div>
-                </div>
-                <div className="bg-orange-100 px-10 py-6 rounded-lg mt-6">
-                  <Banner />
-                </div>
-              </div>
-            </div> */}
-
-            {/* Carousel */}
-            <div className="bg-white w-full">
-              <div className="mx-auto w-full px-0">
-                <div className="flex w-full">
-                  <div className="flex-shrink-0 w-full">
-                    <MainCarousel />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Shop by Category */}
-            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
-              <div className="flex items-center">
-                <div className="w-5 h-10 bg-[#359E52] rounded"></div>
-                <p className="text-[#359E52] font-primarySemibold mx-4">
-                  Categories
-                </p>
-              </div>
-              <div className="py-5 md:text-xl font-primarySemibold">
-                Shop by Category
-              </div>
-              <div className="w-full flex gap-4 overflow-x-auto">
-                {categories.map((category) => (
-                  <Link href={category.path}>
-                    <div className="w-[100px] md:w-[270px] h-[130px] md:h-[270px] bg-[#CED9CF] flex flex-col items-center justify-center rounded md:rounded-lg">
-                      <Image
-                        width={211}
-                        height={226}
-                        src={category.image}
-                        alt={category.title}
-                        className="hidden md:block"
-                        // priority
-                      />
-                      <Image
-                        width={90}
-                        height={75}
-                        src={category.image}
-                        alt={category.title}
-                        className="block md:hidden"
-                        // priority
-                      />
-                      <p className="text-xs md:text-base font-primarySemibold md:py-3">
-                        {category.title}
-                        {/* {category.name} */}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* popular products */}
-            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
-              <div className="flex items-center">
-                <div className="w-2 md:w-5 h-10 bg-[#359E52] rounded"></div>
-                <p className="text-[#359E52] font-primarySemibold mx-3 md:mx-4">
-                  Our Products
-                </p>
-              </div>
+            {/* Exclusive Deals */}
+            <div className="bg-gray-50 lg:py-16 mx-auto max-w-screen-2xl px-3 sm:px-10">
               <div className="w-full flex items-center justify-between py-5">
                 <div className="text-sm md:text-xl font-primarySemibold">
-                  Explore Our Products
+                  Exclusive Deals Today
                 </div>
                 <Link href="/all-products">
                   <button className="hidden md:inline-block w-[250px] h-[44px] text-white font-primaryMedium bg-[#4CBD6B] rounded">
@@ -189,12 +115,22 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </Link>
                 <div className="block md:hidden">
                   <Link href="/all-products">
-                  <button className="p-2 text-white font-primaryMedium bg-[#4CBD6B] rounded">
-                    View all
-                  </button>
-                </Link>
+                    <button className="p-2 text-white font-primaryMedium bg-[#4CBD6B] rounded">
+                      View all
+                    </button>
+                  </Link>
                 </div>
-                
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4 lg:gap-4 mb-4">
+                {exclusiveDeals.map((deal) => (
+                  <div className="w-[186px] md:w-[320px] h-[226px] md:h-[340px] border border-[#CFCBCB] rounded-md shadow-md">
+                    <div>{deal.image}</div>
+                    <div>
+                      <p>{deal.text}</p>
+                      <p>{deal.price}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               {/* <div className="mb-10 flex justify-center">
