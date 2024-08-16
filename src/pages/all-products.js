@@ -79,12 +79,6 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
     }
   };
 
-  // const filteredProducts = selectedCategories.length
-  //   ? products.filter((product) => {
-  //       selectedCategories.includes(product.category);
-  //       console.log(selectedCategories, "category selected");
-  //     })
-  //   : products;
 
   const filteredProducts = selectedCategories.length
     ? products.filter((product) =>
@@ -132,8 +126,8 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                     />
                   )}
                 </div>
-                <main>
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <main className="w-full flex flex-col">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 w-full">
                     <div className="md:text-xl font-primarySemibold">
                       All Products
                       <span className="mx-2 font-primaryRegular">

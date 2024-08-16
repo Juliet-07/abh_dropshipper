@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Accordion = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -55,7 +55,18 @@ const FilterSidebar = ({ setSelectedCategories }) => {
   return (
     <aside className="w-[270px] bg-white">
       <Accordion title="Category">
-        {categories.map((category) => (
+        {[
+          {name: "Fashion and Apparel"},
+          {name: "Electronics"},
+          {name: "Health and Beauty"},
+          {name: "Home and Kitchen"},
+          {name: "Grocery and Gourmet"},
+          {name: "Sports and Outdoor"},
+          {name: "Toys and Games"},
+          {name: "Smart Watches"},
+          {name: "Kids Care"},
+          {name: "Office Supplies"},
+        ].map((category) => (
           <ul>
             <li className="p-2">
               <input
