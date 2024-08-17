@@ -9,12 +9,18 @@ import Label from "@component/form/Label";
 import Error from "@component/form/Error";
 import { notifySuccess } from "@utils/toast";
 import InputArea from "@component/form/InputArea";
+import Sidebar from "./sidebar";
 
 const Help = () => {
   return (
-    <Layout>
-      <div>Dashboard Layout here</div>
-    </Layout>
+    <>
+      <Sidebar>
+        <div className="flex-grow p-6">
+          <h1 className="text-2xl font-semibold">Help Page</h1>
+          {/* Inventory content goes here */}
+        </div>
+      </Sidebar>
+    </>
   );
 };
 
