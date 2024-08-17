@@ -53,6 +53,18 @@
     url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
 }
 
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+
+.product-card:hover .flybtn{
+  bottom: 20px;
+}
+
+.flybtn{
+  transition: all 0.5s;
+}
+
 [type="radio"]:checked {
   background-image: none;
 }
