@@ -23,9 +23,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
-  const [products, setProducts] = useState([]);
-  // const [categories, setCategories] = useState([]);
-  // const [categories, setCategories] = useState([]);
 
   const exclusiveDeals = [
     {
@@ -63,43 +60,8 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     // },
   ];
 
-  useEffect(() => {
-    if (router.asPath === "/") {
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
-    const getProducts = () => {
-      axios
-        .get(`${apiURL}/products/all`)
-        .then((response) => {
-          console.log(response.data.data.data);
-          setProducts(response.data.data.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
-    };
-
-    // const getCategories = () => {
-    //   axios
-    //     .get(`${apiURL}/category`)
-    //     .then((response) => {
-    //       console.log(response.data.data.data);
-    //       setCategories(response.data.data.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error fetching vendors:", error);
-    //     });
-    // };
-
-    // getCategories();
-    getProducts();
-  }, [router]);
-
   return (
     <>
-
       {isLoading ? (
         <Loading loading={isLoading} />
       ) : (
@@ -131,33 +93,35 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 <div className="flex flex-row items-center gap-[20px] overflow-x-scroll hide-scrollbar flex-1 md:justify-between ">
                   {exclusiveDeals.map((deal, index) => (
                     <Link href={`/product-info/${index}`}>
-                    <div className="min-w-[186px] md:w-[320px] h-[226px] curssor-pointer md:h-[340px] relative overflow-hidden flex flex-col border border-[#CFCBCB] rounded-md shadow-md product-card">
-                      <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
-                        <div
-                          style={{
-                            background: `url(${deal.image}) center no-repeat`,
-                            backgroundSize: "contain",
-                          }}
-                          className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
-                        />
-                      </div>
-                      <div className="w-full flex flex-[30] items-center justify-center p-4">
-                        <div className="w-full flex flex-col justify-start">
-                          <p className="md:text-[20px] text-[11px]" >
-                            {deal.title}
-                          </p>
-                          <b>{deal.price}</b>
+                      <div className="min-w-[186px] md:w-[320px] h-[226px] curssor-pointer md:h-[340px] relative overflow-hidden flex flex-col border border-[#CFCBCB] rounded-md shadow-md product-card">
+                        <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
+                          <div
+                            style={{
+                              background: `url(${deal.image}) center no-repeat`,
+                              backgroundSize: "contain",
+                            }}
+                            className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
+                          />
                         </div>
+                        <div className="w-full flex flex-[30] items-center justify-center p-4">
+                          <div className="w-full flex flex-col justify-start">
+                            <p className="md:text-[20px] text-[11px]">
+                              {deal.title}
+                            </p>
+                            <b>{deal.price}</b>
+                          </div>
+                        </div>
+                        <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
+                          preview
+                        </button>
                       </div>
-                      <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
-                      preview
-                    </button>
-                    </div>
                     </Link>
                   ))}
                 </div>
               </div>
               <br />
+
+              {/* Fashion Style */}
               <div className="w-full md:h-[700px] h-[370px] bg-white flex flex-col py-5 px-3 sm:px-10">
                 <b className="text-[24px] text-center w-full mt-[30px]">
                   Get Your Fashion Style
@@ -178,9 +142,10 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </div>
               </div>
 
+              {/* Sample Deals */}
               <div className="w-full min-h-[50vh] flex items-center justify-center px-3 sm:px-10 py-20">
                 <div className="md:w-[80%] min-h-[500px] flex md:flex-row flex-col-reverse bg-[url(/abstract_bg.png)] bg-cover bg-no-repeat bg-center  p-3 sm:p-10 gap-4">
-                  <div className="flex flex-col flex-[40] bg-[url(/hair.png)] bg-contain bg-center bg-no-repeat min-h-[380px]"></div>
+                  {/* <div className="flex flex-col flex-[40] bg-[url(/hair.png)] bg-contain bg-center bg-no-repeat min-h-[380px]"></div> */}
                   <div className="flex flex-col flex-[60] items-center justify-start pt-5 ">
                     <b className="w-full max-w-[400px] text-center text-[38px]">
                       Sample deals for you
@@ -206,36 +171,35 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 <div className="flex flex-row items-center gap-[20px] overflow-x-scroll hide-scrollbar flex-1 md:justify-between ">
                   {exclusiveDeals.map((deal, index) => (
                     <Link href={`/product-info/${index}`}>
-
-                    <div className="min-w-[186px] md:w-[320px] h-[226px] md:h-[340px] overflow-hidden relative flex flex-col border border-[#CFCBCB] rounded-md shadow-md cursor-pointer product-card">
-                      <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
-                        <div
-                          style={{
-                            background: `url(${deal.image}) center no-repeat`,
-                            backgroundSize: "contain",
-                          }}
-                          className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
-                        />
-                      </div>
-                      <div className="w-full flex flex-[30] items-center justify-center p-4">
-                        <div className="w-full flex flex-col justify-start">
-                          <p className="md:text-[20px] text-[11px]">
-                            {deal.title}
-                          </p>
-                          <b>{deal.price}</b>
+                      <div className="min-w-[186px] md:w-[320px] h-[226px] md:h-[340px] overflow-hidden relative flex flex-col border border-[#CFCBCB] rounded-md shadow-md cursor-pointer product-card">
+                        <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
+                          <div
+                            style={{
+                              background: `url(${deal.image}) center no-repeat`,
+                              backgroundSize: "contain",
+                            }}
+                            className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
+                          />
                         </div>
+                        <div className="w-full flex flex-[30] items-center justify-center p-4">
+                          <div className="w-full flex flex-col justify-start">
+                            <p className="md:text-[20px] text-[11px]">
+                              {deal.title}
+                            </p>
+                            <b>{deal.price}</b>
+                          </div>
+                        </div>
+                        <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
+                          preview
+                        </button>
                       </div>
-                      <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
-                      preview
-                    </button>
-                    </div>
                     </Link>
                   ))}
                 </div>
               </div>
 
               <div className="flex xl:flex-row gap-[20px]  md:mt-[50px] px-3 sm:px-10 py-5 items-center justify-center md:justify-between flex-col">
-              <div className="flex flex-row gap-[20px] w-full flex-[60]">
+                <div className="flex flex-row gap-[20px] w-full flex-[60]">
                   <div className="md:min-w-[320px] flex-[50]  h-[226px] md:h-[340px] p-4 gap-4 overflow-hidden flex flex-col border border-[#CFCBCB] rounded-md shadow-md">
                     <div className="md:text-[20px] text-[9px] text-bold">
                       Kids wears
@@ -260,7 +224,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
                   <div className="md:min-w-[320px] flex-[50] h-[226px] md:h-[340px] p-4 gap-4 overflow-hidden flex flex-col  border border-[#CFCBCB] rounded-md shadow-md">
                     <div className="md:text-[20px] text-[9px]  text-bold">
-                    Kitchen and Home Decor
+                      Kitchen and Home Decor
                     </div>
                     <div className="flex  bg-[#E8F1E9] flex-[90]">
                       <div
@@ -284,7 +248,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 {/* column */}
                 <div className="flex md:flex-col gap-[20px] min-h-[340px] justify-between  flex-row md:flex-[40] flex-1  w-full ">
                   <div className="  h-[226px] md:min-h-[150px] p-4 gap-4 overflow-hidden flex flex-1 md:flex-row-reverse flex-col border border-[#CFCBCB] rounded-md shadow-md">
-                   
                     <div className="flex  bg-[#E8F1E9] flex-[80] md:flex-[40]">
                       <div
                         style={{
@@ -296,9 +259,9 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     </div>
                     <div className="w-full flex md:flex-[60] items-center justify-center ">
                       <div className="w-full flex flex-col ">
-                      <div className="md:text-[20px] text-[11px] text-bold">
-                      Grocery
-                    </div>
+                        <div className="md:text-[20px] text-[11px] text-bold">
+                          Grocery
+                        </div>
                         <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
                           Shop Now
                         </p>
@@ -307,7 +270,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   </div>
 
                   <div className="  h-[226px] md:min-h-[150px] p-4 gap-4 overflow-hidden flex flex-1 md:flex-row-reverse flex-col border border-[#CFCBCB] rounded-md shadow-md">
-                   
                     <div className="flex  bg-[#E8F1E9] md:flex-[40] flex-[80]">
                       <div
                         style={{
@@ -319,16 +281,15 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     </div>
                     <div className="w-full flex md:flex-[60] items-center justify-center ">
                       <div className="w-full flex flex-col ">
-                      <div className="md:text-[20px] text-[11px] text-bold">
-                      Office Supplies
-                    </div>
+                        <div className="md:text-[20px] text-[11px] text-bold">
+                          Office Supplies
+                        </div>
                         <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
                           Shop Now
                         </p>
                       </div>
                     </div>
                   </div>
-                  
                 </div>
               </div>
 
