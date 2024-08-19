@@ -4,6 +4,12 @@ import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
 
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
+
 //internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
@@ -46,11 +52,11 @@ const ProductInfo = ({ params }) => {
             <br />
             <br />
             <div className="w-full h-[50px] border-[1px] px-4 flex flex-row items-center gap-4 rounded-xl">
-                <input type="radio" id="pwo" /> <option id="pwo">Process wholesale order</option>
+                <input type="radio" id="wholesale-order" name={"buying-options"} value={"Process wholesale order"} /> <label htmlFor="wholesale-order">Process wholesale order</label>
             </div>
             <br />
             <div className="w-full h-[50px] border-[1px] px-4 flex flex-row items-center gap-4 rounded-xl">
-                <input type="radio" id="pwo" /> <option id="pwo">Opt for drop-shipping</option>
+                <input type="radio" id="drop-shipping" name={"buying-options"} value={"Opt for drop-shipping"} /> <label htmlFor="drop-shipping">Opt for drop-shipping</label>
             </div>
             <br />
             <div className="w-full flex flex-row items-center gap-[20px] justify-between">
@@ -73,7 +79,29 @@ const ProductInfo = ({ params }) => {
             <div className="bg-white w-full min-h-[100vh] flex md:flex-row flex-col flex-wrap min-h-[900px] px-3 sm:px-10">
               <div className="flex flex-[50] flex-col px-3 sm:px-10 py-10">
                 <div className="flex flex-[70] w-full min-h-[210px] bg-[#E8F1E9] bg-[url(/dummy_products/tablet.png)] bg-contain bg-no-repeat bg-center" />
-                <div className="flex flex-[30] w-full"></div>
+                <div className="flex flex-[30] w-full px-3 mt-3">
+                <Swiper
+                  className="h-[66px] max-w-[350px] flex justify-center items-center px-4 "
+                  modules={[Navigation]}
+                  spaceBetween={10}
+                  slidesPerView={3}
+                  navigation
+                  draggable
+                  autoplay
+                  
+                >
+
+                 {
+                  ["", "",'', "", ""]
+                  .map((image, index) => {
+                    return (
+                      <SwiperSlide className="W-[62px] bg-[url(/dummy_products/tablet.png)] bg-cover bg-no-repeat h-[62px] border ">
+                      </SwiperSlide>
+                    )
+                  })
+                 }
+                    </Swiper>
+                </div>
               </div>
               <div className="flex flex-[50] flex-col px-3 sm:px-10 md:py-10 py-4">
                 <strong>C Idea 8 Inches Andriod Tablet</strong>
