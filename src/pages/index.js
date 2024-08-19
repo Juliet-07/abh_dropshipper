@@ -5,6 +5,11 @@ import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
+
 //internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
@@ -59,6 +64,82 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     //   path: "/contact-us",
     // },
   ];
+
+
+  const sampleDealsData = [
+     {
+      image: "/dummy_products/hair.png",
+      title: "Body Wave Bundle Human hair 18 inches ",
+      path: "/contact-us",
+      price: 10000,
+    },
+    
+    {
+      image: "/dummy_products/woman_hair.png",
+      title: "  Human hair 18 inches ",
+      path: "/contact-us",
+      price: 8000,
+    },
+    
+    {
+      image: "/dummy_products/woman_jacket.png",
+      title: "A blue jackect ",
+      path: "/contact-us",
+      price: 3000,
+    },
+  
+  ]
+
+
+  const SampleDeals = ({data}) =>{
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => 
+          prevIndex + 1 < data.length ? prevIndex + 1 : 0
+        );
+      }, 5000);
+ 
+      return () => clearInterval(interval);
+    }, [data.length]);
+    
+    return (
+      <div className="w-full min-h-[50vh] flex items-center justify-center px-3 sm:px-10 py-20">
+                <div className="md:w-[80%] min-h-[500px] flex md:flex-row flex-col-reverse bg-[url(/abstract_bg.png)] bg-cover bg-no-repeat bg-center p-4  sm:p-10 gap-4">
+                <div className="flex flex-col flex-[45]  bg-contain bg-center bg-no-repeat min-h-[380px]">
+                    <div style={{background: `url(${data[currentIndex].image}) center`, backgroundSize: "cover"}}
+                     className="w-full h-[300px]  bg-cover bg-no-repeat bg-center rounded-t-[100px]"></div>
+                    <div className="w-full h-[150px] text-white bg-[#5A6566] rounded-b-[100px] p-6 px-8 flex flex-col">
+                      <p className="text-[14px]">
+                        {/* */}
+                        {data[currentIndex].title}
+                      </p>
+                      <div className="flex flex-row gap-4 items-center text-[14px]w-full justify-between">
+                        <p>Sample Price</p>
+                        <b className="text-[28px]">₦{data[currentIndex].price}</b>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col flex-[55] items-center justify-start pt-5 ">
+                    <b className="w-full max-w-[400px] text-center text-[38px]">
+                      Sample deals for you
+                    </b>
+                    <p className="w-full max-w-[400px] text-center text-[16px]">
+                      Get personalized offers on gadgets, fashion, and travel.
+                      Don’t miss out these exclusive deals.
+                    </p>
+                    <br />
+                    <button onClick={()=> window.open(data[currentIndex].path, "_parent")}
+                    className="border-[1px] border-[#CFCBCB] h-[50px] w-[200px] rounded-md mt-8 bg-white">
+                      Get Sample
+                    </button>
+                  </div>
+                </div>
+              </div>
+    )
+  }
 
   return (
     <>
@@ -126,41 +207,80 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 <b className="text-[24px] text-center w-full mt-[30px]">
                   Get Your Fashion Style
                 </b>
-                <div className="flex flex-1 w-full flex-row md:gap-[50px] gap-[20px] mt-[50px]">
-                  <div className="flex-[50] flex bg-black rounded-[20px] relative p-4  bg-[url(/men_shoes.png)] bg-center bg-cover bg-no-repeat">
-                    <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
-                      <p className="text-white md:text-md text-sm">Men shoes</p>
+                <Swiper
+                  className="w-full h-full flex flex-1"
+                  // modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
+                  modules={[Navigation]}
+                  spaceBetween={50}
+                  slidesPerView={1}
+                  navigation
+                  draggable
+                  autoplay
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log("slide change")}
+                >
+                  <SwiperSlide className="flex  ">
+                    <div className="flex flex-1 w-full flex-row md:gap-[50px] gap-[20px] mt-[50px]">
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4  bg-[url(/men_shoes.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Men shoes
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4 bg-[url(/women_shoes.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Women shoes
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex-[50] flex bg-black rounded-[20px] relative p-4 bg-[url(/women_shoes.png)] bg-center bg-cover bg-no-repeat">
-                    <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
-                      <p className="text-white md:text-md text-sm">
-                        Women shoes
-                      </p>
+                  </SwiperSlide>
+                  <SwiperSlide className="flex  ">
+                    <div className="flex flex-1 w-full flex-row md:gap-[50px] gap-[20px] mt-[50px]">
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4  bg-[url(/dummy_products/shop_bag.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Handbag
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4 bg-[url(/dummy_products/woman_jacket.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Women Clothes
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </SwiperSlide>
+
+                  <SwiperSlide className="flex  ">
+                    <div className="flex flex-1 w-full flex-row md:gap-[50px] gap-[20px] mt-[50px]">
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4  bg-[url(/dummy_products/man2.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Men Clothes
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex-[50] flex bg-black rounded-[20px] relative p-4 bg-[url(/dummy_products/woman_hair.png)] bg-center bg-cover bg-no-repeat">
+                        <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
+                          <p className="text-white md:text-md text-sm">
+                            Women Hair
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                </Swiper>
               </div>
 
+                   {/* <ImageSample data={[{image: "/dummy_products/woman_pc.png"}, {image: "/dummy_products/woman_hair.png"}]} /> */}
               {/* Sample Deals */}
-              <div className="w-full min-h-[50vh] flex items-center justify-center px-3 sm:px-10 py-20">
-                <div className="md:w-[80%] min-h-[500px] flex md:flex-row flex-col-reverse bg-[url(/abstract_bg.png)] bg-cover bg-no-repeat bg-center  p-3 sm:p-10 gap-4">
-                  {/* <div className="flex flex-col flex-[40] bg-[url(/hair.png)] bg-contain bg-center bg-no-repeat min-h-[380px]"></div> */}
-                  <div className="flex flex-col flex-[60] items-center justify-start pt-5 ">
-                    <b className="w-full max-w-[400px] text-center text-[38px]">
-                      Sample deals for you
-                    </b>
-                    <p className="w-full max-w-[400px] text-center text-[16px]">
-                      Get personalized offers on gadgets, fashion, and travel.
-                      Don’t miss out these exclusive deals.
-                    </p>
-                    <br />
-                    <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[200px] rounded-md mt-8 bg-white">
-                      Get Sample
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <SampleDeals data={sampleDealsData} />
+              
 
               <div className="w-full flex items-center justify-between py-5 px-3 sm:px-10">
                 <div className="text-sm md:text-xl font-primarySemibold">
@@ -169,13 +289,27 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               </div>
               <div className="flex w-full px-3 sm:px-10">
                 <div className="flex flex-row items-center gap-[20px] overflow-x-scroll hide-scrollbar flex-1 md:justify-between ">
-                  {exclusiveDeals.map((deal, index) => (
+                  {[
+                    { title: "Laptops", image: "/dummy_products/woman_pc.png" },
+                    {
+                      title: "Smart phones",
+                      image: "/dummy_products/phone.png",
+                    },
+                    {
+                      title: "Home Appliances",
+                      image: "/dummy_products/electronics.png",
+                    },
+                    {
+                      title: "Audio Equipment",
+                      image: "/dummy_products/man.png",
+                    },
+                  ].map((bests, index) => (
                     <Link href={`/product-info/${index}`}>
                       <div className="min-w-[186px] md:w-[320px] h-[226px] md:h-[340px] overflow-hidden relative flex flex-col border border-[#CFCBCB] rounded-md shadow-md cursor-pointer product-card">
-                        <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
+                        <div className="flex  bg-[#E8F1E9] p-3 flex-[70]">
                           <div
                             style={{
-                              background: `url(${deal.image}) center no-repeat`,
+                              background: `url(${bests.image}) center no-repeat`,
                               backgroundSize: "contain",
                             }}
                             className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
@@ -183,15 +317,14 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         </div>
                         <div className="w-full flex flex-[30] items-center justify-center p-4">
                           <div className="w-full flex flex-col justify-start">
-                            <p className="md:text-[20px] text-[11px]">
-                              {deal.title}
+                            <div className="md:text-[20px] text-[11px]">
+                              {bests.title}
+                            </div>
+                            <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
+                              Shop Now
                             </p>
-                            <b>{deal.price}</b>
                           </div>
                         </div>
-                        <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
-                          preview
-                        </button>
                       </div>
                     </Link>
                   ))}
