@@ -1,6 +1,13 @@
-import React from 'react';
+import React from "react";
 
-const InputPayment = ({ register, Icon, name, value, setShowCard }) => {
+const InputPayment = ({
+  register,
+  Icon,
+  name,
+  value,
+  setShowCard,
+  onClick,
+}) => {
   return (
     <div className="px-3 py-4 card border border-gray-200 bg-white rounded-md">
       <label className="cursor-pointer label">
@@ -14,10 +21,11 @@ const InputPayment = ({ register, Icon, name, value, setShowCard }) => {
             </h6>
           </div>
           <input
-            onClick={() => setShowCard(value === 'Card' ? true : false)}
-            {...register('paymentMethod', {
-              required: 'Payment Method is required!',
-            })}
+            // onClick={() => setShowCard(value === 'Card' ? true : false)}
+            // {...register('paymentMethod', {
+            //   required: 'Payment Method is required!',
+            // })}
+            onChange={() => onClick(value)}
             type="radio"
             value={value}
             name="paymentMethod"

@@ -5,11 +5,6 @@ import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation } from "swiper";
-
 //internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
@@ -22,12 +17,18 @@ import CMSkeleton from "@component/preloader/CMSkeleton";
 import MainCarousel from "@component/carousel/MainCarousel";
 import OfferCard from "@component/offer/OfferCard";
 import Banner from "@component/banner/Banner";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const [products, setProducts] = useState([]);
 
   const exclusiveDeals = [
     {
@@ -51,7 +52,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       image: "/dummy_products/watch.png",
       title: "1800 Smart Watches Ultra 8 Door",
       path: "/about-us",
-      price: "#62,000",
+      price: "#20,000",
     },
     // {
     //   image: "/grocery.png",
@@ -65,81 +66,100 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     // },
   ];
 
-
   const sampleDealsData = [
-     {
+    {
       image: "/dummy_products/hair.png",
       title: "Body Wave Bundle Human hair 18 inches ",
       path: "/contact-us",
       price: 10000,
     },
-    
+
     {
       image: "/dummy_products/woman_hair.png",
       title: "  Human hair 18 inches ",
       path: "/contact-us",
       price: 8000,
     },
-    
+
     {
       image: "/dummy_products/woman_jacket.png",
       title: "A blue jackect ",
       path: "/contact-us",
       price: 3000,
     },
-  
-  ]
+  ];
 
-
-  const SampleDeals = ({data}) =>{
+  const SampleDeals = ({ data }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-  
     useEffect(() => {
       const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
           prevIndex + 1 < data.length ? prevIndex + 1 : 0
         );
       }, 5000);
- 
+
       return () => clearInterval(interval);
     }, [data.length]);
-    
+
     return (
       <div className="w-full min-h-[50vh] flex items-center justify-center px-3 sm:px-10 py-20">
-                <div className="md:w-[80%] min-h-[500px] flex md:flex-row flex-col-reverse bg-[url(/abstract_bg.png)] bg-cover bg-no-repeat bg-center p-4  sm:p-10 gap-4">
-                <div className="flex flex-col flex-[45]  bg-contain bg-center bg-no-repeat min-h-[380px]">
-                    <div style={{background: `url(${data[currentIndex].image}) center`, backgroundSize: "cover"}}
-                     className="w-full h-[300px]  bg-cover bg-no-repeat bg-center rounded-t-[100px]"></div>
-                    <div className="w-full h-[150px] text-white bg-[#5A6566] rounded-b-[100px] p-6 px-8 flex flex-col">
-                      <p className="text-[14px]">
-                        {/* */}
-                        {data[currentIndex].title}
-                      </p>
-                      <div className="flex flex-row gap-4 items-center text-[14px]w-full justify-between">
-                        <p>Sample Price</p>
-                        <b className="text-[28px]">₦{data[currentIndex].price}</b>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col flex-[55] items-center justify-start pt-5 ">
-                    <b className="w-full max-w-[400px] text-center text-[38px]">
-                      Sample deals for you
-                    </b>
-                    <p className="w-full max-w-[400px] text-center text-[16px]">
-                      Get personalized offers on gadgets, fashion, and travel.
-                      Don’t miss out these exclusive deals.
-                    </p>
-                    <br />
-                    <button onClick={()=> window.open(data[currentIndex].path, "_parent")}
-                    className="border-[1px] border-[#CFCBCB] h-[50px] w-[200px] rounded-md mt-8 bg-white">
-                      Get Sample
-                    </button>
-                  </div>
-                </div>
+        <div className="md:w-[80%] min-h-[500px] flex md:flex-row flex-col-reverse bg-[url(/abstract_bg.png)] bg-cover bg-no-repeat bg-center p-4  sm:p-10 gap-4">
+          <div className="flex flex-col flex-[45]  bg-contain bg-center bg-no-repeat min-h-[380px]">
+            <div
+              style={{
+                background: `url(${data[currentIndex].image}) center`,
+                backgroundSize: "cover",
+              }}
+              className="w-full h-[300px]  bg-cover bg-no-repeat bg-center rounded-t-[100px]"
+            ></div>
+            <div className="w-full h-[150px] text-white bg-[#5A6566] rounded-b-[100px] p-6 px-8 flex flex-col">
+              <p className="text-[14px]">
+                {/* */}
+                {data[currentIndex].title}
+              </p>
+              <div className="flex flex-row gap-4 items-center text-[14px]w-full justify-between">
+                <p>Sample Price</p>
+                <b className="text-[28px]">₦{data[currentIndex].price}</b>
               </div>
-    )
-  }
+            </div>
+          </div>
+          <div className="flex flex-col flex-[55] items-center justify-start pt-5 ">
+            <p className="text-center text-xl md:text-4xl font-primarySemibold">
+              Sample deals for you
+            </p>
+            <p className=" text-center text-sm md:text-lg">
+              Get personalized offers on gadgets, fashion, and travel. Don’t
+              miss out these exclusive deals.
+            </p>
+            <br />
+            <button
+              // onClick={() => window.open(data[currentIndex].path, "_parent")}
+              className="border border-[#CFCBCB] h-10 w-[150px] md:w-[200px] rounded-md md:mt-8 bg-white"
+            >
+              Get Sample
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    const getProducts = () => {
+      axios
+        .get(`${apiURL}/products/list/wholesale`)
+        .then((response) => {
+          console.log(response.data.data.products);
+          setProducts(response.data.data.products);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getProducts();
+  }, [router]);
 
   return (
     <>
@@ -148,10 +168,10 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       ) : (
         <Layout>
           <div className="min-h-screen">
-            <StickyCart />
+            {/* <StickyCart /> */}
 
             {/* Exclusive Deals */}
-            <div className="bg-gray-50 lg:py-16 mx-auto max-w-screen-2xl ">
+            <div className="bg-gray-50 mx-auto max-w-screen-2xl ">
               <div className="w-full flex items-center justify-between py-5 px-3 sm:px-10">
                 <div className="text-sm md:text-xl font-primarySemibold">
                   Exclusive Deals Today
@@ -172,28 +192,26 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               {/* <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4 lg:gap-4 mb-4"> */}
               <div className="flex w-full px-3 sm:px-10">
                 <div className="flex flex-row items-center gap-[20px] overflow-x-scroll hide-scrollbar flex-1 md:justify-between ">
-                  {exclusiveDeals.map((deal, index) => (
-                    <Link href={`/product-info/${index}`}>
+                  {products.map((deal, index) => (
+                    <Link href={`/product-info/${deal._id}`}>
                       <div className="min-w-[186px] md:w-[320px] h-[226px] curssor-pointer md:h-[340px] relative overflow-hidden flex flex-col border border-[#CFCBCB] rounded-md shadow-md product-card">
-                        <div className="flex  bg-[#E8F1E9] p-6 flex-[70]">
+                        <div className="flex  bg-[#E8F1E9] p-6 flex-[50]">
                           <div
                             style={{
-                              background: `url(${deal.image}) center no-repeat`,
+                              background: `url(${deal.featured_image}) center no-repeat`,
                               backgroundSize: "contain",
                             }}
                             className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
                           />
                         </div>
-                        <div className="w-full flex flex-[30] items-center justify-center p-4">
+                        <div className="w-full flex items-center justify-center p-4">
                           <div className="w-full flex flex-col justify-start">
-                            <p className="md:text-[20px] text-[11px]">
-                              {deal.title}
-                            </p>
-                            <b>{deal.price}</b>
+                            <p className="text-xs md:text-base">{deal.name}</p>
+                            <b>{deal.currency}{" "}{deal.sellingPrice}</b>
                           </div>
                         </div>
-                        <button className="border-[1px] border-[#CFCBCB] h-[50px] w-[150px] rounded-md mt-8 bg-[#4CBD6B] text-white absolute right-4 bottom-[-100px] flybtn">
-                          preview
+                        <button className="border border-[#CFCBCB] h-[28px] w-[92px] rounded-md mt-4 bg-[#4CBD6B] text-white absolute right-4 bottom-[-80px] flybtn">
+                          Preview
                         </button>
                       </div>
                     </Link>
@@ -203,23 +221,26 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               <br />
 
               {/* Fashion Style */}
-              <div className="w-full md:h-[700px] h-[370px] bg-white flex flex-col py-5 px-3 sm:px-10">
-                <b className="text-[24px] text-center w-full mt-[30px]">
+              <div className="w-full md:h-[700px] h-[370px] b-white flex flex-col items-center justify-center py-5 px-3 sm:px-10 bg-white">
+                <div className="text-lg md:text-2xl font-primarySemibold">
                   Get Your Fashion Style
-                </b>
+                </div>
                 <Swiper
-                  className="w-full h-full flex flex-1"
-                  // modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-                  modules={[Navigation]}
+                  className="w-full h-full flex"
+                  modules={[Navigation, Autoplay]}
                   spaceBetween={50}
                   slidesPerView={1}
-                  navigation
+                  navigation={{
+                    nextEl: null,
+                    prevEl: null,
+                  }}
+                  autoplay={{
+                    delay: 2000, // Delay between transitions in milliseconds
+                    disableOnInteraction: false, // Continue autoplay after user interaction
+                  }}
                   draggable
-                  autoplay
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log("slide change")}
                 >
-                  <SwiperSlide className="flex  ">
+                  <SwiperSlide className="flex">
                     <div className="flex flex-1 w-full flex-row md:gap-[50px] gap-[20px] mt-[50px]">
                       <div className="flex-[50] flex bg-black rounded-[20px] relative p-4  bg-[url(/men_shoes.png)] bg-center bg-cover bg-no-repeat">
                         <div className="min-w-[100px] md:w-[200px] md:h-[60px] h-[30px] p-2 bg-[#00000066] absolute left-[10px] bottom-[10px] flex items-center justify-center">
@@ -277,10 +298,8 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </Swiper>
               </div>
 
-                   {/* <ImageSample data={[{image: "/dummy_products/woman_pc.png"}, {image: "/dummy_products/woman_hair.png"}]} /> */}
               {/* Sample Deals */}
               <SampleDeals data={sampleDealsData} />
-              
 
               <div className="w-full flex items-center justify-between py-5 px-3 sm:px-10">
                 <div className="text-sm md:text-xl font-primarySemibold">

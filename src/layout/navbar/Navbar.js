@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useCart } from "react-use-cart";
 import { IoSearchOutline } from "react-icons/io5";
 import { FiShoppingCart, FiUser, FiBell } from "react-icons/fi";
+import { TfiPackage } from "react-icons/tfi";
 import useTranslation from "next-translate/useTranslation";
 
 //internal import
@@ -121,6 +122,16 @@ const Navbar = () => {
                 </span>
                 <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
               </button>
+              <button
+                aria-label="Total"
+                onClick={toggleCartDrawer}
+                className="relative px-5 text-white text-2xl font-bold"
+              >
+                <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                  {totalItems}
+                </span>
+                <TfiPackage className="w-6 h-6 drop-shadow-xl" />
+              </button>
               {/* Profile */}
               <button
                 className="pl-5 text-white text-2xl font-bold"
@@ -147,8 +158,8 @@ const Navbar = () => {
                     {userInfo?.name[0]}
                   </Link>
                 ) : (
-                  <div className="flex items-center">
-                    <span onClick={() => setModalOpen(!modalOpen)}>
+                  <div className="flex items-center" onClick={() => setModalOpen(!modalOpen)}>
+                    <span>
                       <FiUser className="w-6 h-6 drop-shadow-xl" />
                     </span>
                     <p className="mx-2 text-sm">Sign in</p>

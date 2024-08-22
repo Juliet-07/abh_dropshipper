@@ -36,21 +36,17 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
   };
 
   const handleRegisteration = () => {
+    setLoading(true);
     try {
       axios
         .post(`${apiURL}/user`, register)
-        .then((res) => res.json())
+        // .then((res) => res.json())
         .then((user) => {
           console.log(user, "confirm here");
-          // let userDetail = JSON.ify(user.data);
-          // localStorage.setItem("userInfo", userDetail);
-          // if (user.message === "User Authenticated Successfully") {
-          //   navigate("/applications");
-          // }
-          // if (user.status === "99") {
-          //   alert(user.message);
-          //   navigate("/");
-          // }
+          if (user.status === 201) {
+            notifySuccess("User Successfully created");
+            // router.push("/Login");
+          }
         });
     } catch (error) {
       console.log(error);

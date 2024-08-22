@@ -38,26 +38,12 @@ const ProductModal = ({
     const newItem = {
       ...updatedProduct,
       title: product?.name,
-      id: product.id,
+      id: product._id,
       price: product.price,
+      quantity: product.quantity,
     };
 
-    try {
-      const response = await axios.put(`${apiURL}/cart/add`, {
-        productId: product.id,
-        quantity: item,
-      });
-
-      if (response.status === 200) {
-        handleAddItem(newItem);
-        notifySuccess("Item added to cart successfully!");
-      } else {
-        notifyError("Failed to add item to cart!");
-      }
-    } catch (error) {
-      console.error("Error adding item to cart:", error);
-      notifyError("Error adding item to cart!");
-    }
+    handleAddItem(newItem);
   };
 
   // const handleMoreInfo = (slug) => {
@@ -102,7 +88,7 @@ const ProductModal = ({
 
                 <div className="flex gap-4">
                   <p className=" font-primaryBold">Brand</p>
-                  <p>Top wears</p>
+                  <p>{product?.manufacturer}</p>
                 </div>
 
                 {/* <div
@@ -122,7 +108,7 @@ const ProductModal = ({
                   originalPrice={originalPrice}
                 />
               </div>
-
+              <p className="text-red-300">Minimum Order 2 cartons</p>
               <div className="flex items-center mt-4">
                 <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
                   <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">

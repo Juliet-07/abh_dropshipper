@@ -30,17 +30,18 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
   };
 
   const handleLoginValidation = async () => {
+    setLoading(true);
     try {
       const user = await axios.post(`${apiURL}/user/login`, loginDetails);
       console.log(user, "confirm here");
-      const userDetail = JSON.stringify(user.data);
+      let userDetail = user.data.data.accessToken;
       localStorage.setItem("abhUserInfo", userDetail);
       // router.push(redirect || "/checkout");
       // router.push("/user/dashboard")
       if (redirect) {
         router.push("/checkout");
       } else {
-        router.push("/user/dashboard");
+        router.push("/dashboard/home");
       }
     } catch (error) {
       console.log(error);
