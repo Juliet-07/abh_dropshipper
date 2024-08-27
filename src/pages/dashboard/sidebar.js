@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router"; // Import useRouter
 import { FiBox, FiCreditCard, FiHelpCircle } from "react-icons/fi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
+import { IoPersonCircleSharp } from "react-icons/io5";
 import { MdOutlineDashboard, MdOutlineInventory } from "react-icons/md";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
@@ -28,15 +29,20 @@ const Sidebar = ({ title, description, children }) => {
       icon: <FiBox />,
       href: "/dashboard/orders", // Add href value for Orders
     },
-    {
-      title: "Payment",
-      icon: <FiCreditCard />,
-      href: "/dashboard/payment", // Add href value for Payment
-    },
+    // {
+    //   title: "Payment",
+    //   icon: <FiCreditCard />,
+    //   href: "/dashboard/payment", // Add href value for Payment
+    // },
     {
       title: "Subscription",
       icon: <AiOutlineDollarCircle />,
       href: "/dashboard/subscription", // Add href value for Subscription
+    },
+    {
+      title: "My Profile",
+      icon: <IoPersonCircleSharp />,
+      href: "/dashboard/profile", // Add href value for Payment
     },
     {
       title: "Help",
