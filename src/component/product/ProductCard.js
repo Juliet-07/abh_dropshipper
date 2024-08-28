@@ -17,6 +17,7 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import ProductModal from "@component/modal/ProductModal";
 import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
+import Link from "next/link";
 
 const ProductCard = ({ product, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -109,13 +110,14 @@ const ProductCard = ({ product, attributes }) => {
           />
           {/* <Discount product={product} /> */}
         </div>
-        <div
+        {/* <div
           onClick={() => {
             handleModalOpen(!modalOpen, product.id);
             handleLogEvent("product", `opened ${product?.name} product modal`);
           }}
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
-        >
+        > */}
+        <Link href={`/product-info/${product._id}`}>
           <div className="relative w-full h-full p-2">
             {product.images[0] ? (
               <img
@@ -136,7 +138,8 @@ const ProductCard = ({ product, attributes }) => {
               />
             )}
           </div>
-        </div>
+          {/* </div> */}
+        </Link>
         <div className="w-full px-3 lg:px-4 pb-2 overflow-hidden">
           <div className="relative mb-1">
             {/* <span className="text-gray-400 font-medium text-xs d-block mb-1">
@@ -152,7 +155,7 @@ const ProductCard = ({ product, attributes }) => {
               card
               product={product}
               currency={currency}
-              price={product?.price}
+              price={product?.sellingPrice}
               // price={
               //   product?.isCombination
               //     ? product?.variants[0]?.price
@@ -167,7 +170,7 @@ const ProductCard = ({ product, attributes }) => {
 
             <div
               // onClick={() => handleAddItem(product)}
-              onClick={() => handleModalOpen(!modalOpen, product.id)}
+              // onClick={() => handleModalOpen(!modalOpen, product.id)}
               aria-label="cart"
               className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
             >

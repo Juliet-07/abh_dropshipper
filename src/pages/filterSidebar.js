@@ -55,18 +55,7 @@ const FilterSidebar = ({ setSelectedCategories }) => {
   return (
     <aside className="w-[270px] bg-white">
       <Accordion title="Category">
-        {[
-          {name: "Fashion and Apparel"},
-          {name: "Electronics"},
-          {name: "Health and Beauty"},
-          {name: "Home and Kitchen"},
-          {name: "Grocery and Gourmet"},
-          {name: "Sports and Outdoor"},
-          {name: "Toys and Games"},
-          {name: "Smart Watches"},
-          {name: "Kids Care"},
-          {name: "Office Supplies"},
-        ].map((category) => (
+        {categories.map((category) => (
           <ul>
             <li className="p-2">
               <input

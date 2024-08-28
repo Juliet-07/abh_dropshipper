@@ -39,8 +39,8 @@ const CartItem = ({ item, currency }) => {
         <div className="flex items-center justify-between">
           <div className="font-bold text-sm md:text-base text-heading leading-5">
             <span>
-              {/* {currency} */}
-              #{(item.sellingPrice * item.quantity).toFixed(2)}
+              {/* {currency} */}#
+              {(item.sellingPrice * item.quantity).toFixed(2)}
             </span>
           </div>
           <div className="h-8 w-22 md:w-24 lg:w-24 flex flex-wrap items-center justify-evenly p-1 border border-gray-100 bg-white text-gray-600 rounded-md">
@@ -54,7 +54,9 @@ const CartItem = ({ item, currency }) => {
             <p className="text-sm font-semibold text-dark px-1">
               {item.quantity}
             </p>
-            <button onClick={() => handleIncreaseQuantity(item)}>
+            <button
+              onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
+            >
               <span className="text-dark text-base">
                 <FiPlus />
               </span>

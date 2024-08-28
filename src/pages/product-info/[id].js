@@ -171,7 +171,7 @@ const ProductInfo = ({ params }) => {
               {/* Image Section */}
               <div className="flex md:flex-[35] flex-col px-3 sm:px-10 py-10">
                 <div
-                  className={`flex flex-[70] w-full min-h-[210px] bg-[#E8F1E9]`}
+                  className={`flex flex-[45] w-full min-h-[210px]`}
                   style={{
                     backgroundImage: `url(${product.featured_image})`,
                     backgroundSize: "contain",
@@ -179,9 +179,9 @@ const ProductInfo = ({ params }) => {
                     backgroundPosition: "center",
                   }}
                 />
-                <div className="flex flex-[30] w-full px-3 mt-3">
+                <div className="flex flex-[30] w-full px-3">
                   <Swiper
-                    className="h-20 max-w-[350px] flex justify-center items-center px-4"
+                    className="h-24 max-w-[350px] flex justify-center items-center px-4"
                     modules={[Navigation]}
                     spaceBetween={10}
                     slidesPerView={3}
@@ -204,7 +204,7 @@ const ProductInfo = ({ params }) => {
                 </div>
               </div>
               {/* Details Section */}
-              <div className="flex flex-[45] flex-col px-3 sm:px-10 md:py-10 py-4">
+              <div className="flex flex-[35] flex-col px-3 sm:px-10 md:py-10 py-4">
                 <strong>{product.name}</strong>
                 <div>Electronics</div>
                 <br />
@@ -220,9 +220,13 @@ const ProductInfo = ({ params }) => {
                 {/* <p className="text-[#4CBD6B] cursor-pointer active:opacity-[0.5]">
                   More
                 </p> */}
-                <b>{product.sellingPrice} Per Carton</b>
-                <p>14 units in carton</p>
-                <p className="text-[red]">Minimum order 2 cartons</p>
+                <div>
+                  <b>Price:</b> {product.currency + " " + product.sellingPrice}{" "}
+                  per carton
+                </div>
+                {/* <b>{product.sellingPrice} Per Carton</b> */}
+                <p>14 units per carton</p>
+                <p className="text-[red]">Minimum order 2 of cartons</p>
                 <br />
                 <div className="flex md:flex-row flex-col flex-wrap gap-[20px] md:items-center min-h-[60px]">
                   <div className="flex flex-row flex-wrap gap-[20px] items-center flex-[30] bg-[#4F4F4F] min-h-[54px] px-4 justify-between max-w-[200px]">
