@@ -2,15 +2,17 @@ import { useContext } from "react";
 import Link from "next/link";
 import { useCart } from "react-use-cart";
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 
 //internal import
 import useAddToCart from "@hooks/useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
 
-const CartItem = ({ item, currency }) => {
+const CartItem = ({ item }) => {
   const { updateItemQuantity, removeItem } = useCart();
   const { closeCartDrawer } = useContext(SidebarContext);
   const { handleIncreaseQuantity } = useAddToCart();
+  const { currency } = useUtilsFunction();
 
   // console.log("item>>", item);
 
@@ -39,7 +41,7 @@ const CartItem = ({ item, currency }) => {
         <div className="flex items-center justify-between">
           <div className="font-bold text-sm md:text-base text-heading leading-5">
             <span>
-              {/* {currency} */}#
+              {currency}
               {(item.sellingPrice * item.quantity).toFixed(2)}
             </span>
           </div>

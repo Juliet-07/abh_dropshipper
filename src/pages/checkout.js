@@ -1,7 +1,8 @@
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { CardElement } from "@stripe/react-stripe-js";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import axios from "axios";
 import {
   IoReturnUpBackOutline,
   IoArrowForward,
@@ -9,42 +10,38 @@ import {
   IoWalletSharp,
 } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
-import useTranslation from "next-translate/useTranslation";
 import { useCart } from "react-use-cart";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 
 //internal import
 
 import Layout from "@layout/Layout";
-import useAsync from "@hooks/useAsync";
 import Label from "@component/form/Label";
 import Error from "@component/form/Error";
 import CartItem from "@component/cart/CartItem";
-import InputArea from "@component/form/InputArea";
-import useGetSetting from "@hooks/useGetSetting";
 import InputShipping from "@component/form/InputShipping";
 import InputPayment from "@component/form/InputPayment";
-import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
-import useUtilsFunction from "@hooks/useUtilsFunction";
-import SettingServices from "@services/SettingServices";
-import axios from "axios";
 import { notifySuccess } from "@utils/toast";
+import DropdownComponent from "./state-selection";
 
 const Checkout = () => {
   const router = useRouter();
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("abhUserInfo");
   const { handleSubmit } = useForm();
-  const { items,  emptyCart } = useCart();
+  const { items, emptyCart } = useCart();
   const [shippingCost, setShippingCost] = useState(0);
   const [showCard, setShowCard] = useState(false);
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [paymentGateway, setPaymentGateway] = useState("");
+  const [logisticsGateway, setLogisticsGateway] = useState("");
   const [reference, setReference] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [townId, setTownId] = useState("");
 
-   // Calculate the cart total using sellingPrice instead of price
-   const cartTotal = useMemo(() => {
+  // Calculate the cart total using sellingPrice instead of price
+  const cartTotal = useMemo(() => {
     return items.reduce((total, item) => {
       return total + item.sellingPrice * item.quantity;
     }, 0);
@@ -52,15 +49,12 @@ const Checkout = () => {
 
   const discount = 0.0; // Update this value based on your logic
   const totalCost = cartTotal + shippingCost + discount;
-  const currency = "#";
+  const currency = "₦";
 
-  const handleShippingCost = (value) => {
-    setShippingCost(value);
-  };
-
-  const handlePaymentSelect = (value) => {
-    setPaymentGateway(value);
-  };
+  console.log(items, "items in the cart");
+  let weights = items.map((item) => item.weight);
+  let totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
+  console.log(totalWeight, "weight of products in this cart");
 
   const initialValues = {
     firstName: "",
@@ -82,8 +76,8 @@ const Checkout = () => {
     email,
     phoneNumber,
     street,
-    city,
-    state,
+    // city,
+    // state,
     country,
     shippingFee,
     products,
@@ -92,6 +86,90 @@ const Checkout = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setOrderDetails({ ...orderDetails, [name]: value });
+  };
+
+  const handleStateInfo = useCallback((data) => {
+    console.log({ data });
+    setState(data.state);
+    setCity(data.cityName);
+    setTownId(data.townId);
+    console.log(city, "checking state");
+  }, []);
+
+  // Fetch delivery fee
+  const fetchDeliveryFee = async (origin) => {
+    let costData;
+    let cost;
+    try {
+      const payload = {
+        Origin: origin,
+        Destination: state,
+        // Weight: items.reduce(
+        //   (total, item) => total + item.weight * item.quantity,
+        //   0
+        // ),
+        Weight: totalWeight,
+        // Weight: 10,
+        // OnforwardingTownID: String(townId),
+        OnforwardingTownID: townId,
+        // PickupType: "1",
+      };
+      console.log(payload);
+      const response = await axios.post(
+        `${apiURL}/logistic/delivery-fee`,
+        payload
+      );
+      console.log(response.data.data, "response from delivery fee");
+      costData = response.data.data;
+      cost = parseFloat(costData[0]?.TotalAmount);
+      console.log(cost, "actual amount");
+      return isNaN(cost) ? 0 : cost;
+    } catch (error) {
+      console.error("Error fetching delivery fee:", error);
+    }
+  };
+
+  const calculateTotalDeliveryFee = async () => {
+    try {
+      let vendorOrigins = items.map((origin) => origin?.vendor?.state);
+      console.log(vendorOrigins, "places of the vendor");
+
+      const uniqueOrigins = [...new Set(vendorOrigins)];
+
+      const deliveryFeePromises = uniqueOrigins.map((origin) =>
+        fetchDeliveryFee(origin)
+      );
+
+      const deliveryFees = await Promise.all(deliveryFeePromises);
+      console.log("Fetched delivery fees:", deliveryFees);
+
+      const totalDeliveryFee = deliveryFees.reduce((total, fee) => {
+        const numericFee = parseFloat(fee);
+        return total + (isNaN(numericFee) ? 0 : numericFee);
+      }, 0);
+
+      setShippingCost(totalDeliveryFee);
+
+      console.log("Total Delivery Fee:", totalDeliveryFee);
+    } catch (error) {
+      console.error("Error calculating total delivery fee:", error);
+    }
+  };
+
+  // const handleShippingCost = (value) => {
+  //   setShippingCost(value);
+  // };
+
+  const handleCalculateDeliveryFee = () => {
+    calculateTotalDeliveryFee();
+  };
+
+  const handleLogisticsSelect = (value) => {
+    setLogisticsGateway(value);
+  };
+
+  const handlePaymentSelect = (value) => {
+    setPaymentGateway(value);
   };
 
   const submitOrder = () => {
@@ -111,14 +189,14 @@ const Checkout = () => {
         country: country,
       },
       shippingFee: shippingCost,
-      shippingMethod: "GIG_LOGISTICS",
+      shippingMethod: logisticsGateway,
       paymentGateway: paymentGateway,
       products: items.map((item) => ({
         productId: item._id,
         quantity: item.quantity,
       })),
     };
-
+    console.log(payload, "create order payload");
     setIsCheckoutSubmit(true);
 
     try {
@@ -138,34 +216,6 @@ const Checkout = () => {
           url = orderResponse.paymentResponse.data.url;
           emptyCart();
           router.push(url);
-          // const paymentPayload = {
-          //   amount: totalCost,
-          //   email: email,
-          //   customerName: firstName + lastName,
-          //   currency: "NGN",
-          //   transactionRef: ref,
-          //   callback: "http://localhost:3000/about-us",
-          // };
-
-          // if (paymentGateway === "HYDROGENPAY") {
-          //   axios
-          //     .post(
-          //       `${apiURL}/payments/hydrogenpay/initialize`,
-          //       paymentPayload,
-          //       {
-          //         headers: {
-          //           Authorization: `Bearer ${token}`,
-          //           "Content-type": "application/json; charset=UTF-8",
-          //         },
-          //       }
-          //     )
-          //     .then((response) => {
-          //       console.log(response);
-          //     })
-          // .catch((error) => {
-          //   console.error("Payment Initialization Error:", error);
-          // });
-          // }
         })
         .catch((error) => {
           console.error("Error submitting order:", error);
@@ -258,7 +308,7 @@ const Checkout = () => {
                           required
                         />
                       </div>
-
+                      {/* 
                       <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                         <Label label="City" />
                         <input
@@ -294,43 +344,33 @@ const Checkout = () => {
                           onChange={handleChange}
                           required
                         />
-                      </div>
+                      </div> */}
                     </div>
-
+                    <DropdownComponent onForm={handleStateInfo} />
                     <Label label="Shipping Cost" />
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
                         <InputShipping
                           currency={currency}
-                          handleShippingCost={handleShippingCost}
+                          handleShippingCost={handleCalculateDeliveryFee}
                           // register={register}
-                          value="FedEx"
-                          description="Delivery: 7 days Cost "
-                          cost={
-                            Number() || 60
-                            // storeCustomizationSetting?.checkout
-                            // ?.shipping_one_cost
-                          }
+                          value="REDSTART_LOGISTICS"
+                          description="Delivery Cost: "
+                          cost={shippingCost}
+                          onClick={handleLogisticsSelect}
                         />
-
-                        {/* <Error errorName={errors.shippingOption} /> */}
                       </div>
 
                       <div className="col-span-6 sm:col-span-3">
                         <InputShipping
                           currency={currency}
-                          handleShippingCost={handleShippingCost}
+                          handleShippingCost={handleCalculateDeliveryFee}
                           // register={register}
-                          value="GIG"
-                          description="Delivery: Today Cost "
-                          cost={
-                            Number() || 120
-                            // storeCustomizationSetting?.checkout
-                            // ?.shipping_one_cost
-                          }
+                          value="DHL"
+                          description="Delivery Cost: "
+                          cost={shippingCost}
+                          onClick={handleLogisticsSelect}
                         />
-
-                        {/* <Error errorName={errors.shippingOption} /> */}
                       </div>
 
                       {/* <div className="col-span-6 sm:col-span-3">
@@ -406,7 +446,6 @@ const Checkout = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <button
                         type="submit"
-                        // disabled={isEmpty || !stripe || isCheckoutSubmit}
                         className="bg-[#359E52] hover:bg-[#359E52] border border-[#359E52] transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
                       >
                         {isCheckoutSubmit ? (
@@ -475,12 +514,12 @@ const Checkout = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0">
+                {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0">
                   Discount
                   <span className="ml-auto flex-shrink-0 font-bold text-orange-400">
                     0.00
                   </span>
-                </div>
+                </div> */}
 
                 <div className="border-t mt-4">
                   <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">

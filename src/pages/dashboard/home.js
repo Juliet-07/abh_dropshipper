@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import axios from "axios";
+import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import { FiMail, FiMapPin, FiBell, FiDownload } from "react-icons/fi";
@@ -14,36 +16,35 @@ import Sidebar from "./sidebar";
 import Link from "next/link";
 
 const Dashboard = () => {
-  // const [orders, setOrders] = useState([]);
-  const orders = [
-    {
-      id: "32100",
-      date: "4/4/2024, 2:11 PM",
-      product: "Apples",
-      quantity: "1 carton",
-      paymentStatus: "Paid",
-      orderStatus: "Placed",
-      imageUrl: "/apples.png",
-    },
-    {
-      id: "32101",
-      date: "4/4/2024, 2:11 PM",
-      product: "C Idea 8 Inches Android Tablet",
-      quantity: "12 units",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      imageUrl: "/dummy_products/tablet.png",
-    },
-    {
-      id: "32102",
-      date: "4/4/2024, 2:11 PM",
-      product: "Apples",
-      quantity: "12 units",
-      paymentStatus: "Paid",
-      orderStatus: "Processing",
-      imageUrl: "/apples.png",
-    },
-  ];
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const token = localStorage.getItem("abhUserInfo");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const getMyOrders = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${apiURL}/orders/user/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        console.log(response.data.data.data, "Orders");
+        setOrders(response.data.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setError("Failed to fetch orders");
+        setLoading(false);
+      }
+    };
+
+    getMyOrders();
+  }, []);
+
   return (
     <>
       <Sidebar>
@@ -58,17 +59,17 @@ const Dashboard = () => {
           </div>
 
           {/* Date Filters */}
-          <div className="flex space-x-4 mb-8">
-            <button className="px-4 py-2 bg-orange-500 text-white rounded-md">
+          <div className="flex space-x-4 mb-8 overflow-x-auto">
+            <button className="px-3 py-1 bg-orange-500 text-white rounded-md">
               Today
             </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md">
+            <button className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md">
               This week
             </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md">
+            <button className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md">
               This month
             </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md">
+            <button className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md">
               Customize date
             </button>
           </div>
@@ -102,10 +103,10 @@ const Dashboard = () => {
               <p className="text-gray-500">Total orders</p>
               <div className="flex justify-between items-center mt-2">
                 <span>Items</span>
-                <span className="text-orange-500">0</span>
+                <span className="text-orange-500">{orders.length}</span>
               </div>
             </div>
-            <div className="bg-white p-4 rounded-md shadow-md"></div>
+            <div></div>
           </div>
 
           {/* Recent Orders */}
@@ -132,7 +133,7 @@ const Dashboard = () => {
                       height={112}
                       className="hidden md:block rounded-md"
                     />
-                     <Image
+                    <Image
                       src={order.imageUrl}
                       alt={order.product}
                       width={50}
@@ -143,33 +144,39 @@ const Dashboard = () => {
                       <h3 className="text-sm md:text-base font-primaryMedium text-[#373435]">
                         {order.product}
                       </h3>
-                      <p className="text-sm text-gray-500">Order #{order.id}</p>
                       <p className="text-sm text-gray-500">
-                        Quantity: {order.quantity}
+                        Order: {order?._id?.substring(20, 24)}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Quantity: {order?.products?.length} product(s)
                       </p>
                     </div>
                     <div className="text-right p-2">
                       <div
                         className={`h-[35px] flex items-center justify-center space-x-1 ${
-                          order.orderStatus === "Pending"
+                          order.deliveryStatus.toLowerCase() === "Pending"
                             ? "text-red-600 bg-red-100"
-                            : order.orderStatus === "Processing"
+                            : order.deliveryStatus.toLowerCase() ===
+                              "Processing"
                             ? "text-blue-600 bg-blue-100"
                             : "text-gray-600 bg-gray-100"
                         }`}
                       >
                         <div
                           className={`w-2 h-2 rounded-full ${
-                            order.orderStatus === "Pending"
+                            order.deliveryStatus.toLowerCase() === "Pending"
                               ? "bg-red-600"
-                              : order.orderStatus === "Processing"
+                              : order.deliveryStatus.toLowerCase() ===
+                                "Processing"
                               ? "bg-blue-600"
                               : "bg-gray-600"
                           }`}
                         />
-                        <span className="text-xs">{order.orderStatus}</span>
+                        <span className="text-xs">{order.deliveryStatus}</span>
                       </div>
-                      <p className="text-xs text-gray-500">On {order.date}</p>
+                      <p className="text-xs text-gray-500">
+                        On {dayjs(order.created_at).format("MMMM D, YYYY")}
+                      </p>
                       <p className="text-xs text-green-600">See Details</p>
                     </div>
                   </div>
