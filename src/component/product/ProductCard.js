@@ -28,7 +28,7 @@ const ProductCard = ({ product, attributes }) => {
   const { globalSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
-  const currency = globalSetting?.default_currency || "#";
+  const currency = globalSetting?.default_currency || "₦";
 
   // console.log('attributes in product cart',attributes)
 
@@ -155,7 +155,7 @@ const ProductCard = ({ product, attributes }) => {
               card
               product={product}
               currency={currency}
-              price={product?.sellingPrice}
+              // price={product?.sellingPrice}
               // price={
               //   product?.isCombination
               //     ? product?.variants[0]?.price
