@@ -207,7 +207,9 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         <div className="w-full flex items-center justify-center p-4">
                           <div className="w-full flex flex-col justify-start">
                             <p className="text-xs md:text-base">{deal.name}</p>
-                            <b>{deal.currency}{" "}{deal.sellingPrice}</b>
+                            <b>
+                              {deal.currency} {deal.sellingPrice}
+                            </b>
                           </div>
                         </div>
                         <button className="border border-[#CFCBCB] h-[28px] w-[92px] rounded-md mt-4 bg-[#4CBD6B] text-white absolute right-4 bottom-[-80px] flybtn">
@@ -221,7 +223,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               <br />
 
               {/* Fashion Style */}
-              <div className="w-full md:h-[700px] h-[370px] b-white flex flex-col items-center justify-center py-5 px-3 sm:px-10 bg-white">
+              <div className="w-full md:h-[600px] h-[370px] b-white flex flex-col items-center justify-center py-5 px-3 sm:px-10 bg-white">
                 <div className="text-lg md:text-2xl font-primarySemibold">
                   Get Your Fashion Style
                 </div>
@@ -301,11 +303,13 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               {/* Sample Deals */}
               <SampleDeals data={sampleDealsData} />
 
+              {/* Shop by category */}
               <div className="w-full flex items-center justify-between py-5 px-3 sm:px-10">
                 <div className="text-sm md:text-xl font-primarySemibold">
                   Best Of Electronics
                 </div>
               </div>
+
               <div className="flex w-full px-3 sm:px-10">
                 <div className="flex flex-row items-center gap-[20px] overflow-x-scroll hide-scrollbar flex-1 md:justify-between ">
                   {[
@@ -323,7 +327,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       image: "/dummy_products/man.png",
                     },
                   ].map((bests, index) => (
-                    <Link href={`/product-info/${index}`}>
+                    <Link href="/all-products">
                       <div className="min-w-[186px] md:w-[320px] h-[226px] md:h-[340px] overflow-hidden relative flex flex-col border border-[#CFCBCB] rounded-md shadow-md cursor-pointer product-card">
                         <div className="flex  bg-[#E8F1E9] p-3 flex-[70]">
                           <div
@@ -365,13 +369,16 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
                       />
                     </div>
-                    <div className="w-full flex flex-[10] items-center justify-center ">
+                    <Link
+                      href="/all-products"
+                      className="w-full flex flex-[10] items-center justify-center "
+                    >
                       <div className="w-full flex flex-col ">
                         <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
                           See More
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   </div>
 
                   <div className="md:min-w-[320px] flex-[50] h-[226px] md:h-[340px] p-4 gap-4 overflow-hidden flex flex-col  border border-[#CFCBCB] rounded-md shadow-md">
@@ -388,11 +395,14 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       />
                     </div>
                     <div className="w-full flex flex-[10] items-center justify-center ">
-                      <div className="w-full flex flex-col ">
+                      <Link
+                        href="/all-products"
+                        className="w-full flex flex-col "
+                      >
                         <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
                           See More
                         </p>
-                      </div>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -410,14 +420,17 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       />
                     </div>
                     <div className="w-full flex md:flex-[60] items-center justify-center ">
-                      <div className="w-full flex flex-col ">
+                      <Link
+                        href="/all-products"
+                        className="w-full flex flex-col "
+                      >
                         <div className="md:text-[20px] text-[11px] text-bold">
                           Grocery
                         </div>
                         <p className="text-[#10B981] cursor-pointer active:opacity-[0.5] md:text-[20px] text-[11px]">
                           Shop Now
                         </p>
-                      </div>
+                      </Link>
                     </div>
                   </div>
 
@@ -431,7 +444,10 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         className={`flex flex-1 bg-[#E8F1E9] bg-center bg-contain bg-no-repeat`}
                       />
                     </div>
-                    <div className="w-full flex md:flex-[60] items-center justify-center ">
+                    <Link
+                      href="/all-products"
+                      className="w-full flex md:flex-[60] items-center justify-center "
+                    >
                       <div className="w-full flex flex-col ">
                         <div className="md:text-[20px] text-[11px] text-bold">
                           Office Supplies
@@ -440,7 +456,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           Shop Now
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>

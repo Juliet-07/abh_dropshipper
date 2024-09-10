@@ -36,7 +36,7 @@ const CartItem = ({ item }) => {
           {item.title}
         </Link>
         <span className="text-xs text-gray-400 mb-1">
-          Item Price #{item.sellingPrice}
+          Item Price ₦{item.sellingPrice}
         </span>
         <div className="flex items-center justify-between">
           <div className="font-bold text-sm md:text-base text-heading leading-5">

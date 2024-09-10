@@ -126,7 +126,7 @@ const PaymentSummary = ({ params }) => {
                     ₦ {product?.sellingPrice}
                   </p>
                 </div> */}
-                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-[200px] bg-gray-50 block">
+                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-[120px] bg-gray-50 block">
                   {items.length > 0 ? (
                     items.map((item) => (
                       <CartItem key={item.id} item={item} currency={currency} />
@@ -147,10 +147,10 @@ const PaymentSummary = ({ params }) => {
                   <p>₦{cartTotal?.toFixed(2)}</p>
                 </div>
 
-                <div className="flex flex-row gap-2 w-full border-b h-[50px] justify-between mt-8">
+                {/* <div className="flex flex-row gap-2 w-full border-b h-[50px] justify-between mt-8">
                   <p className="font-[400]">Shipping fee</p>
                   <p>₦1500.00</p>
-                </div>
+                </div> */}
 
                 <div className="flex flex-row gap-2 w-full border-b min-h-[50px] justify-between mt-8">
                   <div className="flex flex-row items-center gap-4 flex-wrap">
@@ -201,15 +201,15 @@ const PaymentSummary = ({ params }) => {
                 <b className="w-full">Drop-shipment Summary</b>
                 <br />
                 <div className="w-full min-h-[200px]">
-                  {/* <p className="mb-2">Items to be shipped</p>
+                  <p className="mb-2">Items to be shipped</p>
                   <Select
                     isMulti
                     name="colors"
-                    options={options}
+                    // options={options}
                     className="basic-multi-select"
                     classNamePrefix="select"
                   />
-                  <br /> */}
+                  <br />
                   <p className="mb-2">Quantity to be shipped</p>
                   <Select
                     isMulti

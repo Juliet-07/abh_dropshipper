@@ -152,14 +152,6 @@ const ProductInfo = ({ params }) => {
             </div>
           )}
 
-          {/* <div className="product-details">
-            <h1>{product.name}</h1>
-            <p>{product.description}</p>
-            <p>Price: {product.price}</p>
-            <p>Category: {product.category}</p>
-            <img src={product.imageUrl} alt={product.name} />
-            Add more details as necessary
-          </div> */}
           <div className="min-h-screen  mx-auto max-w-screen-2xl ">
             {/* Exclusive Deals */}
             <div className="w-full h-14 flex flex-row items-center px-3 sm:px-10 gap-2 ">
@@ -260,9 +252,9 @@ const ProductInfo = ({ params }) => {
                     >
                       Add to cart
                     </button>
-                    <button className="flex flex-[60] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#455A64] items-center justify-center text-white font-primaryMedium">
+                    {/* <button className="flex flex-[60] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#455A64] items-center justify-center text-white font-primaryMedium">
                       Add For drop-shipping
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <br />
