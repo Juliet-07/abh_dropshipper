@@ -31,19 +31,35 @@ const PaymentSummary = ({ params }) => {
   const [subscriptionPopup, setsubscriptionPopup] = useState(false);
   const currency = "#";
   const [shippingCost, setShippingCost] = useState(0);
-  const cartTotal = useMemo(() => {
-    return items.reduce((total, item) => {
-      return total + item.sellingPrice * item.quantity;
-    }, 0);
-  }, [items]);
-  const totalCost = cartTotal + shippingCost;
   const [SelectedSubscription, setSelectedSubscription] =
     useState("Daily plan");
+
   const [Subscription, setSubscription] = useState([
     "Daily plan",
     "Weekly plan",
     "Monthly plan",
   ]);
+
+  // Calculate subscription fee based on the selected plan
+  const subscriptionFee = useMemo(() => {
+    switch (SelectedSubscription) {
+      case "Daily plan":
+        return 500;
+      case "Weekly plan":
+        return 1000;
+      case "Monthly plan":
+        return 5000;
+      default:
+        return 0;
+    }
+  }, [SelectedSubscription]);
+
+  const cartTotal = useMemo(() => {
+    return items.reduce((total, item) => {
+      return total + item.sellingPrice * item.quantity;
+    }, 0);
+  }, [items]);
+  const totalCost = cartTotal + shippingCost + subscriptionFee;
 
   const QuantityOptions = [
     { value: "1", label: "1 carton" },
@@ -95,37 +111,8 @@ const PaymentSummary = ({ params }) => {
               <div className="flex flex-[50] flex-col px-3 sm:px-10 py-10 bg-white ">
                 <div className="w-full flex flex-row items-center justify-between text-[16px]">
                   <b>Payment Summary</b>
-                  {/* <p className="text-[#359E52] active:opacity-[0.5] cursor-pointer text-[12px] md:text-[14px]">
-                    Add more items
-                  </p> */}
                 </div>
                 <br />
-                {/* <div className="w-full flex flex-row items-center justify-between text-[16px] mt-4">
-                  <div
-                    className="min-w-[90px] h-[90px] border rounded-xl bg-cover bg-no-repeat"
-                    style={{
-                      backgroundImage: `url(${product?.featured_image})`,
-                      backgroundSize: "contain",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                  <div className="flex flex-col p-3 ">
-                    <div className="flex flex-wrap text-[14px] ">
-                      {product?.name}
-                    </div>
-                    <div className="flex flex-row gap-2 md:text-[14px] text-[11px] mt-2">
-                      <b>QTY</b>
-                      <p>1 carton</p>
-                    </div>
-                    <p className="text-[black] active:opacity-[0.5] cursor-pointer  text-[14px] mt-2  md:hidden flex">
-                      ₦ {product?.sellingPrice}
-                    </p>
-                  </div>
-                  <p className="text-[black] active:opacity-[0.5] cursor-pointer text-[14px] md:flex hidden">
-                    ₦ {product?.sellingPrice}
-                  </p>
-                </div> */}
                 <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-[120px] bg-gray-50 block">
                   {items.length > 0 ? (
                     items.map((item) => (
@@ -169,6 +156,7 @@ const PaymentSummary = ({ params }) => {
                             if (data !== SelectedSubscription)
                               return (
                                 <p
+                                  key={index} // Add a key to each mapped item
                                   onClick={() => {
                                     setSelectedSubscription(data);
                                     setsubscriptionPopup(false);
@@ -183,13 +171,14 @@ const PaymentSummary = ({ params }) => {
                       )}
                     </div>
                   </div>
-                  <p>₦500.00</p>
+                  <p>₦{subscriptionFee.toFixed(2)}</p>
                 </div>
+
                 <br />
                 <p className="text-[red] text-[12px] max-w-[400px]">
-                  Your items are held in our warehouse for one day before
-                  shipping. You can’t ship items after your subscription expires
-                  until renewal.
+                  Your items are held in our warehouse for the duration of your
+                  subscription. You can’t ship items after your subscription
+                  expires until renewal.
                 </p>
                 <br />
                 <div className="flex flex-row gap-2 w-full border-b h-[50px] justify-between mt-8">
