@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import { FiMail, FiMapPin, FiBell } from "react-icons/fi";
+import dayjs from "dayjs";
 
 //internal import
 import Layout from "@layout/Layout";
@@ -10,104 +13,16 @@ import Error from "@component/form/Error";
 import { notifySuccess } from "@utils/toast";
 import InputArea from "@component/form/InputArea";
 import Sidebar from "./sidebar";
+import { flat } from "next-pwa/cache";
 
 const Inventory = () => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const token = localStorage.getItem("abhUserInfo");
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
-  // const [productsData, setProductsData] = useState([]);
-
-  const productsData = [
-    {
-      id: "1565132",
-      name: "Apples",
-      type: "grocery",
-      sku: "123456",
-      sold: "N/A",
-      units: 34,
-      price: "$230",
-      status: "pending",
-    },
-    {
-      id: "1565132",
-      name: "Cup",
-      type: "Merch",
-      sku: "123456",
-      sold: "N/A",
-      units: 25,
-      price: "$230",
-      status: "deleted",
-    },
-    {
-      id: "1565132",
-      name: "Mangoes",
-      type: "grocery",
-      sku: "123456",
-      sold: "55 Units",
-      units: 10,
-      price: "$230",
-      status: "live",
-    },
-    {
-      id: "1565132",
-      name: "Bread",
-      type: "grocery",
-      sku: "123456",
-      sold: "N/A",
-      units: 5,
-      price: "$230",
-      status: "pending",
-    },
-    {
-      id: "1565132",
-      name: "Apples",
-      type: "grocery",
-      sku: "123456",
-      sold: "55 Units",
-      units: 11,
-      price: "$230",
-      status: "live",
-    },
-    {
-      id: "1565132",
-      name: "Bread",
-      type: "grocery",
-      sku: "123456",
-      sold: "N/A",
-      units: 8,
-      price: "$230",
-      status: "deleted",
-    },
-    {
-      id: "1565132",
-      name: "Mangoes",
-      type: "grocery",
-      sku: "123456",
-      sold: "55 Units",
-      units: 11,
-      price: "$230",
-      status: "live",
-    },
-    {
-      id: "1565132",
-      name: "Mangoes",
-      type: "grocery",
-      sku: "123456",
-      sold: "55 Units",
-      units: 61,
-      price: "$230",
-      status: "live",
-    },
-    {
-      id: "1565132",
-      name: "Apples",
-      type: "grocery",
-      sku: "123456",
-      sold: "N/A",
-      units: 22,
-      price: "$230",
-      status: "pending",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [productsData, setProductsData] = useState([]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -119,6 +34,39 @@ const Inventory = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    const getMyInventory = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${apiURL}/dropshipping/my-inventories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
+        console.log(response.data.data, "My Inventory");
+        setProductsData(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
+
+    getMyInventory();
+  }, [router]);
+
+  const handleShipItems = (order) => {
+    // Navigate to the new page and pass the order ID via query parameters
+    router.push({
+      pathname: "/dashboard/shipItems",
+      query: { id: order._id }, // Pass order ID as query parameter
+    });
+  };
 
   return (
     <>
@@ -140,7 +88,7 @@ const Inventory = () => {
                 <b className="text-[14px] text-black  min-w-[150px]">
                   Quantity Shipped
                 </b>
-                <b className="text-[14px] text-black  min-w-[150px]">
+                <b className="text-[14px] text-black  min-w-[150px] text-center">
                   Quantity Left
                 </b>
                 <b className="text-[14px] text-black  min-w-[150px] text-center">
@@ -153,32 +101,40 @@ const Inventory = () => {
                 <div className="flex flex-row items-center gap-4">
                   <div className=" md:w-full  h-[56px] px-[10px] flex flex-row items-center justify-between border-[#C1C6C5] border-[0.66px] mt-[10px]">
                     <p className="text-[12px] text-black min-w-[100px]">
-                      120381
+                      {dayjs(data.created_at).format("MMMM D, YYYY")}
                     </p>
                     <div className="text-[12px] text-black min-w-[150px]">
                       <div className="flex flex-row items-center gap-2">
-                        <img src="/apples.png" alt="" width={50} height={50} />
+                        <img
+                          src={data?.productId?.featured_image}
+                          alt="Product Image"
+                          width={50}
+                          height={50}
+                        />
                         <div
                           className="flex flex-col justify-start h-[40px] active:opacity-5 cursor-pointer"
                           // onClick={() => setPreview(true)}
                         >
-                          <b className="">{data.name}</b>
+                          <b className="">{data?.productId?.name}</b>
                           <p className="">{data.type}</p>
                         </div>
                       </div>
                     </div>
 
                     <div className="text-[12px] text-black min-w-[150px] flex items-center gap-2">
-                      <p>{data.units} Units</p>
+                      <p>{data.quantity} Carton(s)</p>
                     </div>
                     <p className="text-[12px] text-black min-w-[150px] text-center">
-                      15
+                      {data.quantityShipped}
                     </p>
                     <p className="text-[12px] text-black min-w-[150px] text-center">
-                      10
+                      {data.quantityLeft}
                     </p>
                     <div className="min-w-[150px] text-center">
-                      <button className="w-20 h-[35px] bg-[#088D2D]/[12%] text-xs text-[#088D2D]">
+                      <button
+                        onClick={() => handleShipItems(data)}
+                        className="w-20 h-[35px] bg-[#088D2D]/[12%] text-xs text-[#088D2D]"
+                      >
                         Ship Item
                       </button>
                     </div>

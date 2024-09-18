@@ -170,7 +170,7 @@ const Profile = () => {
           {/* Profile Banner */}
           <div className="bg-gray-100 h-36 rounded-lg relative">
             <Image
-              src="/path-to-banner-image.png"
+              src="/profile-bg.svg"
               alt="Profile Banner"
               layout="fill"
               objectFit="cover"

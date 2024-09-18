@@ -20,20 +20,21 @@ import useGetSetting from "@hooks/useGetSetting";
 import { handleLogEvent } from "@utils/analytics";
 
 const Navbar = () => {
+  const token = localStorage.getItem("abhUserInfo");
   const [imageUrl, setImageUrl] = useState("");
   const [searchText, setSearchText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer } = useContext(SidebarContext);
   const { totalItems } = useCart();
   const router = useRouter();
+  const { id } = router.query;
 
-  const {
-    state: { userInfo },
-  } = useContext(UserContext);
+  // const {
+  //   state: { userInfo },
+  // } = useContext(UserContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // return;
     if (searchText) {
       router.push(`/search?query=${searchText}`, null, { scroll: false });
@@ -45,12 +46,20 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setImageUrl(user.image);
+  const handleDropshippingClick = () => {
+    if (token) {
+      router.push(`/product-info/dropshipping`);
+    } else {
+      setModalOpen(true);
     }
-  }, []);
+  };
+
+  // useEffect(() => {
+  //   if (Cookies.get("userInfo")) {
+  //     const user = JSON.parse(Cookies.get("userInfo"));
+  //     setImageUrl(user.image);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -80,7 +89,7 @@ const Navbar = () => {
             </Link>
             {/* search button */}
             <div className="w-full transition-all duration-200 ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[750px] 2xl:max-w-[900px] md:mx-12 lg:mx-4 xl:mx-0">
-              <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30">
+              {/* <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30">
                 <div className="flex flex-col mx-auto w-full">
                   <form
                     onSubmit={handleSubmit}
@@ -103,7 +112,7 @@ const Navbar = () => {
                     </button>
                   </form>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="hidden md:hidden md:items-center lg:flex xl:flex absolute inset-y-0 right-0 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {/* <button
@@ -124,7 +133,8 @@ const Navbar = () => {
               </button>
               <button
                 aria-label="Total"
-                onClick={toggleCartDrawer}
+                onClick={handleDropshippingClick}
+                // onClick={toggleCartDrawer}
                 className="relative px-5 text-white text-2xl font-bold"
               >
                 <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
@@ -137,7 +147,7 @@ const Navbar = () => {
                 className="pl-5 text-white text-2xl font-bold"
                 aria-label="Login"
               >
-                {imageUrl || userInfo?.image ? (
+                {/* {imageUrl || userInfo?.image ? (
                   <Link
                     href="/user/dashboard"
                     className="relative top-1 w-6 h-6"
@@ -158,13 +168,25 @@ const Navbar = () => {
                     {userInfo?.name[0]}
                   </Link>
                 ) : (
-                  <div className="flex items-center" onClick={() => setModalOpen(!modalOpen)}>
+                  <div
+                    className="flex items-center"
+                    onClick={() => setModalOpen(!modalOpen)}
+                  >
                     <span>
                       <FiUser className="w-6 h-6 drop-shadow-xl" />
                     </span>
                     <p className="mx-2 text-sm">Sign in</p>
                   </div>
-                )}
+                )} */}
+                <div
+                  className="flex items-center"
+                  onClick={() => setModalOpen(!modalOpen)}
+                >
+                  <span>
+                    <FiUser className="w-6 h-6 drop-shadow-xl" />
+                  </span>
+                  <p className="mx-2 text-sm">Sign in</p>
+                </div>
               </button>
             </div>
             {/* <Link href="/vendor/signup">

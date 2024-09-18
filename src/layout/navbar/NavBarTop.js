@@ -52,7 +52,7 @@ const NavBarTop = () => {
                 +099949343
               </a>
             </span>
-            <p>Logout</p>
+            {/* <p>Logout</p> */}
           </div>
         </div>
       </div>

@@ -61,7 +61,7 @@ const ProductInfo = ({ params }) => {
       toggleCartDrawer();
       setbuyNowModal(false);
     } else if (selectedOption === "drop-shipping") {
-      window.location.href = `payment-summary/${id}`;
+      window.location.href = `/product-info/dropshipping`;
     }
   };
 

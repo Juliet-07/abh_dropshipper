@@ -17,15 +17,22 @@ import {
 } from "@heroicons/react/outline";
 import Select from "react-select";
 import { useCart } from "react-use-cart";
+import { useForm } from "react-hook-form";
 import CartItem from "@component/cart/CartItem";
-import { IoBagHandle } from "react-icons/io5";
+import { IoBagHandle, IoWalletSharp } from "react-icons/io5";
+import { ImCreditCard } from "react-icons/im";
+import InputPayment from "@component/form/InputPayment";
+import { notifySuccess } from "@utils/toast";
 
 const PaymentSummary = ({ params }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const token = localStorage.getItem("abhUserInfo");
   const router = useRouter();
   const { id } = router.query;
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const { handleSubmit } = useForm();
+  const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [product, setProduct] = useState(null);
   const { items, emptyCart } = useCart();
   const [subscriptionPopup, setsubscriptionPopup] = useState(false);
@@ -33,12 +40,17 @@ const PaymentSummary = ({ params }) => {
   const [shippingCost, setShippingCost] = useState(0);
   const [SelectedSubscription, setSelectedSubscription] =
     useState("Daily plan");
+  const [paymentGateway, setPaymentGateway] = useState("");
 
   const [Subscription, setSubscription] = useState([
     "Daily plan",
     "Weekly plan",
     "Monthly plan",
   ]);
+
+  const handlePaymentSelect = (value) => {
+    setPaymentGateway(value);
+  };
 
   // Calculate subscription fee based on the selected plan
   const subscriptionFee = useMemo(() => {
@@ -88,6 +100,50 @@ const PaymentSummary = ({ params }) => {
     }
   }, [id]);
 
+  const handleDropshipOrder = () => {
+    let orderResponse;
+    let url;
+    const payload = {
+      subscriptionDetails: {
+        plan: SelectedSubscription,
+        // plan: "MONTHLY",
+        amount: subscriptionFee,
+      },
+      paymentGateway: paymentGateway,
+      products: items.map((item) => ({
+        productId: item._id,
+        quantity: item.quantity,
+      })),
+    };
+    console.log(payload, "create order payload");
+    setIsCheckoutSubmit(true);
+
+    try {
+      axios
+        .post(`${apiURL}/dropshipping`, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((order) => {
+          console.log(order.data);
+          if (order.status === 201) {
+            notifySuccess("Inventory Successfully created");
+          }
+          orderResponse = order.data.data;
+          url = orderResponse.paymentResponse.data.url;
+          emptyCart();
+          router.push(url);
+        })
+        .catch((error) => {
+          console.error("Error submitting order:", error);
+        });
+    } catch (error) {
+      console.log("Unexpected Error:", error);
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -95,8 +151,8 @@ const PaymentSummary = ({ params }) => {
       ) : (
         <Layout>
           <div className="min-h-screen  mx-auto max-w-screen-2xl ">
-            {/* Exclusive Deals */}
-            <div className="w-full h-20 flex flex-row items-center px-3 sm:px-10 gap-2 flex-wrap ">
+            {/* Header */}
+            <div className="w-full h-[60px] flex flex-row items-center px-3 sm:px-10 gap-2 flex-wrap ">
               <div className=" text-[12px] md:text-[14px] text-black">Home</div>{" "}
               <ChevronRightIcon width={14} height={14} />{" "}
               <div className=" text-[12px] md:text-[14px] text-black">
@@ -107,13 +163,17 @@ const PaymentSummary = ({ params }) => {
                 Payment Summary
               </div>
             </div>
-            <div className=" w-full min-h-[100vh] flex lg:flex-row flex-col flex-wrap px-3 sm:px-10 gap-8">
+            {/* Form Proper */}
+            <form
+              onSubmit={handleSubmit(handleDropshipOrder)}
+              className=" w-full min-h-[100vh] flex lg:flex-row flex-col flex-wrap px-3 sm:px-10 gap-8"
+            >
               <div className="flex flex-[50] flex-col px-3 sm:px-10 py-10 bg-white ">
                 <div className="w-full flex flex-row items-center justify-between text-[16px]">
                   <b>Payment Summary</b>
                 </div>
                 <br />
-                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-[120px] bg-gray-50 block">
+                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-[200px] bg-gray-50 block">
                   {items.length > 0 ? (
                     items.map((item) => (
                       <CartItem key={item.id} item={item} currency={currency} />
@@ -144,7 +204,10 @@ const PaymentSummary = ({ params }) => {
                     <p className="font-[400]">Subscription fee</p>
                     <div className="relative">
                       <button
-                        onClick={() => setsubscriptionPopup(!subscriptionPopup)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setsubscriptionPopup(!subscriptionPopup);
+                        }}
                         className="bg-[#FEC499] rounded-md h-[36px] w-[130px] flex px-1 active:opacity-[0.7] justify-between flex-row items-center gap-1 text-[14px]"
                       >
                         {SelectedSubscription}{" "}
@@ -156,8 +219,9 @@ const PaymentSummary = ({ params }) => {
                             if (data !== SelectedSubscription)
                               return (
                                 <p
-                                  key={index} // Add a key to each mapped item
-                                  onClick={() => {
+                                  key={index}
+                                  onClick={(e) => {
+                                    e.preventDefault();
                                     setSelectedSubscription(data);
                                     setsubscriptionPopup(false);
                                   }}
@@ -174,19 +238,77 @@ const PaymentSummary = ({ params }) => {
                   <p>₦{subscriptionFee.toFixed(2)}</p>
                 </div>
 
-                <br />
-                <p className="text-[red] text-[12px] max-w-[400px]">
+                <p className="text-[red] text-[12px] max-w-[400px] mt-3">
                   Your items are held in our warehouse for the duration of your
                   subscription. You can’t ship items after your subscription
                   expires until renewal.
                 </p>
                 <br />
+                <div className="form-group mt-12">
+                  <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
+                    03. Payment Gateway
+                  </h2>
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3">
+                      <InputPayment
+                        // setShowCard={setShowCard}
+                        // register={register}
+                        name="Hydrogen Pay"
+                        value="HYDROGENPAY"
+                        Icon={IoWalletSharp}
+                        // onClick={() => handlePaymentSelect("HYDROGENPAY")}
+                        onClick={handlePaymentSelect}
+                      />
+                      {/* <Error errorName={errors.paymentMethod} /> */}
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <InputPayment
+                        // setShowCard={setShowCard}
+                        // register={register}
+                        name="Providus Bank"
+                        value="PROVIDUS"
+                        Icon={ImCreditCard}
+                        // onClick={() => handlePaymentSelect("PROVIDUS")}
+                        onClick={handlePaymentSelect}
+                      />
+                      {/* <Error errorName={errors.paymentMethod} /> */}
+                    </div>
+                  </div>
+                </div>
+                <br />
                 <div className="flex flex-row gap-2 w-full border-b h-[50px] justify-between mt-8">
                   <b>Total</b>
                   <b>₦{parseFloat(totalCost).toFixed(2)}</b>
                 </div>
+                {/* Button */}
+                <div className="w-full flex items-center justify-center my-10">
+                  {/* <Link
+                    href={`/order-status/${id}`}
+                    className=" w-full max-w-[250px]"
+                  > */}
+                  <button className="flex w-[90%] max-w-[250px] h-[50px] rounded-[5px] font-primarySemibold p-2 bg-[#4CBD6B] items-center justify-center text-white">
+                    {isCheckoutSubmit ? (
+                      <span className="flex justify-center text-center">
+                        {" "}
+                        <img
+                          src="/loader/spinner.gif"
+                          alt="Loading"
+                          width={20}
+                          height={10}
+                        />{" "}
+                        <span className="ml-2">Processing</span>
+                      </span>
+                    ) : (
+                      <span className="flex justify-center text-center">
+                        Create Inventory
+                      </span>
+                    )}
+                  </button>
+                  {/* </Link> */}
+                </div>
               </div>
-              <div className="flex flex-[50] flex-col px-3 sm:px-10 md:py-10 py-4 bg-white items-center min-h-[400px]">
+
+              {/* <div className="flex flex-[50] flex-col px-3 sm:px-10 md:py-10 py-4 bg-white items-center min-h-[400px]">
                 <b className="w-full">Drop-shipment Summary</b>
                 <br />
                 <div className="w-full min-h-[200px]">
@@ -217,8 +339,8 @@ const PaymentSummary = ({ params }) => {
                     Create Order
                   </button>
                 </Link>
-              </div>
-            </div>
+              </div> */}
+            </form>
           </div>
         </Layout>
       )}

@@ -66,13 +66,13 @@ const OrderStatus = ({ params }) => {
         <Loading loading={isLoading} />
       ) : (
         <Layout>
-          <div className="min-h-screen  mx-auto max-w-screen-2xl min-h-[100vh] flex items-center justify-center py-5">
+          <div className="min-h-screen  mx-auto max-w-screen-2xl flex items-center justify-center py-5">
             <div className="w-[90%] min-h-[80vh] bg-white rounded-xl border flex flex-col py-4">
               <div className="w-full flex md:flex-row md:items-center justify-between text-[16px] md:p-8 p-4 flex-wrap flex-col">
                 <b>Thank you! Your order has been placed.</b>
-                <p className="text-[#359E52] active:opacity-[0.5] cursor-pointer text-[12px] md:text-[14px]">
+                <Link href="/all-products" className="text-[#359E52] active:opacity-[0.5] cursor-pointer text-[12px] md:text-[14px]">
                   Shop more
-                </p>
+                </Link>
               </div>
               <div className="flex md:flex-row w-full flex-col">
                 <div className="flex flex-[60]  md:p-8 p-4 min-h-[400px] flex-col">
@@ -85,13 +85,15 @@ const OrderStatus = ({ params }) => {
                     </div>
                     <div className="border max-h-[90px] max-w-[180px] rounded-md flex flex-col items-center justify-between md:p-4 p-2">
                       <p className="text-[12px] md:text-[16px] text-center">
-                       Date placed
+                        Date placed
                       </p>
-                      <p className="text-[12px] md:text-[16px]">July 18, 2023</p>
+                      <p className="text-[12px] md:text-[16px]">
+                        July 18, 2023
+                      </p>
                     </div>
                     <div className="border max-h-[90px] max-w-[180px] rounded-md flex flex-col items-center justify-between   p-2">
                       <p className="text-[12px] md:text-[16px] text-center">
-                      Quantity_Shipped
+                        Quantity_Shipped
                       </p>
                       <p className="text-[12px] md:text-[16px]">12 units</p>
                     </div>
@@ -99,7 +101,9 @@ const OrderStatus = ({ params }) => {
                       <p className="text-[12px] md:text-[16px] text-center">
                         Payment status
                       </p>
-                      <p className="text-[12px] md:text-[16px] text-[#F58634]">paid</p>
+                      <p className="text-[12px] md:text-[16px] text-[#F58634]">
+                        paid
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-row items-start justify-between mt-4 flex-wrap">
@@ -128,7 +132,13 @@ const OrderStatus = ({ params }) => {
                     </p>
                   </div>
                   <br />
-                  <div className="flex flex-row gap-2 items-center mt-10"><img width={44} height={44} src="/car_icon.svg" /> <p>You ‘ll get an email with tracking info once your item ships</p> </div>
+                  <div className="flex flex-row gap-2 items-center mt-10">
+                    <img width={44} height={44} src="/car_icon.svg" />{" "}
+                    <p>
+                      You ‘ll get an email with tracking info once your item
+                      ships
+                    </p>{" "}
+                  </div>
                 </div>
                 <div className="flex flex-[40] min-h-[80vh] flex-col px-4 ">
                   <div className="w-full h-[60px] rounded-md border flex items-center px-4 mt-4">

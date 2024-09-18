@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
     const getMyOrders = async () => {
@@ -41,7 +42,28 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+    const getMyInventory = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${apiURL}/dropshipping/my-inventories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
+        console.log(response.data.data, "My Inventory");
+        setInventory(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
 
+    getMyInventory();
     getMyOrders();
   }, []);
 
@@ -96,7 +118,7 @@ const Dashboard = () => {
               <p className="text-gray-500">My inventory</p>
               <div className="flex justify-between items-center mt-2">
                 <span>Items</span>
-                <span className="text-blue-500">2</span>
+                <span className="text-blue-500">{inventory.length}</span>
               </div>
             </div>
             <div className="bg-white p-4 rounded-md shadow-md">
