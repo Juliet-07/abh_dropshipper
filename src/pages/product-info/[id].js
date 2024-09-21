@@ -196,30 +196,29 @@ const ProductInfo = ({ params }) => {
                 </div>
               </div>
               {/* Details Section */}
-              <div className="flex flex-[35] flex-col px-3 sm:px-10 md:py-10 py-4">
-                <strong>{product.name}</strong>
-                <div>Electronics</div>
-                <br />
+              <div className="flex flex-[35] flex-col px-3 sm:px-10 md:py-10 py-4 gap-y-6">
+                <div>
+                  <strong>{product.name}</strong>
+                  <div>{product.categoryId.name}</div>
+                  <p className="text-xs text-blue-600">{product.productType}</p>
+                </div>
                 <div>
                   <b>Brand:</b> {product.manufacturer}
                 </div>
-                {/* <div>
-                  <b>sku:</b> 221
-                </div> */}
-                <br />
-                <strong>Description:</strong>
-                <p>{product.description}</p>
-                {/* <p className="text-[#4CBD6B] cursor-pointer active:opacity-[0.5]">
-                  More
-                </p> */}
+                <div>
+                  <strong>Description:</strong>
+                  <p>{product.description}</p>
+                </div>
                 <div>
                   <b>Price:</b> {product.currency + " " + product.sellingPrice}{" "}
                   per carton
                 </div>
-                {/* <b>{product.sellingPrice} Per Carton</b> */}
-                <p>14 units per carton</p>
-                <p className="text-[red]">Minimum order 2 of cartons</p>
-                <br />
+                {/* <p>14 units per carton</p> */}
+                <div>
+                  <p className="text-[red] text-sm">
+                    Minimum order {product.maximumOrderPerCarton} of cartons
+                  </p>
+                </div>
                 <div className="flex md:flex-row flex-col flex-wrap gap-[20px] md:items-center min-h-[60px]">
                   <div className="flex flex-row flex-wrap gap-[20px] items-center flex-[30] bg-[#4F4F4F] min-h-[54px] px-4 justify-between max-w-[200px]">
                     <MinusIcon
@@ -259,7 +258,7 @@ const ProductInfo = ({ params }) => {
                 </div>
                 <br />
                 <button
-                  className="flex w-full max-w-[500px] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#F58634] items-center justify-center text-white font-primaryBold"
+                  className="flex w-full max-w-[500px] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#F58634] items-center justify-center text-white font-primaryBold my-4"
                   onClick={() => setbuyNowModal(true)}
                 >
                   Buy now

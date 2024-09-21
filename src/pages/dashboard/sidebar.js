@@ -19,11 +19,11 @@ const Sidebar = ({ title, description, children }) => {
       icon: <MdOutlineDashboard />,
       href: "/dashboard/home",
     },
-    {
-      title: "Inventory",
-      icon: <MdOutlineInventory />,
-      href: "/dashboard/inventory", // Add href value for Inventory
-    },
+    // {
+    //   title: "Inventory",
+    //   icon: <MdOutlineInventory />,
+    //   href: "/dashboard/inventory", // Add href value for Inventory
+    // },
     {
       title: "Orders",
       icon: <FiBox />,
@@ -34,11 +34,11 @@ const Sidebar = ({ title, description, children }) => {
     //   icon: <FiCreditCard />,
     //   href: "/dashboard/payment", // Add href value for Payment
     // },
-    {
-      title: "Subscription",
-      icon: <AiOutlineDollarCircle />,
-      href: "/dashboard/subscription", // Add href value for Subscription
-    },
+    // {
+    //   title: "Subscription",
+    //   icon: <AiOutlineDollarCircle />,
+    //   href: "/dashboard/subscription", // Add href value for Subscription
+    // },
     {
       title: "My Profile",
       icon: <IoPersonCircleSharp />,

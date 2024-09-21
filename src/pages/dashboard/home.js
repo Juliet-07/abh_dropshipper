@@ -42,28 +42,7 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-    const getMyInventory = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${apiURL}/dropshipping/my-inventories`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-type": "application/json; charset=UTF-8",
-            },
-          }
-        );
-        console.log(response.data.data, "My Inventory");
-        setInventory(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        setLoading(false);
-      }
-    };
 
-    getMyInventory();
     getMyOrders();
   }, []);
 
@@ -98,7 +77,7 @@ const Dashboard = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white p-4 rounded-md shadow-md border border-[#CFCBCB]">
+            {/* <div className="bg-white p-4 rounded-md shadow-md border border-[#CFCBCB]">
               <div className="flex justify-between items-center">
                 <Image width={18} height={18} src="/sub.png" alt="logo" />
                 <span className="text-sm text-[#373435]">
@@ -113,14 +92,14 @@ const Dashboard = () => {
                   <span>Active</span>
                 </div>
               </div>
-            </div>
-            <div className="bg-white p-4 rounded-md shadow-md">
+            </div> */}
+            {/* <div className="bg-white p-4 rounded-md shadow-md">
               <p className="text-gray-500">My inventory</p>
               <div className="flex justify-between items-center mt-2">
                 <span>Items</span>
                 <span className="text-blue-500">{inventory.length}</span>
               </div>
-            </div>
+            </div> */}
             <div className="bg-white p-4 rounded-md shadow-md">
               <p className="text-gray-500">Total orders</p>
               <div className="flex justify-between items-center mt-2">
