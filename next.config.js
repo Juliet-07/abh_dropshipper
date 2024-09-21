@@ -59,6 +59,7 @@ module.exports = withPWA({
       "lh3.googleusercontent.com",
       "",
       "images.dashter.com",
+      "adhproject.blob.core.windows.net",
     ],
   },
 

@@ -121,7 +121,7 @@ const Navbar = () => {
               >
                 <FiBell className="w-6 h-6 drop-shadow-xl" />
               </button> */}
-              <button
+              {/* <button
                 aria-label="Total"
                 onClick={toggleCartDrawer}
                 className="relative px-5 text-white text-2xl font-bold"
@@ -130,7 +130,7 @@ const Navbar = () => {
                   {totalItems}
                 </span>
                 <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
-              </button>
+              </button> */}
               <button
                 aria-label="Total"
                 onClick={handleDropshippingClick}

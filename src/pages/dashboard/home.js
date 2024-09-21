@@ -42,7 +42,28 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+    const getMyInventory = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${apiURL}/dropshipping/my-inventories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
+        console.log(response.data.data, "My Inventory");
+        setInventory(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
 
+    getMyInventory();
     getMyOrders();
   }, []);
 
@@ -53,14 +74,14 @@ const Dashboard = () => {
           {/* Dashboard Header */}
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-xl font-primarySemibold">Dashboard</h1>
-            <button className="flex items-center space-x-2 bg-[#8BCB90]/[12%] text-green-600 px-4 py-2 text-sm rounded-md font-primarySemibold">
+            {/* <button className="flex items-center space-x-2 bg-[#8BCB90]/[12%] text-green-600 px-4 py-2 text-sm rounded-md font-primarySemibold">
               <FiDownload className="text-sm" />
               <span>Download</span>
-            </button>
+            </button> */}
           </div>
 
           {/* Date Filters */}
-          <div className="flex space-x-4 mb-8 overflow-x-auto">
+          {/* <div className="flex space-x-4 mb-8 overflow-x-auto">
             <button className="px-3 py-1 bg-orange-500 text-white rounded-md">
               Today
             </button>
@@ -73,11 +94,11 @@ const Dashboard = () => {
             <button className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md">
               Customize date
             </button>
-          </div>
+          </div> */}
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            {/* <div className="bg-white p-4 rounded-md shadow-md border border-[#CFCBCB]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8 bg-slate-100 p-4">
+            <div className="bg-white p-4 rounded-md shadow-md border border-[#CFCBCB]">
               <div className="flex justify-between items-center">
                 <Image width={18} height={18} src="/sub.png" alt="logo" />
                 <span className="text-sm text-[#373435]">
@@ -92,14 +113,14 @@ const Dashboard = () => {
                   <span>Active</span>
                 </div>
               </div>
-            </div> */}
-            {/* <div className="bg-white p-4 rounded-md shadow-md">
+            </div>
+            <div className="bg-white p-4 rounded-md shadow-md">
               <p className="text-gray-500">My inventory</p>
               <div className="flex justify-between items-center mt-2">
                 <span>Items</span>
                 <span className="text-blue-500">{inventory.length}</span>
               </div>
-            </div> */}
+            </div>
             <div className="bg-white p-4 rounded-md shadow-md">
               <p className="text-gray-500">Total orders</p>
               <div className="flex justify-between items-center mt-2">

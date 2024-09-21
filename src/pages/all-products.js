@@ -45,10 +45,10 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
     }
     const getProducts = () => {
       axios
-        .get(`${apiURL}/products/list/wholesale`)
+        .get(`${apiURL}/products/list/all`)
         .then((response) => {
-          console.log(response.data.data.products);
-          setProducts(response.data.data.products);
+          console.log(response.data.data.data);
+          setProducts(response.data.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -78,7 +78,6 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
         return products;
     }
   };
-
 
   const filteredProducts = selectedCategories.length
     ? products.filter((product) =>
@@ -116,7 +115,10 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                 </div>
                 {/* Mobile Filter */}
                 <div className="md:hidden">
-                  <div className="flex items-center gap-10" onClick={toggleMobileFilter}>
+                  <div
+                    className="flex items-center gap-10"
+                    onClick={toggleMobileFilter}
+                  >
                     <p className="font-primarySemibold">Filter</p>
                     <span>{isMobileFilterVisible ? "▲" : "▼"}</span>
                   </div>
@@ -154,7 +156,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         loading={loading}
                       />
                     ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3    2xl:grid-cols-5 gap-2 md:gap-3 lg:gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-6 ">
                         {sortedAndFilteredProducts.map((product) => (
                           <ProductCard
                             key={product.id}

@@ -65,11 +65,13 @@ const ProductInfo = ({ params }) => {
     }
   };
 
+  const handleBuyNow = () => {
+    router.push(`/product-info/dropshipping`);
+  };
+
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await fetch(
-        `${apiURL}/products/list/wholesale/${productId}`
-      );
+      const response = await fetch(`${apiURL}/products/list-one/${productId}`);
       const data = await response.json();
       console.log(data.data, "product details");
       setProduct(data.data);
@@ -118,6 +120,16 @@ const ProductInfo = ({ params }) => {
                   </label>
                 </div>
                 <br />
+                <button
+                  aria-label="Total"
+                  onClick={toggleCartDrawer}
+                  className="relative px-5 text-white text-2xl font-bold"
+                >
+                  <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                    {totalItems}
+                  </span>
+                  <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
+                </button>
                 <div className="w-full h-[50px] border-[1px] px-4 flex flex-row items-center gap-4 rounded-xl">
                   <input
                     type="radio"
@@ -163,7 +175,7 @@ const ProductInfo = ({ params }) => {
               {/* Image Section */}
               <div className="flex md:flex-[35] flex-col px-3 sm:px-10 py-10">
                 <div
-                  className={`flex flex-[45] w-full min-h-[210px]`}
+                  className={`flex flex-[40] w-full min-h-[100px]`}
                   style={{
                     backgroundImage: `url(${product.featured_image})`,
                     backgroundSize: "contain",
@@ -211,14 +223,25 @@ const ProductInfo = ({ params }) => {
                 </div>
                 <div>
                   <b>Price:</b> {product.currency + " " + product.sellingPrice}{" "}
+                  {product.productType === "RETAIL" ? "per unit" : "per carton"}
+                </div>
+                {product.productType !== "RETAIL" && (
+                  <div>
+                    <p className="text-[red] text-sm">
+                      Minimum order {product.maximumOrderPerCarton} of cartons
+                    </p>
+                  </div>
+                )}
+                {/* <div>
+                  <b>Price:</b> {product.currency + " " + product.sellingPrice}{" "}
                   per carton
                 </div>
-                {/* <p>14 units per carton</p> */}
                 <div>
                   <p className="text-[red] text-sm">
                     Minimum order {product.maximumOrderPerCarton} of cartons
                   </p>
-                </div>
+                </div> */}
+
                 <div className="flex md:flex-row flex-col flex-wrap gap-[20px] md:items-center min-h-[60px]">
                   <div className="flex flex-row flex-wrap gap-[20px] items-center flex-[30] bg-[#4F4F4F] min-h-[54px] px-4 justify-between max-w-[200px]">
                     <MinusIcon
@@ -256,10 +279,10 @@ const ProductInfo = ({ params }) => {
                     </button> */}
                   </div>
                 </div>
-                <br />
                 <button
                   className="flex w-full max-w-[500px] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#F58634] items-center justify-center text-white font-primaryBold my-4"
-                  onClick={() => setbuyNowModal(true)}
+                  // onClick={() => setbuyNowModal(true)}
+                  onClick={handleBuyNow}
                 >
                   Buy now
                 </button>
