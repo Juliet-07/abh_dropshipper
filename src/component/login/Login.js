@@ -41,7 +41,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
       // router.push(redirect || "/checkout");
       // router.push("/user/dashboard")
       if (redirect) {
-        router.push("/checkout");
+        router.push("/product-info/dropshipping");
       } else {
         router.push("/dashboard/home");
       }

@@ -23,6 +23,8 @@ import FilterSidebar from "./filterSidebar";
 const sortingOptions = [
   { value: "relevance", label: "Relevance" },
   { value: "newest", label: "Newest Arrival" },
+  { value: "wholesale", label: "Wholesale Products" },
+  { value: "retail", label: "Retail Products" },
   { value: "priceHighLow", label: "Price: High - Low" },
   { value: "priceLowHigh", label: "Price: Low - High" },
 ];
@@ -68,12 +70,22 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
         return products; // Implement relevance sorting logic
       case "newest":
         return [...products].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
       case "priceHighLow":
         return [...products].sort((a, b) => b.price - a.price);
       case "priceLowHigh":
         return [...products].sort((a, b) => a.price - b.price);
+      case "wholesale":
+        // Filter by product_type === 'wholesale' and then sort by price
+        return [...products]
+          .filter((product) => product.productType === "WHOLESALE")
+          .sort((a, b) => a.price - b.price); // Sort by price (low to high)
+      case "retail":
+        // Filter by product_type === 'retail' and then sort by price
+        return [...products]
+          .filter((product) => product.productType === "RETAIL")
+          .sort((a, b) => a.price - b.price); // Sort by price (low to high)
       default:
         return products;
     }

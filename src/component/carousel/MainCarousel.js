@@ -33,7 +33,7 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.first_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.first_img) ||
-        "/slider/slider-1.png",
+        "/slider/banner-1.jpg",
     },
     {
       id: 2,
@@ -49,24 +49,24 @@ const MainCarousel = () => {
       url: showingUrl(storeCustomizationSetting?.slider?.second_link),
       image:
         showingImage(storeCustomizationSetting?.slider?.second_img) ||
-        "/slider/slider-2.png",
+        "/slider/banner-2.jpg",
     },
-    {
-      id: 3,
-      title: showingTranslateValue(
-        storeCustomizationSetting?.slider?.third_title
-      ),
-      info: showingTranslateValue(
-        storeCustomizationSetting?.slider?.third_description
-      ),
-      buttonName: showingTranslateValue(
-        storeCustomizationSetting?.slider?.third_button
-      ),
-      url: showingUrl(storeCustomizationSetting?.slider?.third_link),
-      image:
-        showingImage(storeCustomizationSetting?.slider?.third_img) ||
-        "/slider/slider-3.png",
-    },
+    // {
+    //   id: 3,
+    //   title: showingTranslateValue(
+    //     storeCustomizationSetting?.slider?.third_title
+    //   ),
+    //   info: showingTranslateValue(
+    //     storeCustomizationSetting?.slider?.third_description
+    //   ),
+    //   buttonName: showingTranslateValue(
+    //     storeCustomizationSetting?.slider?.third_button
+    //   ),
+    //   url: showingUrl(storeCustomizationSetting?.slider?.third_link),
+    //   image:
+    //     showingImage(storeCustomizationSetting?.slider?.third_img) ||
+    //     "/slider/slider-3.png",
+    // },
     {
       id: 4,
       title: showingTranslateValue(
