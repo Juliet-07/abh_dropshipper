@@ -93,11 +93,9 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
 
   const filteredProducts = selectedCategories.length
     ? products.filter((product) =>
-        selectedCategories.some((category) => {
-          if (Array.isArray(product.category)) {
-            return product.category.includes(category);
-          }
-          return product.category === category;
+        selectedCategories.some((selectedCategory) => {
+          // Check if the categoryId.name matches any of the selected categories
+          return product.categoryId?.name === selectedCategory;
         })
       )
     : products;
