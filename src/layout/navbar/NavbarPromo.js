@@ -147,13 +147,13 @@ const NavbarPromo = () => {
                 >
                   Sell on ABH
                 </Link>
-                <Link
+                {/* <Link
                   onClick={() => setIsLoading(!isLoading)}
                   href="https://abh-customer.vercel.app/"
                   className="font-serif mx-4 py-2 text-sm font-medium hover:text-[#8DCB90]"
                 >
                   Retail Purchase
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

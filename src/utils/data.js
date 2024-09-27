@@ -54,14 +54,14 @@ const pages = [
     href: "/terms-and-conditions",
     icon: FiFileText,
   },
-  {
-    title: "Bulk Purchase",
-    href: "#",
-    icon: FiGift,
-  },
+  // {
+  //   title: "Bulk Purchase",
+  //   href: "#",
+  //   icon: FiGift,
+  // },
   {
     title: "Sell on ABH",
-    href: "#",
+    href: "/vendor/signup",
     icon: FiShoppingBag,
   },
   // {
@@ -74,22 +74,22 @@ const pages = [
 const userSidebar = [
   {
     title: "Dashboard",
-    href: "/user/dashboard",
+    href: "/dashboard/home",
     icon: FiGrid,
   },
   {
     title: "My Orders",
-    href: "/user/my-orders",
+    href: "/dashboard/orders",
     icon: FiList,
   },
   {
     title: "Update Profile",
-    href: "/user/update-profile",
+    href: "/dashboard/profile",
     icon: FiSettings,
   },
   {
     title: "Change Password",
-    href: "/user/change-password",
+    href: "/dashboard/profile",
     icon: FiFileText,
   },
 ];
