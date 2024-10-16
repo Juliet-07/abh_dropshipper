@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Image from "next/image";
 import Sidebar from "./sidebar";
 import { IoArrowBackOutline, IoPersonSharp } from "react-icons/io5";
@@ -12,6 +13,11 @@ const Profile = () => {
 
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("abhUserInfo");
+    window.location.href = "/";
   };
 
   let viewToRender;
@@ -56,7 +62,7 @@ const Profile = () => {
 
         <div
           className="font-primaryMedium cursor-pointer"
-          onClick={() => setShowPreview(true)}
+          // onClick={() => setShowPreview(true)}
         >
           Edit
         </div>
@@ -162,7 +168,10 @@ const Profile = () => {
               <IoArrowBackOutline size={20} />
               <span className="mx-2">Profile</span>
             </Link>
-            <button className="text-red-600 border border-red-600 px-4 py-2 rounded-md">
+            <button
+              onClick={handleLogout}
+              className="text-red-600 border border-red-600 px-4 py-2 rounded-md"
+            >
               Log out
             </button>
           </div>
@@ -203,20 +212,48 @@ const Profile = () => {
 export default Profile;
 
 const PersonalInfo = () => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const token = localStorage.getItem("abhUserInfo");
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const getUserData = () => {
+      axios
+        .get(`${apiURL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data, "User Info");
+          setUserData(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getUserData();
+  }, []);
   return (
     <div>
       <div className="w-full bg-white p-4 rounded-xl shadow-md space-y-4">
         <div className="flex justify-between items-center">
           <h3 className="font-medium text-gray-900">Name</h3>
-          <span className="font-semibold text-gray-700">Roselyn Klein</span>
+          <span className="font-semibold text-gray-700">
+            {userData.firstName + " " + userData.lastName}
+          </span>
         </div>
         <div className="flex justify-between items-center">
           <h3 className="font-medium text-gray-900">Email</h3>
-          <span className="font-semibold text-gray-700">johndoe@gmail.com</span>
+          <span className="font-semibold text-gray-700">{userData.email}</span>
         </div>
         <div className="flex justify-between items-center">
           <h3 className="font-medium text-gray-900">Phone</h3>
-          <span className="font-semibold text-gray-700">08123122311</span>
+          <span className="font-semibold text-gray-700">
+            {userData.phoneNumber}
+          </span>
         </div>
       </div>
     </div>

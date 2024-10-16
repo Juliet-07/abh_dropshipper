@@ -24,9 +24,11 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    let ordersData;
     const getMyOrders = async () => {
       try {
         setLoading(true);
@@ -37,7 +39,8 @@ const Orders = () => {
           },
         });
         console.log(response.data.data.data, "Orders");
-        setOrders(response.data.data.data);
+        ordersData = response.data.data.data;
+        setOrders(ordersData.reverse());
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -71,7 +74,16 @@ const Orders = () => {
       query: { id: order._id }, // Pass order ID as query parameter
     });
   };
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+
+  const paginatedTable = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   // const handleOrderDetails = (data) => {
   //   // Navigate to the new page and pass the data through state
   //   console.log("handleViewDetails called with:", data);
@@ -104,20 +116,20 @@ const Orders = () => {
             {/* table proper */}
             {filteredOrders.length > 0 ? (
               <div className="my-10 space-y-10">
-                {filteredOrders.map((order) => (
+                {paginatedTable.map((order) => (
                   <div
                     key={order.id}
                     className="bg-[#0B63B2]/[4%] rounded-md p-4 flex items-center md:space-x-4 border-l border-l-[#8BCB90]"
                   >
                     <Image
-                      src={order.imageUrl}
+                      src="/orderCart.jpg"
                       alt={order.product}
                       width={117}
                       height={112}
                       className="hidden md:block rounded-md"
                     />
                     <Image
-                      src={order.imageUrl}
+                      src="/orderCart.jpg"
                       alt={order.product}
                       width={50}
                       height={50}
@@ -170,6 +182,21 @@ const Orders = () => {
                     </div>
                   </div>
                 ))}
+                <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`w-8 rounded mx-1 p-2 ${
+                        currentPage === index + 1
+                          ? "bg-[#359E52] text-white"
+                          : "bg-gray-200 text-black"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
               <table className="my-10 w-full">

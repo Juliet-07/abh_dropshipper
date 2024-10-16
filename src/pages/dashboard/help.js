@@ -31,7 +31,7 @@ const Help = () => {
               <div className="flex">
                 <FiPhone size={20} />
                 <p className="mx-4">Call us</p>
-                <p>123456789</p>
+                <p>+2347061131509</p>
               </div>
             </div>
           </div>

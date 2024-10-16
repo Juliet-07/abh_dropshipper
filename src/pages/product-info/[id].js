@@ -279,13 +279,13 @@ const ProductInfo = ({ params }) => {
                     </button> */}
                   </div>
                 </div>
-                <button
+                {/* <button
                   className="flex w-full max-w-[500px] h-[50px] rounded-[5px] text-[14px] p-2 bg-[#F58634] items-center justify-center text-white font-primaryBold my-4"
                   // onClick={() => setbuyNowModal(true)}
                   onClick={handleBuyNow}
                 >
                   Buy now
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
