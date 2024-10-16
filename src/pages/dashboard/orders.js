@@ -99,10 +99,10 @@ const Orders = () => {
               {tabs.map((tab) => (
                 <button
                   key={tab}
-                  className={`px-3 py-1 rounded ${
+                  className={`px-1 md:px-3 py-1 rounded ${
                     activeTab === tab
-                      ? "bg-[#359E52] text-white"
-                      : "bg-[#C1C6C5] text-sm"
+                      ? "bg-[#359E52] text-white text-xs md:text-sm"
+                      : "bg-[#C1C6C5] text-xs md:text-sm"
                   }`}
                   onClick={() => {
                     setActiveTab(tab);
@@ -139,10 +139,10 @@ const Orders = () => {
                       <h3 className="text-sm md:text-base font-primaryMedium text-[#373435]">
                         {order.product}
                       </h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500">
                         Order: {order?._id?.substring(20, 24)}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500">
                         Quantity: {order?.products?.length} product(s)
                       </p>
                     </div>
@@ -169,7 +169,7 @@ const Orders = () => {
                         />
                         <span className="text-xs">{order.deliveryStatus}</span>
                       </div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-[7px] md:text-xs text-gray-500">
                         On {dayjs(order.created_at).format("MMMM D, YYYY")}
                       </p>
                       <div

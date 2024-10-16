@@ -86,7 +86,7 @@ const Dashboard = () => {
       <Sidebar>
         <div className="flex-grow md:px-6">
           {/* Dashboard Header */}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-6 p-3 md:p-0">
             <h1 className="text-xl font-primarySemibold">Dashboard</h1>
             {/* <button className="flex items-center space-x-2 bg-[#8BCB90]/[12%] text-green-600 px-4 py-2 text-sm rounded-md font-primarySemibold">
               <FiDownload className="text-sm" />
@@ -180,10 +180,10 @@ const Dashboard = () => {
                       <h3 className="text-sm md:text-base font-primaryMedium text-[#373435]">
                         {order.product}
                       </h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500">
                         Order: {order?._id?.substring(20, 24)}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500">
                         Quantity: {order?.products?.length} product(s)
                       </p>
                     </div>
