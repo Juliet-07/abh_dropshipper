@@ -9,6 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FiShoppingCart, FiUser, FiBell } from "react-icons/fi";
 import { TfiPackage } from "react-icons/tfi";
 import useTranslation from "next-translate/useTranslation";
+import axios from "axios";
 
 //internal import
 import NavbarPromo from "@layout/navbar/NavbarPromo";
@@ -18,16 +19,19 @@ import CartDrawer from "@component/drawer/CartDrawer";
 import { SidebarContext } from "@context/SidebarContext";
 import useGetSetting from "@hooks/useGetSetting";
 import { handleLogEvent } from "@utils/analytics";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("abhUserInfo");
-  const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
+  const { id } = router.query;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({});
   const [searchText, setSearchText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer } = useContext(SidebarContext);
   const { totalItems } = useCart();
-  const router = useRouter();
-  const { id } = router.query;
 
   // const {
   //   state: { userInfo },
@@ -60,6 +64,34 @@ const Navbar = () => {
   //     setImageUrl(user.image);
   //   }
   // }, []);
+
+  useEffect(() => {
+    const getUserData = () => {
+      if (!token) {
+        console.log("No token found. User is not logged in.");
+        setIsLoggedIn(false);
+        return; // Exit the function if there's no token.
+      }
+
+      axios
+        .get(`${apiURL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data, "User Info");
+          setUserData(response.data.data); // Set user data in the state
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    };
+
+    getUserData();
+  }, []);
 
   return (
     <>
@@ -143,29 +175,18 @@ const Navbar = () => {
               </button>
               {/* Profile */}
               <button
-                className="pl-5 text-white text-2xl font-bold"
+                className="text-white font-primaryMedium"
                 aria-label="Login"
               >
-                {/* {imageUrl || userInfo?.image ? (
-                  <Link
-                    href="/user/dashboard"
-                    className="relative top-1 w-6 h-6"
-                  >
-                    <Image
-                      width={29}
-                      height={29}
-                      src={imageUrl || userInfo?.image}
-                      alt="user"
-                      className="bg-white rounded-full"
+                {isLoggedIn ? (
+                  <div className="flex items-center justify-between">
+                    <FaUserCircle
+                      size={24}
+                      style={{ cursor: "pointer" }}
+                      // onClick={() => setShowDropdown(!showDropdown)}
                     />
-                  </Link>
-                ) : userInfo?.name ? (
-                  <Link
-                    href="/user/dashboard"
-                    className="leading-none font-bold font-serif block"
-                  >
-                    {userInfo?.name[0]}
-                  </Link>
+                    <span className="p-2">{userData?.firstName || "User"}</span>{" "}
+                  </div>
                 ) : (
                   <div
                     className="flex items-center"
@@ -176,16 +197,7 @@ const Navbar = () => {
                     </span>
                     <p className="mx-2 text-sm">Sign in</p>
                   </div>
-                )} */}
-                <div
-                  className="flex items-center"
-                  onClick={() => setModalOpen(!modalOpen)}
-                >
-                  <span>
-                    <FiUser className="w-6 h-6 drop-shadow-xl" />
-                  </span>
-                  <p className="mx-2 text-sm">Sign in</p>
-                </div>
+                )}
               </button>
             </div>
             {/* <Link href="/vendor/signup">

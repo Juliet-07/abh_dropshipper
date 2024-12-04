@@ -156,7 +156,7 @@ const ProductCard = ({ product, attributes }) => {
             </span> */}
             <h2 className="text-heading truncate mb-0 block text-sm font-medium text-red-600">
               <span className="line-clamp-2 text-xs">
-                {product.productType} Product
+                {product.productType}
               </span>
             </h2>
           </div>
