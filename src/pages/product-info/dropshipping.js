@@ -278,7 +278,7 @@ const PaymentSummary = ({ params }) => {
                 <br />
                 <div className="flex flex-row gap-2 w-full border-b h-[50px] justify-between mt-8">
                   <b>Total</b>
-                  <b>₦{parseFloat(totalCost).toFixed(2)}</b>
+                  <b>₦{parseFloat(totalCost).toLocaleString()}</b>
                 </div>
                 {/* Button */}
                 <div className="w-full flex items-center justify-center my-10">
