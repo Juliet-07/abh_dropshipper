@@ -21,6 +21,7 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -28,7 +29,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
   const [products, setProducts] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState(15);
+  const visibleProducts = 15;
   const [categories, setCategories] = useState([]);
 
   function scrollCategories(direction) {
@@ -147,7 +148,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         query: { name: category.name }, // Add the category name as a query parameter
                       }}
                     >
-                      <div className="w-full h-full p-2 md:p-3 bg-[#A5D8A9] flex flex-col items-center justify-center rounded md:rounded-lg">
+                      <div className="min-w-[150px] md:min-w-[250px] h-full p-2 md:p-3 bg-[#A5D8A9] flex flex-col items-center justify-center rounded md:rounded-lg">
                         <Image
                           width={211}
                           height={226}
@@ -182,6 +183,16 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </button>
               </div>
             </div>
+
+            {/* WhatsApp Sticky Button For User Support */}
+            <a
+              href="https://wa.me/+2347068528399" // Replace with your WhatsApp number
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fixed bottom-20 md:bottom-5 right-5 bg-green-500 rounded-full p-3 shadow-lg cursor-pointer z-50"
+            >
+              <FaWhatsapp size={35} color="white" />
+            </a>
 
             {/* Our Products */}
             <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">

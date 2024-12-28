@@ -38,6 +38,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState(sortingOptions[0]);
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (router.asPath === "/") {
@@ -91,16 +92,35 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
     }
   };
 
-  const filteredProducts = selectedCategories.length
-    ? products.filter((product) =>
-        selectedCategories.some((selectedCategory) => {
-          // Check if the categoryId.name matches any of the selected categories
-          return product.categoryId?.name === selectedCategory;
-        })
-      )
-    : products;
+  // Filter Products
+  const filteredProducts = products.filter((product) => {
+    const matchesSearchQuery = product.name
+      ?.toLowerCase()
+      .includes(searchQuery.trim().toLowerCase());
 
-  const sortedAndFilteredProducts = sortProducts(filteredProducts);
+    const matchesCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(product.categoryId?.name);
+
+    return matchesSearchQuery && matchesCategory;
+  });
+
+  // Prioritize search results
+  const prioritizedProducts = filteredProducts.sort((a, b) => {
+    const aMatch = a.name
+      ?.toLowerCase()
+      .includes(searchQuery.trim().toLowerCase());
+    const bMatch = b.name
+      ?.toLowerCase()
+      .includes(searchQuery.trim().toLowerCase());
+
+    // Matching products move to the top
+    if (aMatch && !bMatch) return -1;
+    if (!aMatch && bMatch) return 1;
+    return 0; // No change in order
+  });
+
+  const sortedAndFilteredProducts = sortProducts(prioritizedProducts);
 
   const toggleMobileFilter = () => {
     setIsMobileFilterVisible(!isMobileFilterVisible);
@@ -142,9 +162,15 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 w-full">
                     <div className="md:text-xl font-primarySemibold">
                       All Products
-                      <span className="mx-2 font-primaryRegular">
-                        ( {sortedAndFilteredProducts.length} products found)
-                      </span>
+                    </div>
+                    <div className="w-full md:w-1/2">
+                      <input
+                        type="text"
+                        placeholder="Search for products..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full p-2 border rounded"
+                      />
                     </div>
                     <div className="flex items-center gap-3">
                       <p className="font-primarySemibold">Sort by:</p>
@@ -153,6 +179,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         options={sortingOptions}
                         value={sortOption}
                         onChange={handleSortChange}
+                        className="z-50"
                       />
                     </div>
                   </div>
@@ -165,8 +192,15 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         error={error}
                         loading={loading}
                       />
+                    ) : sortedAndFilteredProducts.length === 0 ? (
+                      <div className="text-center py-10">
+                        <p className="text-lg font-primarySemibold text-gray-500">
+                          No products found. Try adjusting your search or
+                          filter.
+                        </p>
+                      </div>
                     ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-6 ">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5  2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                         {sortedAndFilteredProducts.map((product) => (
                           <ProductCard
                             key={product.id}
