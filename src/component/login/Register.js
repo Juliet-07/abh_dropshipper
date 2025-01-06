@@ -43,6 +43,15 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
   };
 
   const handleRegisteration = async () => {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      notifyError(
+        "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character."
+      );
+      return;
+    }
     setLoading(true);
     try {
       const user = await axios.post(`${apiURL}/user`, register);
@@ -56,9 +65,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
       if (error.response) {
         const errorMessage = error.response.data.message || "An error occurred";
         console.log("Error:", errorMessage);
-        notifyError(
-          errorMessage[0] || "Sorry! Unable to complete registration"
-        );
+        notifyError(errorMessage || "Sorry! Unable to complete registration");
       } else {
         console.log("Error", error.message);
         notifyError("An unexpected error occurred. Please try again.");
@@ -198,6 +205,16 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             </div>
 
             <Error errorName={errors.password} />
+            {/* Helper text for password requirements */}
+            <p className="text-xs text-red-500 mt-2">
+              Password must be at least 8 characters long, include an uppercase
+              letter, one number, and one special character.
+            </p>
+
+            {/* Display an error message if password doesn't meet criteria */}
+            {errors.password && (
+              <Error errorName="Password must meet the specified criteria." />
+            )}
           </div>
 
           <div className="flex items-center justify-between">
