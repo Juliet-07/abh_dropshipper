@@ -314,7 +314,7 @@ const ShipItems = () => {
                       />
                     </div>
 
-                    <div className="col-span-6 sm:col-span-3">
+                    {/* <div className="col-span-6 sm:col-span-3">
                       <InputShipping
                         currency={currency}
                         handleShippingCost={handleCalculateDeliveryFee}
@@ -324,7 +324,7 @@ const ShipItems = () => {
                         cost={shippingCost}
                         onClick={handleLogisticsSelect}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="my-2">
@@ -342,7 +342,7 @@ const ShipItems = () => {
                       />
                       {/* <Error errorName={errors.paymentMethod} /> */}
                     </div>
-                    <div className="col-span-6 sm:col-span-3">
+                    {/* <div className="col-span-6 sm:col-span-3">
                       <InputPayment
                         // setShowCard={setShowCard}
                         // register={register}
@@ -352,8 +352,8 @@ const ShipItems = () => {
                         // onClick={() => handlePaymentSelect("PROVIDUS")}
                         onClick={handlePaymentSelect}
                       />
-                      {/* <Error errorName={errors.paymentMethod} /> */}
-                    </div>
+                      <Error errorName={errors.paymentMethod} />
+                    </div> */}
                   </div>
                 </div>
 

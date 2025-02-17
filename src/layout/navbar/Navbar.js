@@ -33,10 +33,6 @@ const Navbar = () => {
   const { toggleCartDrawer } = useContext(SidebarContext);
   const { totalItems } = useCart();
 
-  // const {
-  //   state: { userInfo },
-  // } = useContext(UserContext);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // return;
@@ -57,13 +53,6 @@ const Navbar = () => {
       setModalOpen(true);
     }
   };
-
-  // useEffect(() => {
-  //   if (Cookies.get("userInfo")) {
-  //     const user = JSON.parse(Cookies.get("userInfo"));
-  //     setImageUrl(user.image);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const getUserData = () => {

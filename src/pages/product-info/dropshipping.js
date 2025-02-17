@@ -261,7 +261,7 @@ const PaymentSummary = ({ params }) => {
                       />
                       {/* <Error errorName={errors.paymentMethod} /> */}
                     </div>
-                    <div className="col-span-6 sm:col-span-3">
+                    {/* <div className="col-span-6 sm:col-span-3">
                       <InputPayment
                         // setShowCard={setShowCard}
                         // register={register}
@@ -271,8 +271,8 @@ const PaymentSummary = ({ params }) => {
                         // onClick={() => handlePaymentSelect("PROVIDUS")}
                         onClick={handlePaymentSelect}
                       />
-                      {/* <Error errorName={errors.paymentMethod} /> */}
-                    </div>
+                      <Error errorName={errors.paymentMethod} />
+                    </div> */}
                   </div>
                 </div>
                 <br />

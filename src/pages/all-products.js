@@ -133,7 +133,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
       ) : (
         <Layout>
           <div className="min-h-screen">
-            <StickyCart />
+            {/* <StickyCart /> */}
 
             <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10">
