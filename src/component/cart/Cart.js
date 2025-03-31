@@ -20,10 +20,10 @@ const Cart = () => {
   const { currency } = useUtilsFunction();
 
   const handleOpenLogin = () => {
-    if (router.push("/?redirect=/checkout")) {
-      toggleCartDrawer();
-      setModalOpen(!modalOpen);
-    }
+    // if (router.push("/?redirect=/checkout")) {
+    toggleCartDrawer();
+    setModalOpen(!modalOpen);
+    // }
   };
 
   // Calculate the cart total using sellingPrice instead of price

@@ -1,34 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import useTranslation from "next-translate/useTranslation";
-import {
-  FacebookIcon,
-  LinkedinIcon,
-  PinterestIcon,
-  TwitterIcon,
-  WhatsappIcon,
-} from "react-share";
+import axios from "axios";
+import { FacebookIcon, LinkedinIcon } from "react-share";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
-
-//internal import
-import { UserContext } from "@context/UserContext";
-import useGetSetting from "@hooks/useGetSetting";
-import useUtilsFunction from "@hooks/useUtilsFunction";
 import LoginModal from "@component/modal/LoginModal";
+import { useRouter } from "next/router";
 
 const Footer = () => {
-  const { t } = useTranslation();
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const router = useRouter();
   const token = localStorage.getItem("abhUserInfo");
   const [isModalOpen, setModalOpen] = useState(false);
-
-  const {
-    state: { userInfo },
-  } = useContext(UserContext);
-  const { showingTranslateValue } = useUtilsFunction();
-  const { loading, storeCustomizationSetting } = useGetSetting();
+  const [categories, setCategories] = useState([]);
+  const visibleCategories = 4;
 
   const handleProtectedRoute = (path) => {
     if (token) {
@@ -37,6 +24,22 @@ const Footer = () => {
       setModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    const getCategories = () => {
+      axios
+        .get(`${apiURL}/category`)
+        .then((response) => {
+          console.log(response.data.data.items);
+          setCategories(response.data.data.items);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getCategories();
+  }, [router]);
 
   return (
     <>
@@ -95,61 +98,25 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Latest News */}
+            {/* Category */}
             <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
               <h3 className="text-md lg:leading-7 font-semibold mb-4 sm:mb-5 lg:mb-6 pb-0.5">
                 Category
               </h3>
               <ul className="text-sm lg:text-15px flex flex-col space-y-3">
-                <li className="flex items-baseline">
-                  <Link
-                    href="#"
-                    className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                  >
-                    Fashion and Apparel
-                  </Link>
-                </li>
-
-                <li className="flex items-baseline">
-                  <Link
-                    href="#"
-                    className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                  >
-                    Electronics
-                  </Link>
-                </li>
-                <li className="flex items-baseline">
-                  <Link
-                    href="#"
-                    className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                  >
-                    Grocery & Gourmet
-                  </Link>
-                </li>
-                <li className="flex items-baseline">
-                  <Link
-                    href="#"
-                    className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                  >
-                    Home and Kitchen
-                  </Link>
-                </li>
-                {/* <li className="flex items-baseline">
-                <Link
-                  href="#"
-                  className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                >
-                  Kids Care
-                </Link>
-              </li>
-              <li className="flex items-baseline">
-                <Link
-                  href="#"
-                  className="text-gray-600 inline-block w-full hover:text-emerald-500"
-                >
-                  Sport and Outdoor
-                </Link>
-              </li> */}
+                {categories.slice(0, visibleCategories).map((category) => (
+                  <li className="flex items-baseline">
+                    <Link
+                      href={{
+                        pathname: `/categories/${category._id}`,
+                        query: { name: category.name }, // Add the category name as a query parameter
+                      }}
+                      className="text-gray-600 inline-block w-full hover:text-emerald-500"
+                    >
+                      {category?.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -233,7 +200,7 @@ const Footer = () => {
               {/* <div></div> */}
               <div className="col-span-1">
                 <div>
-                  {(storeCustomizationSetting?.footer?.social_facebook ||
+                  {/* {(storeCustomizationSetting?.footer?.social_facebook ||
                     storeCustomizationSetting?.footer?.social_twitter ||
                     storeCustomizationSetting?.footer?.social_pinterest ||
                     storeCustomizationSetting?.footer?.social_linkedin ||
@@ -241,7 +208,7 @@ const Footer = () => {
                     <span className="text-base leading-7 font-medium block mb-2 pb-0.5">
                       {t("common:footer-follow-us")}
                     </span>
-                  )}
+                  )} */}
                   <ul className="text-sm flex">
                     <li className="flex items-center mr-3 transition ease-in-out duration-500">
                       <Link
@@ -309,7 +276,7 @@ const Footer = () => {
               <div className="col-span-1 text-center hidden lg:block md:block">
                 <div>
                   <p className="text-base leading-7 font-medium block">
-                    {t("common:footer-call-us")}
+                    Call us Today!
                   </p>
                   <h5 className="text-2xl font-bold text-[#359E52] leading-7">
                     +2347061131509
@@ -323,10 +290,7 @@ const Footer = () => {
                       width={274}
                       height={85}
                       className="w-full"
-                      src={
-                        storeCustomizationSetting?.footer?.payment_method_img ||
-                        "/payment-method/payment-logo.png"
-                      }
+                      src={"/payment-method/payment-logo.png"}
                       alt="payment method"
                     />
                   </li>

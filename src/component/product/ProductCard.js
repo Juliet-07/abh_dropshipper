@@ -103,11 +103,11 @@ const ProductCard = ({ product, attributes }) => {
 
       <div className="h-full group box-border overflow-hidden flex rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
         <div className="w-full flex justify-between">
-          <Stock
+          {/* <Stock
             product={product}
             stock={product.quantity - product.soldQuantity}
             card
-          />
+          /> */}
           {/* <Discount product={product} /> */}
         </div>
         {/* <div
@@ -118,7 +118,7 @@ const ProductCard = ({ product, attributes }) => {
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
         > */}
         <Link href={`/product-info/${product._id}`}>
-          <div className="relative w-full h-[170px] p-2">
+          <div className="relative w-full h-[100px] md:h-[150px] p-3 flex items-center justify-center">
             {product.images[0] ? (
               <img
                 src={product.featured_image}

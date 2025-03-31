@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import Layout from "@layout/Layout";
+import Layout from "@layout/LayoutCustom";
 import ProductCard from "@component/product/ProductCard";
 import Loading from "@component/preloader/Loading";
 import Select from "react-select";
+import Image from "next/image";
 
 const sortingOptions = [
   { value: "newest", label: "Newest Arrival" },
@@ -85,14 +86,25 @@ const CategoryPage = ({ params }) => {
       ) : error ? (
         <div className="text-red-500 text-center">{error}</div>
       ) : (
-        <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+        <div className="bg-gray-50 md:py-8 mx-auto max-w-screen-2xl px-3 sm:px-10">
+          <div className="relative w-full md:hidden">
+            <Image
+              width="0"
+              height="0"
+              sizes="100vw"
+              className="w-full h-auto"
+              priority
+              src={"/abh_logo.png"}
+              alt="logo"
+            />
+          </div>
           <div className="flex flex-col md:flex-row gap-4 md:gap-10">
             <main>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <h2 className="text-xl font-primaryMedium">
                   Products in {name} Category{" "}
                 </h2>
-                <div className="w-full md:w-1/2">
+                <div className="hidden md:block md:w-1/2">
                   <input
                     type="text"
                     placeholder="Search products..."
@@ -101,7 +113,7 @@ const CategoryPage = ({ params }) => {
                     className="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="hidden md:flex items-center gap-3">
                   <p className="font-primarySemibold">Sort by:</p>
                   <Select
                     options={sortingOptions}
@@ -109,6 +121,27 @@ const CategoryPage = ({ params }) => {
                     onChange={handleSortChange}
                     className="z-20"
                   />
+                </div>
+                {/* Mobile View */}
+                <div className="flex items-end md:hidden gap-4">
+                  <div className="w-full md:w-1/2">
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      className="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="font-primarySemibold">Sort by:</p>
+                    <Select
+                      options={sortingOptions}
+                      value={sortOption}
+                      onChange={handleSortChange}
+                      className="z-20"
+                    />
+                  </div>
                 </div>
               </div>
 

@@ -23,14 +23,6 @@ const MobileFooter = () => {
     state: { userInfo },
   } = useContext(UserContext);
 
-  const handleDropshippingClick = () => {
-    if (token) {
-      router.push(`/product-info/dropshipping`);
-    } else {
-      setModalOpen(true);
-    }
-  };
-
   return (
     <>
       <LoginModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
@@ -57,7 +49,8 @@ const MobileFooter = () => {
         </Link>
 
         <button
-          onClick={handleDropshippingClick}
+          // onClick={handleDropshippingClick}
+          onClick={toggleCartDrawer}
           className="h-9 w-9 relative whitespace-nowrap inline-flex items-center justify-center text-white text-lg"
         >
           <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 bg-red-500 rounded-full">

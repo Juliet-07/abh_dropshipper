@@ -114,14 +114,14 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             </div>
 
             {/* Shop by Category */}
-            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+            <div className="bg-gray-50 mx-auto max-w-screen-2xl lg:py-12 p-3 sm:px-10">
               <div className="flex items-center">
-                <div className="w-5 h-10 bg-[#359E52] rounded"></div>
+                <div className="w-2 md:w-5 h-10 bg-[#359E52] rounded"></div>
                 <p className="text-[#359E52] font-primarySemibold mx-4">
                   Categories
                 </p>
               </div>
-              <div className="py-5 md:text-xl font-primarySemibold">
+              <div className="py-2.5 md:py-4 md:text-xl font-primarySemibold">
                 Shop by Category
               </div>
               {/* Category Carousel */}
@@ -195,7 +195,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             </a>
 
             {/* Our Products */}
-            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+            <div className="bg-gray-50 mx-auto max-w-screen-2xl p-3 sm:px-10">
               <div className="flex items-center">
                 <div className="w-2 md:w-5 h-10 bg-[#359E52] rounded"></div>
                 <p className="text-[#359E52] font-primarySemibold mx-3 md:mx-4">
@@ -288,7 +288,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             </div> */}
 
             {/* promotional banner card */}
-            <div className="block mx-auto max-w-screen-2xl">
+            <div className="block mx-auto max-w-screen-2xl my-10">
               <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
                 <div className="lg:p-16 p-6 bg-[#359E52] shadow-sm border rounded-lg">
                   <CardTwo />

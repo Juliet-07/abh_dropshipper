@@ -5,9 +5,7 @@ import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
 import Select from "react-select";
-
-//internal import
-import Layout from "@layout/Layout";
+import Layout from "@layout/LayoutCustom";
 import useGetSetting from "@hooks/useGetSetting";
 import CardTwo from "@component/cta-card/CardTwo";
 import StickyCart from "@component/cart/StickyCart";
@@ -134,8 +132,18 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
         <Layout>
           <div className="min-h-screen">
             {/* <StickyCart /> */}
-
-            <div className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+            <div className="relative w-full md:hidden">
+              <Image
+                width="0"
+                height="0"
+                sizes="100vw"
+                className="w-full h-auto"
+                priority
+                src={"/abh_logo.png"}
+                alt="logo"
+              />
+            </div>
+            <div className="bg-gray-50 md:py-8 mx-auto max-w-screen-2xl px-3 sm:px-10">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10">
                 <div className="hidden md:block">
                   <p className="text-xl font-primarySemibold mb-4">Filter</p>
@@ -144,7 +152,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                   />
                 </div>
                 {/* Mobile Filter */}
-                <div className="md:hidden">
+                <div className="hidden">
                   <div
                     className="flex items-center gap-10"
                     onClick={toggleMobileFilter}
@@ -159,9 +167,12 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                   )}
                 </div>
                 <main className="w-full flex flex-col">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 w-full">
+                  <div className="hidden md:flex items-center justify-between gap-4 mb-4">
                     <div className="md:text-xl font-primarySemibold">
                       All Products
+                      {/* <span className="mx-2 font-primaryRegular text-xs">
+                        ( {sortedAndFilteredProducts.length} products found)
+                      </span> */}
                     </div>
                     <div className="w-full md:w-1/2">
                       <input
@@ -181,6 +192,37 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         onChange={handleSortChange}
                         className="z-50"
                       />
+                    </div>
+                  </div>
+
+                  {/* Mobile View */}
+                  <div className="flex flex-col mb-4 md:hidden">
+                    <div className="text-lg md:text-xl font-primarySemibold">
+                      All Products
+                      {/* <span className="mx-2 font-primaryRegular text-xs">
+                        ( {sortedAndFilteredProducts.length} products found)
+                      </span> */}
+                    </div>
+                    <div className="flex items-end gap-4">
+                      <div className="w-full md:w-1/2">
+                        <input
+                          type="text"
+                          placeholder="Search for products..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>{" "}
+                      <div className="flex flex-col gap-2">
+                        <p className="font-primarySemibold">Sort by:</p>
+
+                        <Select
+                          options={sortingOptions}
+                          value={sortOption}
+                          onChange={handleSortChange}
+                          className="z-50"
+                        />
+                      </div>
                     </div>
                   </div>
 
