@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import getCategories from "@services/CategoryServices";
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -23,24 +23,7 @@ const Accordion = ({ title, children }) => {
 };
 
 const FilterSidebar = ({ setSelectedCategories }) => {
-  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const getCategories = () => {
-      axios
-        .get(`${apiURL}/category`)
-        .then((response) => {
-          console.log(response.data.data.items);
-          setCategories(response.data.data.items);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
-    };
-
-    getCategories();
-  }, []);
 
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) => {
@@ -51,6 +34,15 @@ const FilterSidebar = ({ setSelectedCategories }) => {
       }
     });
   };
+
+  useEffect(() => {
+    const fetchAndSetCategories = async () => {
+      const cats = await getCategories();
+      setCategories(cats);
+    };
+
+    fetchAndSetCategories();
+  }, []);
 
   return (
     <aside className="w-[270px] bg-white">

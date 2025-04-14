@@ -17,7 +17,7 @@ const Layout = ({ title, description, children }) => {
 
       <div className="font-primaryRegular">
         <Head>
-          <title>ABH Markets</title>
+          <title>ABH Markets - Quality Products</title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href="/favicon.png" />
         </Head>

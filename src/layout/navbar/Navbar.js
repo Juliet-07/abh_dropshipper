@@ -42,7 +42,7 @@ const Navbar = () => {
       axios
         .get(`${apiURL}/products/list/all`)
         .then((response) => {
-          console.log(response.data.data.data);
+          // console.log(response.data.data.data);
           setProducts(response.data.data.data);
         })
         .catch((error) => {

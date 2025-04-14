@@ -2,41 +2,25 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
-import axios from "axios";
-
-//internal import
 import { pages } from "@utils/data";
-import useAsync from "@hooks/useAsync";
 import Loading from "@component/preloader/Loading";
 import { SidebarContext } from "@context/SidebarContext";
-import CategoryServices from "@services/CategoryServices";
 import CategoryCard from "@component/category/CategoryCard";
-import useUtilsFunction from "@hooks/useUtilsFunction";
+import getCategories from "@services/CategoryServices";
 
 const Category = () => {
-  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const { categoryDrawerOpen, closeCategoryDrawer } =
+  const { categoryDrawerOpen, closeCategoryDrawer, isLoading, error } =
     useContext(SidebarContext);
-  const { showingTranslateValue } = useUtilsFunction();
-  const { data, loading, error } = useAsync(() =>
-    CategoryServices.getShowingCategory()
-  );
+
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const getCategories = () => {
-      axios
-        .get(`${apiURL}/category`)
-        .then((response) => {
-          console.log(response.data.data.items);
-          setCategories(response.data.data.items);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
+    const fetchAndSetCategories = async () => {
+      const cats = await getCategories();
+      setCategories(cats);
     };
 
-    getCategories();
+    fetchAndSetCategories();
   }, []);
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer font-primaryRegular scrollbar-hide">
@@ -44,7 +28,7 @@ const Category = () => {
         <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-[#359E52] text-white border-b border-gray-100">
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
             <Link href="/" className="mr-10">
-              <Image width={100} height={38} src="/abh_logo.png" alt="logo" />
+              <Image width={200} height={50} src="/abh_logo.png" alt="logo" />
             </Link>
           </h2>
           <button
@@ -66,8 +50,8 @@ const Category = () => {
           <p className="flex justify-center align-middle items-center m-auto text-xl text-red-500">
             <span> {error}</span>
           </p>
-        ) : data.length === 0 ? (
-          <Loading loading={loading} />
+        ) : categories.length === 0 ? (
+          <Loading loading={isLoading} />
         ) : (
           <div className="relative grid gap-3 p-4 overflow-y-auto h-[40vh] md:h-full">
             {categories.map((category) => (

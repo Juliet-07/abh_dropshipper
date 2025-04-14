@@ -93,7 +93,7 @@ const ProductInfo = ({ params }) => {
       {isLoading ? (
         <Loading loading={isLoading} />
       ) : (
-        <Layout>
+        <Layout title={product?.name} description={product?.description}>
           {buyNowModal && (
             <div className="w-full flex items-center justify-center bg-[#00000080] fixed top-0 left-0 z-[200000] h-[100vh]">
               <div className="w-[90%] max-w-[700px] min-h-[400px] rounded-xl bg-white p-8 flex flex-col relative px-[10vw]">

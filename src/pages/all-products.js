@@ -1,25 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Link from "next/link";
-import { SidebarContext } from "@context/SidebarContext";
+import { useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
+import { SidebarContext } from "@context/SidebarContext";
 import Select from "react-select";
 import Layout from "@layout/LayoutCustom";
 import useGetSetting from "@hooks/useGetSetting";
-import CardTwo from "@component/cta-card/CardTwo";
-import StickyCart from "@component/cart/StickyCart";
 import Loading from "@component/preloader/Loading";
 import ProductCard from "@component/product/ProductCard";
-import FeatureCategory from "@component/category/FeatureCategory";
 import CMSkeleton from "@component/preloader/CMSkeleton";
-import MainCarousel from "@component/carousel/MainCarousel";
-import OfferCard from "@component/offer/OfferCard";
-import Banner from "@component/banner/Banner";
 import FilterSidebar from "./filterSidebar";
 
 const sortingOptions = [
-  { value: "relevance", label: "Relevance" },
+  { value: "relevance", label: "All Products" },
   { value: "newest", label: "Newest Arrival" },
   { value: "wholesale", label: "Wholesale Products" },
   { value: "retail", label: "Retail Products" },
@@ -27,102 +19,102 @@ const sortingOptions = [
   { value: "priceLowHigh", label: "Price: Low - High" },
 ];
 
-const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
-  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const router = useRouter();
+const AllProducts = ({ serverProducts, attributes }) => {
+  console.log(serverProducts, "checking if this loads");
   const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const { loading, error, storeCustomizationSetting } = useGetSetting();
-  const [products, setProducts] = useState([]);
+  const { loading, error } = useGetSetting();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState(sortingOptions[0]);
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
 
-  useEffect(() => {
-    if (router.asPath === "/") {
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
+  const groupByCategory = (products) => {
+    const grouped = {};
+
+    products.forEach((product) => {
+      const catId = product.categoryId?._id;
+      if (!grouped[catId]) {
+        grouped[catId] = [];
+      }
+      grouped[catId].push(product);
+    });
+
+    return Object.values(grouped); // returns an array of arrays
+  };
+
+  // 2. Interleave products across category groups
+  const interleaveGroups = (groups) => {
+    const result = [];
+    let i = 0;
+
+    while (groups.some((group) => group.length > i)) {
+      groups.forEach((group) => {
+        if (group[i]) {
+          result.push(group[i]);
+        }
+      });
+      i++;
     }
-    const getProducts = () => {
-      axios
-        .get(`${apiURL}/products/list/all`)
-        .then((response) => {
-          console.log(response.data.data.data);
-          setProducts(response.data.data.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
-    };
 
-    getProducts();
-  }, [router]);
+    return result;
+  };
+
+  const interleavedProducts = useMemo(() => {
+    const grouped = groupByCategory(serverProducts);
+    return interleaveGroups(grouped);
+  }, [serverProducts]);
 
   const handleSortChange = (selectedOption) => {
     setSortOption(selectedOption);
   };
 
-  const sortProducts = (products) => {
+  // Memoized Filtered Products
+  const filteredProducts = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return interleavedProducts.filter((product) => {
+      const matchesSearch = product.name.toLowerCase().includes(q);
+
+      const matchesCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(product.categoryId?.name);
+      return matchesSearch && matchesCategory;
+    });
+  }, [interleavedProducts, searchQuery, selectedCategories]);
+
+  console.log(filteredProducts, "let me see what is going on here");
+  // Memoized Sorted Products
+  const sortedProducts = useMemo(() => {
     switch (sortOption.value) {
-      case "relevance":
-        return products; // Implement relevance sorting logic
       case "newest":
-        return [...products].sort(
+        return [...filteredProducts].sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
       case "priceHighLow":
-        return [...products].sort((a, b) => b.price - a.price);
+        return [...filteredProducts].sort((a, b) => b.price - a.price);
       case "priceLowHigh":
-        return [...products].sort((a, b) => a.price - b.price);
+        return [...filteredProducts].sort((a, b) => a.price - b.price);
       case "wholesale":
         // Filter by product_type === 'wholesale' and then sort by price
-        return [...products]
+        return [...filteredProducts]
           .filter((product) => product.productType === "WHOLESALE")
           .sort((a, b) => a.price - b.price); // Sort by price (low to high)
       case "retail":
         // Filter by product_type === 'retail' and then sort by price
-        return [...products]
+        return [...filteredProducts]
           .filter((product) => product.productType === "RETAIL")
           .sort((a, b) => a.price - b.price); // Sort by price (low to high)
       default:
-        return products;
+        return filteredProducts;
     }
-  };
+  }, [filteredProducts, sortOption]);
 
-  // Filter Products
-  const filteredProducts = products.filter((product) => {
-    const matchesSearchQuery = product.name
-      ?.toLowerCase()
-      .includes(searchQuery.trim().toLowerCase());
-
-    const matchesCategory =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(product.categoryId?.name);
-
-    return matchesSearchQuery && matchesCategory;
-  });
-
-  // Prioritize search results
-  const prioritizedProducts = filteredProducts.sort((a, b) => {
-    const aMatch = a.name
-      ?.toLowerCase()
-      .includes(searchQuery.trim().toLowerCase());
-    const bMatch = b.name
-      ?.toLowerCase()
-      .includes(searchQuery.trim().toLowerCase());
-
-    // Matching products move to the top
-    if (aMatch && !bMatch) return -1;
-    if (!aMatch && bMatch) return 1;
-    return 0; // No change in order
-  });
-
-  const sortedAndFilteredProducts = sortProducts(prioritizedProducts);
-
-  const toggleMobileFilter = () => {
-    setIsMobileFilterVisible(!isMobileFilterVisible);
-  };
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return sortedProducts.slice(startIndex, endIndex);
+  }, [sortedProducts, currentPage]);
 
   return (
     <>
@@ -152,7 +144,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                   />
                 </div>
                 {/* Mobile Filter */}
-                <div className="hidden">
+                {/* <div className="hidden">
                   <div
                     className="flex items-center gap-10"
                     onClick={toggleMobileFilter}
@@ -165,7 +157,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                       setSelectedCategories={setSelectedCategories}
                     />
                   )}
-                </div>
+                </div> */}
                 <main className="w-full flex flex-col">
                   <div className="hidden md:flex items-center justify-between gap-4 mb-4">
                     <div className="md:text-xl font-primarySemibold">
@@ -234,7 +226,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         error={error}
                         loading={loading}
                       />
-                    ) : sortedAndFilteredProducts.length === 0 ? (
+                    ) : paginatedProducts.length === 0 ? (
                       <div className="text-center py-10">
                         <p className="text-lg font-primarySemibold text-gray-500">
                           No products found. Try adjusting your search or
@@ -243,7 +235,7 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5  2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                        {sortedAndFilteredProducts.map((product) => (
+                        {paginatedProducts.map((product) => (
                           <ProductCard
                             key={product.id}
                             product={product}
@@ -252,6 +244,33 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
                         ))}
                       </div>
                     )}
+                  </div>
+                  {/* Pagination Buttons */}
+                  <div className="flex justify-center gap-2 my-6">
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1 border rounded"
+                    >
+                      Prev
+                    </button>
+                    <span className="px-3 py-1">{currentPage}</span>
+                    <button
+                      onClick={() =>
+                        setCurrentPage((p) =>
+                          p < Math.ceil(sortedProducts.length / itemsPerPage)
+                            ? p + 1
+                            : p
+                        )
+                      }
+                      disabled={
+                        currentPage >=
+                        Math.ceil(sortedProducts.length / itemsPerPage)
+                      }
+                      className="px-3 py-1 border rounded"
+                    >
+                      Next
+                    </button>
                   </div>
                 </main>
               </div>
@@ -264,3 +283,15 @@ const AllProducts = ({ popularProducts, discountProducts, attributes }) => {
 };
 
 export default AllProducts;
+
+export async function getServerSideProps() {
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const res = await fetch(`${apiURL}/products/list/all`);
+  const data = await res.json();
+  return {
+    props: {
+      serverProducts: data?.data?.data || [],
+      attributes: [], // fetch or inject as needed
+    },
+  };
+}

@@ -22,14 +22,15 @@ import {
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
+import getCategories from "@services/CategoryServices";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const { loading, error } = useGetSetting();
   const [products, setProducts] = useState([]);
-  const visibleProducts = 15;
+  const visibleProducts = 50;
   const [categories, setCategories] = useState([]);
 
   function scrollCategories(direction) {
@@ -42,6 +43,10 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     }
   }
 
+  const shuffleArray = (array) => {
+    return [...array].sort(() => Math.random() - 0.5);
+  };
+
   useEffect(() => {
     if (router.asPath === "/") {
       setIsLoading(false);
@@ -49,31 +54,25 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       setIsLoading(false);
     }
 
-    const getCategories = () => {
-      axios
-        .get(`${apiURL}/category`)
-        .then((response) => {
-          console.log(response.data.data.items);
-          setCategories(response.data.data.items);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
+    const fetchAndSetCategories = async () => {
+      const cats = await getCategories();
+      setCategories(cats);
     };
 
     const getProducts = () => {
       axios
         .get(`${apiURL}/products/list/all`)
         .then((response) => {
-          console.log(response.data.data.data);
-          setProducts(response.data.data.data);
+          // console.log(response.data.data.data);
+          const shuffled = shuffleArray(response.data.data.data);
+          setProducts(shuffled);
         })
         .catch((error) => {
           console.error("Error fetching categories:", error);
         });
     };
 
-    getCategories();
+    fetchAndSetCategories();
     getProducts();
   }, [router]);
 
