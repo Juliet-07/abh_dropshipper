@@ -19,16 +19,36 @@ const sortingOptions = [
   { value: "priceLowHigh", label: "Price: Low - High" },
 ];
 
-const AllProducts = ({ serverProducts, attributes }) => {
+const AllProducts = ({ attributes }) => {
   console.log(serverProducts, "checking if this loads");
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error } = useGetSetting();
+  const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState(sortingOptions[0]);
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
+
+  useEffect(() => {
+    const getProducts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`${apiURL}/products/list/all`);
+        const data = response?.data?.data?.data || [];
+        // console.log(data, "data");
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        // Ensure loading is set to false in both success & error cases
+        setIsLoading(false);
+      }
+    };
+
+    getProducts();
+  }, []);
 
   const groupByCategory = (products) => {
     const grouped = {};
@@ -62,9 +82,9 @@ const AllProducts = ({ serverProducts, attributes }) => {
   };
 
   const interleavedProducts = useMemo(() => {
-    const grouped = groupByCategory(serverProducts);
+    const grouped = groupByCategory(products);
     return interleaveGroups(grouped);
-  }, [serverProducts]);
+  }, [products]);
 
   const handleSortChange = (selectedOption) => {
     setSortOption(selectedOption);
@@ -283,15 +303,3 @@ const AllProducts = ({ serverProducts, attributes }) => {
 };
 
 export default AllProducts;
-
-export async function getServerSideProps() {
-  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const res = await fetch(`${apiURL}/products/list/all`);
-  const data = await res.json();
-  return {
-    props: {
-      serverProducts: data?.data?.data || [],
-      attributes: [], // fetch or inject as needed
-    },
-  };
-}
