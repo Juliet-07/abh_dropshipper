@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import axios from "axios";
@@ -9,20 +8,12 @@ import axios from "axios";
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
 import CardTwo from "@component/cta-card/CardTwo";
-import StickyCart from "@component/cart/StickyCart";
 import Loading from "@component/preloader/Loading";
 import ProductCard from "@component/product/ProductCard";
-import FeatureCategory from "@component/category/FeatureCategory";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import MainCarousel from "@component/carousel/MainCarousel";
-import OfferCard from "@component/offer/OfferCard";
-import Banner from "@component/banner/Banner";
-import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
-import getCategories from "@services/CategoryServices";
+import CategoryCarousel from "@component/carousel/CategoryCarousel";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -31,17 +22,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const { loading, error } = useGetSetting();
   const [products, setProducts] = useState([]);
   const visibleProducts = 50;
-  const [categories, setCategories] = useState([]);
-
-  function scrollCategories(direction) {
-    const container = document.getElementById("categoryContainer");
-    const scrollAmount = 300; // Adjust this value to set the scroll distance
-    if (direction === "left") {
-      container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    } else {
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  }
 
   const shuffleArray = (array) => {
     return [...array].sort(() => Math.random() - 0.5);
@@ -54,16 +34,11 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       setIsLoading(false);
     }
 
-    const fetchAndSetCategories = async () => {
-      const cats = await getCategories();
-      setCategories(cats);
-    };
-
     const getProducts = () => {
       axios
         .get(`${apiURL}/products/list/all`)
         .then((response) => {
-          // console.log(response.data.data.data);
+          // console.log(response.data);
           const shuffled = shuffleArray(response.data.data.data);
           setProducts(shuffled);
         })
@@ -72,7 +47,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
         });
     };
 
-    fetchAndSetCategories();
     getProducts();
   }, [router]);
 
@@ -124,63 +98,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 Shop by Category
               </div>
               {/* Category Carousel */}
-              <div className="relative w-full flex items-center">
-                {/* Left Arrow */}
-                <button
-                  className="absolute left-0 z-10 bg-white shadow-md rounded-full p-1 md:p-2"
-                  onClick={() => scrollCategories("left")}
-                >
-                  <span className="material-icons">
-                    <MdOutlineKeyboardArrowLeft />
-                  </span>
-                </button>
-                {/* Categories */}
-                <div
-                  id="categoryContainer"
-                  className="w-full flex gap-4 overflow-x-auto scroll-smooth no-scrollbar"
-                >
-                  {categories.map((category) => (
-                    <Link
-                      // href={`categories/${category._id}`}
-                      href={{
-                        pathname: `categories/${category._id}`,
-                        query: { name: category.name }, // Add the category name as a query parameter
-                      }}
-                    >
-                      <div className="min-w-[150px] md:min-w-[250px] h-full p-2 md:p-3 bg-[#A5D8A9] flex flex-col items-center justify-center rounded md:rounded-lg">
-                        <Image
-                          width={211}
-                          height={226}
-                          src={category?.image}
-                          alt={category?.name}
-                          className="hidden md:block"
-                          // priority
-                        />
-                        <Image
-                          width={90}
-                          height={75}
-                          src={category?.image}
-                          alt={category?.name}
-                          className="block md:hidden"
-                          // priority
-                        />
-                        <p className="text-xs md:text-base font-primarySemibold md:py-3">
-                          {category.name}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                {/* Right Arrow */}
-                <button
-                  className="absolute right-0 z-10 bg-white shadow-md rounded-full p-2"
-                  onClick={() => scrollCategories("right")}
-                >
-                  <span className="material-icons">
-                    <MdOutlineKeyboardArrowRight />
-                  </span>
-                </button>
-              </div>
+              <CategoryCarousel />
             </div>
 
             {/* WhatsApp Sticky Button For User Support */}
@@ -287,13 +205,13 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             </div> */}
 
             {/* promotional banner card */}
-            <div className="block mx-auto max-w-screen-2xl my-10">
+            {/* <div className="block mx-auto max-w-screen-2xl my-10">
               <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
                 <div className="lg:p-16 p-6 bg-[#359E52] shadow-sm border rounded-lg">
                   <CardTwo />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* discounted products */}
             {/* {storeCustomizationSetting?.home?.discount_product_status &&

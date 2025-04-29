@@ -18,11 +18,9 @@ const TermAndConditions = () => {
     >
       <PageHeader
         headerBg={storeCustomizationSetting?.term_and_condition?.header_bg}
-        title={showingTranslateValue(
-          storeCustomizationSetting?.term_and_condition?.title
-        )}
+        title="Terms & Conditions"
       />
-      <div className="bg-white">
+      <div className="bg-white p-4">
         <b>Last Updated: 18th September 2024</b>
         <p>
           Welcome to ABH! By accessing or using our platform, you agree to
@@ -31,15 +29,15 @@ const TermAndConditions = () => {
           you may not use our services.
         </p>
 
-        <h2>1. General Terms</h2>
-        <h3>1.1 Eligibility:</h3>
+        <b>1. General Terms</b>
+        <h3 className="font-primarySemibold">1.1 Eligibility:</h3>
         <p>
           To use ABH, you must be at least 18 years old and have the legal
           capacity to enter into contracts. By using our platform, you represent
           and warrant that you meet these requirements.
         </p>
 
-        <h3>1.2 Account Registration:</h3>
+        <h3 className="font-primarySemibold">1.2 Account Registration:</h3>
         <p>
           You must create an account to access certain services on the ABH
           platform. You agree to provide accurate, complete, and updated
@@ -48,10 +46,10 @@ const TermAndConditions = () => {
           account.
         </p>
 
-        <h3>1.3 Prohibited Conduct:</h3>
+        <h3 className="font-primarySemibold">1.3 Prohibited Conduct:</h3>
         <p>
           You agree not to engage in any of the following prohibited activities:
-          <ul>
+          <ul className="list-disc px-4">
             <li>
               Violating any local, national, or international laws or
               regulations.
@@ -66,10 +64,10 @@ const TermAndConditions = () => {
           </ul>
         </p>
 
-        <h2>2. Product Listings and Transactions</h2>
-        <h3>2.1 Manufacturers:</h3>
+        <strong>2. Product Listings and Transactions</strong>
+        <h3 className="font-primarySemibold">2.1 Manufacturers:</h3>
         <p>
-          <ul>
+          <ul className="list-disc px-4">
             <li>
               Manufacturers are responsible for providing accurate and complete
               product descriptions, pricing, and availability information.
@@ -85,7 +83,7 @@ const TermAndConditions = () => {
           </ul>
         </p>
 
-        <h3>2.2 Wholesalers:</h3>
+        <h3 className="font-primarySemibold">2.2 Wholesalers:</h3>
         <p>
           <ul>
             <li>
@@ -103,9 +101,9 @@ const TermAndConditions = () => {
           </ul>
         </p>
 
-        <h3>2.3 Retailers:</h3>
+        <h3 className="font-primarySemibold">2.3 Retailers:</h3>
         <p>
-          <ul>
+          <ul className="list-disc px-4">
             <li>
               Retailers are responsible for ensuring that all orders placed
               through the platform are accurate and in compliance with customer
@@ -123,9 +121,9 @@ const TermAndConditions = () => {
           </ul>
         </p>
 
-        <h3>2.4 Drop-shippers:</h3>
+        <h3 className="font-primarySemibold">2.4 Drop-shippers:</h3>
         <p>
-          <ul>
+          <ul className="list-disc px-4">
             <li>
               Drop-shippers must accurately represent product information and
               delivery times to their customers.
@@ -141,8 +139,8 @@ const TermAndConditions = () => {
           </ul>
         </p>
 
-        <h2>3. Payments and Fees</h2>
-        <h3>3.1 Payment Terms:</h3>
+        <strong>3. Payments and Fees</strong>
+        <h3 className="font-primarySemibold">3.1 Payment Terms:</h3>
         <p>
           All transactions on the ABH platform must be conducted through the
           approved payment methods. You agree to pay all applicable fees,
@@ -150,7 +148,7 @@ const TermAndConditions = () => {
           transaction process.
         </p>
 
-        <h3>3.2 Fees for Services:</h3>
+        <h3 className="font-primarySemibold">3.2 Fees for Services:</h3>
         <p>
           ABH charges fees for certain services, such as premium listings,
           advertising, and transaction processing. Fees are clearly disclosed on
@@ -158,15 +156,15 @@ const TermAndConditions = () => {
           agree to pay the fees as outlined.
         </p>
 
-        <h3>3.3 Refunds and Cancellations:</h3>
+        <h3 className="font-primarySemibold">3.3 Refunds and Cancellations:</h3>
         <p>
           Refunds and cancellations are subject to the terms agreed upon between
           the buyer and seller. ABH is not responsible for issuing refunds but
           may assist in resolving disputes.
         </p>
 
-        <h2>4. Shipping and Delivery</h2>
-        <h3>4.1 Shipping Responsibility:</h3>
+        <strong>4. Shipping and Delivery</strong>
+        <h3 className="font-primarySemibold">4.1 Shipping Responsibility:</h3>
         <p>
           The seller (manufacturer, wholesaler, or drop-shipper) is responsible
           for ensuring timely and accurate delivery of products to the buyer.
@@ -174,7 +172,7 @@ const TermAndConditions = () => {
           facilitate communication between parties if issues arise.
         </p>
 
-        <h3>4.2 Delivery Disputes:</h3>
+        <h3 className="font-primarySemibold">4.2 Delivery Disputes:</h3>
         <p>
           Any disputes regarding shipping delays, lost items, or damaged goods
           must be resolved between the buyer and seller. ABH may intervene at
@@ -182,8 +180,8 @@ const TermAndConditions = () => {
           shipping-related issues.
         </p>
 
-        <h2>5. Intellectual Property</h2>
-        <h3>5.1 Ownership:</h3>
+        <strong>5. Intellectual Property</strong>
+        <h3 className="font-primarySemibold">5.1 Ownership:</h3>
         <p>
           All content, trademarks, and intellectual property on the ABH
           platform, including but not limited to text, graphics, logos, and
@@ -192,7 +190,7 @@ const TermAndConditions = () => {
           without express written permission from ABH.
         </p>
 
-        <h3>5.2 User-Generated Content:</h3>
+        <h3 className="font-primarySemibold">5.2 User-Generated Content:</h3>
         <p>
           By uploading or posting content on the ABH platform, you grant ABH a
           worldwide, royalty-free, perpetual, and non-exclusive license to use,
@@ -200,7 +198,7 @@ const TermAndConditions = () => {
           services.
         </p>
 
-        <h2>6. Privacy and Data Security</h2>
+        <strong>6. Privacy and Data Security</strong>
         <p>
           Your use of the ABH platform is governed by our Privacy Policy, which
           explains how we collect, use, and protect your personal information.
@@ -208,15 +206,15 @@ const TermAndConditions = () => {
           information as described in the Privacy Policy.
         </p>
 
-        <h2>7. Dispute Resolution</h2>
-        <h3>7.1 Mediation:</h3>
+        <strong>7. Dispute Resolution</strong>
+        <h3 className="font-primarySemibold">7.1 Mediation:</h3>
         <p>
           ABH encourages users to resolve disputes amicably through direct
           communication. If mediation is necessary, ABH may assist in
           facilitating a resolution but does not guarantee outcomes.
         </p>
 
-        <h3>7.2 Arbitration:</h3>
+        <h3 className="font-primarySemibold">7.2 Arbitration:</h3>
         <p>
           If disputes cannot be resolved through mediation, the parties agree to
           submit the matter to binding arbitration by the laws of [Insert
@@ -224,7 +222,7 @@ const TermAndConditions = () => {
           binding on all parties.
         </p>
 
-        <h2>8. Limitation of Liability</h2>
+        <strong>8. Limitation of Liability</strong>
         <p>
           To the fullest extent permitted by law, ABH shall not be liable for
           any indirect, incidental, special, or consequential damages arising
@@ -232,7 +230,7 @@ const TermAndConditions = () => {
           not limited to loss of profits, data, or business opportunities.
         </p>
 
-        <h2>9. Termination</h2>
+        <strong>9. Termination</strong>
         <p>
           ABH reserves the right to suspend or terminate your account and access
           to the platform at any time for any reason, including violation of
@@ -240,7 +238,7 @@ const TermAndConditions = () => {
           time by contacting our support team.
         </p>
 
-        <h2>10. Changes to These Terms</h2>
+        <strong>10. Changes to These Terms</strong>
         <p>
           ABH may update these Terms & Conditions from time to time. You will be
           notified of any significant changes via email or through the platform.

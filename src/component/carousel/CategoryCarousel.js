@@ -1,143 +1,148 @@
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import React, { useContext, useRef } from "react";
-import { IoChevronBackOutline, IoChevronForward } from "react-icons/io5";
-import { Navigation } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-//internal import
-import useAsync from "@hooks/useAsync";
-import { SidebarContext } from "@context/SidebarContext";
-import CategoryServices from "@services/CategoryServices";
-import useUtilsFunction from "@hooks/useUtilsFunction";
+import Link from "next/link";
+import {
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import getCategories from "@services/CategoryServices";
 
 const CategoryCarousel = () => {
-  const router = useRouter();
+  const categoryContainerRef = useRef(null);
+  const autoPlayInterval = useRef(null);
+  const [categories, setCategories] = useState([]);
 
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  // Scroll function
+  const scrollCategories = (direction) => {
+    const container = categoryContainerRef.current;
+    if (!container) return;
 
-  const { showingTranslateValue } = useUtilsFunction();
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const { data, error } = useAsync(() => CategoryServices.getShowingCategory());
-
-  const handleCategoryClick = (id, category) => {
-    const category_name = showingTranslateValue(category)
-      ?.toLowerCase()
-      .replace(/[^A-Z0-9]+/gi, "-");
-
-    router.push(`/search?category=${category_name}&_id=${id}`);
-    setIsLoading(!isLoading);
+    const scrollAmount = direction === "left" ? -300 : 300;
+    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
+  // Auto-play function
+  const startAutoPlay = () => {
+    // Clear any existing interval
+    if (autoPlayInterval.current) {
+      clearInterval(autoPlayInterval.current);
+    }
+
+    // Set new interval (3 seconds in this example)
+    autoPlayInterval.current = setInterval(() => {
+      const container = categoryContainerRef.current;
+      if (!container) return;
+
+      // Check if we've reached the end
+      if (
+        container.scrollLeft + container.clientWidth >=
+        container.scrollWidth - 10
+      ) {
+        // If at end, scroll back to start
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        // Otherwise scroll right
+        scrollCategories("right");
+      }
+    }, 3000);
+  };
+
+  // Start auto-play on component mount
+  useEffect(() => {
+    startAutoPlay();
+
+    // Clean up interval on unmount
+    return () => {
+      if (autoPlayInterval.current) {
+        clearInterval(autoPlayInterval.current);
+      }
+    };
+  }, []);
+
+  // Pause on hover for better UX
+  const handleMouseEnter = () => {
+    if (autoPlayInterval.current) {
+      clearInterval(autoPlayInterval.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    startAutoPlay();
+  };
+
+  useEffect(() => {
+    const fetchAndSetCategories = async () => {
+      const cats = await getCategories();
+      setCategories(cats);
+    };
+
+    fetchAndSetCategories();
+  }, []);
+
   return (
-    <>
-      <Swiper
-        onInit={(swiper) => {
-          swiper.params.navigation.prevEl = prevRef.current;
-          swiper.params.navigation.nextEl = nextRef.current;
-          swiper.navigation.init();
-          swiper.navigation.update();
-        }}
-        spaceBetween={8}
-        navigation={true}
-        allowTouchMove={false}
-        loop={true}
-        breakpoints={{
-          // when window width is >= 640px
-          375: {
-            width: 375,
-            slidesPerView: 2,
-          },
-          // when window width is >= 768px
-          414: {
-            width: 414,
-            slidesPerView: 3,
-          },
-          // when window width is >= 768px
-          660: {
-            width: 660,
-            slidesPerView: 4,
-          },
-
-          // when window width is >= 768px
-          768: {
-            width: 768,
-            slidesPerView: 6,
-          },
-
-          // when window width is >= 768px
-          991: {
-            width: 991,
-            slidesPerView: 8,
-          },
-
-          // when window width is >= 768px
-          1140: {
-            width: 1140,
-            slidesPerView: 9,
-          },
-          1680: {
-            width: 1680,
-            slidesPerView: 10,
-          },
-          1920: {
-            width: 1920,
-            slidesPerView: 10,
-          },
-        }}
-        modules={[Navigation]}
-        className="mySwiper category-slider my-10"
+    <div
+      className="relative w-full flex items-center"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Left Arrow */}
+      <button
+        className="absolute left-0 z-10 bg-white shadow-md rounded-full p-1 md:p-2"
+        onClick={() => scrollCategories("left")}
       >
-        {error ? (
-          <p className="flex justify-center align-middle items-center m-auto text-xl text-red-500">
-            <span> {error}</span>
-          </p>
-        ) : (
-          <div>
-            {data[0]?.children?.map((category, i) => (
-              <SwiperSlide key={i + 1} className="group">
-                <div
-                  onClick={() =>
-                    handleCategoryClick(category?._id, category.name)
-                  }
-                  className="text-center cursor-pointer p-3 bg-white rounded-lg"
-                >
-                  <div className="bg-white p-2 mx-auto w-10 h-10 rounded-full shadow-md">
-                    <div className="relative w-9 h-9">
-                      <Image
-                        src={
-                          category?.icon ||
-                          "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                        }
-                        alt="category"
-                        width={40}
-                        height={40}
-                        className="object-fill"
-                      />
-                    </div>
-                  </div>
+        <span className="material-icons">
+          <MdOutlineKeyboardArrowLeft />
+        </span>
+      </button>
 
-                  <h3 className="text-xs text-gray-600 mt-2 font-serif group-hover:text-emerald-500">
-                    {showingTranslateValue(category?.name)}
-                  </h3>
-                </div>
-              </SwiperSlide>
-            ))}
-          </div>
-        )}
-        <button ref={prevRef} className="prev">
-          <IoChevronBackOutline />
-        </button>
-        <button ref={nextRef} className="next">
-          <IoChevronForward />
-        </button>
-      </Swiper>
-    </>
+      {/* Categories */}
+      <div
+        id="categoryContainer"
+        ref={categoryContainerRef}
+        className="w-full flex md:gap-4 overflow-x-auto scroll-smooth no-scrollbar"
+      >
+        {categories.map((category) => (
+          <Link
+            key={category._id}
+            href={{
+              pathname: `/categories/${category._id}`,
+              query: { name: category.name },
+            }}
+          >
+            <div className="min-w-[150px] md:min-w-[250px] h-full p-2 md:p-3 flex flex-col items-center justify-center rounded md:rounded-lg">
+              <Image
+                width={211}
+                height={226}
+                src={category?.image}
+                alt={category?.name}
+                className="hidden md:block"
+              />
+              <Image
+                width={100}
+                height={75}
+                src={category?.image}
+                alt={category?.name}
+                className="block md:hidden"
+              />
+              <p className="text-xs md:text-sm py-3 text-center font-primaryMedium">
+                {category.name}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Right Arrow */}
+      <button
+        className="absolute right-0 z-10 bg-white shadow-md rounded-full p-2"
+        onClick={() => scrollCategories("right")}
+      >
+        <span className="material-icons">
+          <MdOutlineKeyboardArrowRight />
+        </span>
+      </button>
+    </div>
   );
 };
 
-export default React.memo(CategoryCarousel);
+export default CategoryCarousel;
