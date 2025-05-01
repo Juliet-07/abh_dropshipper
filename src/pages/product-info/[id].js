@@ -174,37 +174,24 @@ const ProductInfo = ({ params }) => {
             <div className="bg-white w-full min-h-[100vh] flex md:flex-row flex-col flex-wrap px-3 sm:px-10">
               {/* Image Section */}
               <div className="flex md:flex-[35] flex-col px-3 sm:px-10 py-10">
-                <div
-                  className={`flex flex-[40] w-full min-h-[100px]`}
-                  style={{
-                    backgroundImage: `url(${product.featured_image})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                  }}
-                />
-                <div className="flex flex-[30] w-full px-3">
-                  <Swiper
-                    className="h-24 max-w-[350px] flex justify-center items-center px-4"
-                    modules={[Navigation]}
-                    spaceBetween={10}
-                    slidesPerView={3}
-                    navigation
-                    draggable
-                    autoplay
-                  >
-                    {product.images.map((image, index) => (
-                      <SwiperSlide
+                <div>
+                  <img src={product.featured_image} />
+                </div>
+                <div className="flex items-center justify-center w-full my-4">
+                  <div className="flex space-x-4 overflow-x-auto max-w-[400px]">
+                    {product?.images?.map((image, index) => (
+                      <div
                         key={index}
-                        className="w-[62px] h-[62px] border"
-                        style={{
-                          backgroundImage: `url(${image.url})`,
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                      />
+                        className="w-[100px] h-[100px] flex-shrink-0 border rounded-md overflow-hidden"
+                      >
+                        <img
+                          src={image?.url}
+                          alt={`Product Image ${index}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     ))}
-                  </Swiper>
+                  </div>
                 </div>
               </div>
               {/* Details Section */}
