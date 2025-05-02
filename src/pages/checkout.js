@@ -29,10 +29,14 @@ const Checkout = () => {
   const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("abhUserInfo");
   const { handleSubmit } = useForm();
+  const [userData, setUserData] = useState({});
   const { items, emptyCart } = useCart();
   const [shippingCost, setShippingCost] = useState(0);
   const [showCard, setShowCard] = useState(false);
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
+  const [isEditingPersonalDetails, setIsEditingPersonalDetails] =
+    useState(false);
+  const [isCalculatingDelivery, setIsCalculatingDelivery] = useState(false);
   const [paymentGateway, setPaymentGateway] = useState("");
   const [logisticsGateway, setLogisticsGateway] = useState("");
   const [reference, setReference] = useState("");
@@ -131,6 +135,7 @@ const Checkout = () => {
 
   const calculateTotalDeliveryFee = async () => {
     try {
+      setIsCalculatingDelivery(true);
       let vendorOrigins = items.map((origin) => origin?.vendor?.state);
       console.log(vendorOrigins, "places of the vendor");
 
@@ -153,6 +158,8 @@ const Checkout = () => {
       console.log("Total Delivery Fee:", totalDeliveryFee);
     } catch (error) {
       console.error("Error calculating total delivery fee:", error);
+    } finally {
+      setIsCalculatingDelivery(false);
     }
   };
 
@@ -177,10 +184,10 @@ const Checkout = () => {
     let url;
     const payload = {
       personaInfo: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phoneNumber: phoneNumber,
+        firstName: userData?.firstName,
+        lastName: userData?.lastName,
+        email: userData?.email,
+        phoneNumber: userData?.phoneNumber,
       },
       shippingAddress: {
         street: street,
@@ -225,6 +232,27 @@ const Checkout = () => {
     }
   };
 
+  useEffect(() => {
+    const getUserData = () => {
+      axios
+        .get(`${apiURL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data, "User Info");
+          setUserData(response.data.data); // Set user data in the state
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    };
+
+    getUserData();
+  }, []);
   return (
     <>
       <Layout title="Checkout" description="Checkout page">
@@ -234,19 +262,49 @@ const Checkout = () => {
               <div className="mt-5 md:mt-0 md:col-span-2">
                 <form onSubmit={handleSubmit(submitOrder)}>
                   <div className="form-group">
-                    <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
-                      01. Personal Details
-                    </h2>
+                    <div className="flex justify-between items-center">
+                      <h2 className="font-semibold font-serif text-base text-gray-700 pb-3">
+                        01. Personal Details
+                      </h2>
+                      {!isEditingPersonalDetails ? (
+                        <button
+                          type="button"
+                          onClick={() => setIsEditingPersonalDetails(true)}
+                          className="text-green-600 text-sm hover:underline font-primaryBold"
+                        >
+                          Edit
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setIsEditingPersonalDetails(false)}
+                          className="text-green-600 text-sm hover:underline font-primaryBold"
+                        >
+                          Save
+                        </button>
+                      )}
+                    </div>
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
                         <Label label="First Name" />
                         <input
                           type="text"
-                          className="w-full p-3 border border-gray-200 text-sm"
+                          className="w-full p-3 border border-gray-200 text-sm disabled:bg-gray-300"
                           placeholder="First Name"
                           name="firstName"
-                          value={firstName}
-                          onChange={handleChange}
+                          value={
+                            isEditingPersonalDetails
+                              ? orderDetails.firstName
+                              : userData?.firstName
+                          }
+                          onChange={(e) => {
+                            handleChange(e);
+                            setUserData((prev) => ({
+                              ...prev,
+                              firstName: e.target.value,
+                            }));
+                          }}
+                          disabled={!isEditingPersonalDetails}
                           required
                         />
                         {/* <Error errorName={errors.firstName} /> */}
@@ -256,11 +314,22 @@ const Checkout = () => {
                         <Label label="Last Name" />
                         <input
                           type="text"
-                          className="w-full p-3 border border-gray-200 text-sm"
+                          className="w-full p-3 border border-gray-200 text-sm disabled:bg-gray-300"
                           placeholder="Last Name"
                           name="lastName"
-                          value={lastName}
-                          onChange={handleChange}
+                          value={
+                            isEditingPersonalDetails
+                              ? orderDetails.lastName
+                              : userData?.lastName
+                          }
+                          onChange={(e) => {
+                            handleChange(e);
+                            setUserData((prev) => ({
+                              ...prev,
+                              lastName: e.target.value,
+                            }));
+                          }}
+                          disabled={!isEditingPersonalDetails}
                           required
                         />
                       </div>
@@ -268,11 +337,22 @@ const Checkout = () => {
                         <Label label="Email" />
                         <input
                           type="email"
-                          className="w-full p-3 border border-gray-200 text-sm"
+                          className="w-full p-3 border border-gray-200 text-sm disabled:bg-gray-300"
                           placeholder="Email"
                           name="email"
-                          value={email}
-                          onChange={handleChange}
+                          value={
+                            isEditingPersonalDetails
+                              ? orderDetails.email
+                              : userData?.email
+                          }
+                          onChange={(e) => {
+                            handleChange(e);
+                            setUserData((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }));
+                          }}
+                          disabled={!isEditingPersonalDetails}
                           required
                         />
                       </div>
@@ -280,11 +360,22 @@ const Checkout = () => {
                         <Label label="Phone Number" />
                         <input
                           type="number"
-                          className="w-full p-3 border border-gray-200 text-sm"
+                          className="w-full p-3 border border-gray-200 text-sm disabled:bg-gray-300"
                           placeholder="Phone Number"
                           name="phoneNumber"
-                          value={phoneNumber}
-                          onChange={handleChange}
+                          value={
+                            isEditingPersonalDetails
+                              ? orderDetails.phoneNumber
+                              : userData?.phoneNumber
+                          }
+                          onChange={(e) => {
+                            handleChange(e);
+                            setUserData((prev) => ({
+                              ...prev,
+                              phoneNumber: e.target.value,
+                            }));
+                          }}
+                          disabled={!isEditingPersonalDetails}
                           required
                         />
                       </div>
