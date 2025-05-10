@@ -1,5 +1,6 @@
 import "@styles/custom.css";
 import { CartProvider } from "react-use-cart";
+import Script from "next/script";
 import { Elements } from "@stripe/react-stripe-js";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { PersistGate } from "redux-persist/integration/react";
@@ -59,6 +60,19 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      {/* ✅ Google Analytics Script */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_KEY}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_KEY}');
+        `}
+      </Script>
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
@@ -71,10 +85,10 @@ function MyApp({ Component, pageProps }) {
             <PersistGate loading={null} persistor={persistor}>
               <SidebarProvider>
                 {/* <Elements stripe={stripePromise}> */}
-                  <CartProvider>
-                    <DefaultSeo />
-                    <Component {...pageProps} />
-                  </CartProvider>
+                <CartProvider>
+                  <DefaultSeo />
+                  <Component {...pageProps} />
+                </CartProvider>
                 {/* </Elements> */}
               </SidebarProvider>
             </PersistGate>
