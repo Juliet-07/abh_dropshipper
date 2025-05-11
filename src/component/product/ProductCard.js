@@ -143,7 +143,7 @@ const ProductCard = ({ product, attributes }) => {
         <div className="w-full px-3 lg:px-4 pb-2 overflow-hidden">
           <div className="relative mb-1">
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
-              {product.quantity + product.unit}
+              {product.quantity + " " + product.unit}
             </span>
             <h2 className="text-heading truncate mb-0 block text-sm font-medium text-gray-600">
               <span className="line-clamp-2">{product.name}</span>
@@ -180,10 +180,10 @@ const ProductCard = ({ product, attributes }) => {
             />
 
             <div
-              // onClick={() => handleAddItem(product)}
+              onClick={() => handleAddItem(product)}
               // onClick={() => handleModalOpen(!modalOpen, product.id)}
               aria-label="cart"
-              className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+              className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-[#F58634] hover:border-[#F58634] hover:bg-[#F58634] hover:text-white transition-all cursor-pointer"
             >
               {" "}
               <span className="text-xl">

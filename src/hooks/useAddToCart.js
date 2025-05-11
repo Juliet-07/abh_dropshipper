@@ -9,31 +9,26 @@ const useAddToCart = () => {
   // console.log("items", items);
 
   const handleAddItem = (product) => {
-    const result = items.find((i) => i.id === product.id);
-    console.log(result, "checking the results");
-    console.log(product, "checking products");
+    if (product.quantity < 1) return notifyError("Insufficient stock!");
 
-    const { variants, categories, description, ...updatedProduct } = product;
-
-    // Calculate available stock
-    const availableStock = product?.quantity - product?.soldQuantity;
-    // console.log(availableStock, "checking stock");
-
-    if (result) {
-      if (result?.quantity + item <= availableStock) {
-        updateItemQuantity(result.id, result.quantity + item);
-        notifySuccess(`${item} ${product.name} added to cart!`);
-      } else {
-        notifyError("Insufficient stock!");
-      }
-    } else {
-      if (item <= availableStock) {
-        addItem({ ...product, quantity: availableStock }, item);
-        notifySuccess(`${item} ${product.name} added to cart!`);
-      } else {
-        notifyError("Insufficient stock!");
-      }
+    if (product?.variants?.length > 0) {
+      // Optionally open modal for selecting variant
+      return;
     }
+
+    const { slug, variants, categories, description, ...updatedProduct } =
+      product;
+
+    const newItem = {
+      ...updatedProduct,
+      title: product?.name,
+      id: product.id || product._id,
+      // variant: product.prices,
+      // price: product.price,
+      // originalPrice: product.prices?.originalPrice,
+    };
+    console.log(newItem, "checking what they are adding here");
+    addItem(newItem);
   };
 
   const handleIncreaseQuantity = (product) => {

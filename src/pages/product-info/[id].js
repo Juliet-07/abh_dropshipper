@@ -198,7 +198,7 @@ const ProductInfo = ({ params }) => {
               <div className="flex flex-[35] flex-col px-3 sm:px-10 md:py-10 py-4 gap-y-6">
                 <div>
                   <strong>{product.name}</strong>
-                  <div>{product.categoryId.name}</div>
+                  <div>{product?.categoryId?.name}</div>
                   <p className="text-xs text-blue-600">{product.productType}</p>
                 </div>
                 <div>
@@ -212,9 +212,16 @@ const ProductInfo = ({ params }) => {
                   <b>Price:</b>{" "}
                   {product.currency +
                     " " +
-                    product.sellingPrice.toLocaleString()}{" "}
+                    (product?.sellingPrice ?? 0).toLocaleString()}{" "}
                   {product.productType === "RETAIL" ? "per unit" : "per carton"}
                 </div>
+                {product.productType !== "RETAIL" && (
+                  <div>
+                    <p className="text-blue-600 text-sm">
+                      {product?.unitPerCarton} units per carton
+                    </p>
+                  </div>
+                )}
                 {product.productType !== "RETAIL" && (
                   <div>
                     <p className="text-[red] text-sm">

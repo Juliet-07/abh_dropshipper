@@ -20,7 +20,7 @@ const sortingOptions = [
 ];
 
 const AllProducts = ({ attributes }) => {
-  console.log(serverProducts, "checking if this loads");
+  const apiURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error } = useGetSetting();
   const [products, setProducts] = useState([]);
@@ -37,7 +37,7 @@ const AllProducts = ({ attributes }) => {
       try {
         const response = await axios.get(`${apiURL}/products/list/all`);
         const data = response?.data?.data?.data || [];
-        // console.log(data, "data");
+        console.log(data, "data, why is data not loading");
         setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -103,7 +103,7 @@ const AllProducts = ({ attributes }) => {
     });
   }, [interleavedProducts, searchQuery, selectedCategories]);
 
-  console.log(filteredProducts, "let me see what is going on here");
+  // console.log(filteredProducts, "let me see what is going on here");
   // Memoized Sorted Products
   const sortedProducts = useMemo(() => {
     switch (sortOption.value) {
@@ -246,14 +246,14 @@ const AllProducts = ({ attributes }) => {
                         error={error}
                         loading={loading}
                       />
-                    ) : paginatedProducts.length === 0 ? (
-                      <div className="text-center py-10">
-                        <p className="text-lg font-primarySemibold text-gray-500">
-                          No products found. Try adjusting your search or
-                          filter.
-                        </p>
-                      </div>
                     ) : (
+                      // ) : paginatedProducts.length === 0 ? (
+                      //   <div className="text-center py-10">
+                      //     <p className="text-lg font-primarySemibold text-gray-500">
+                      //       No products found. Try adjusting your search or
+                      //       filter.
+                      //     </p>
+                      //   </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5  2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                         {paginatedProducts.map((product) => (
                           <ProductCard
